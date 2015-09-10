@@ -1,0 +1,328 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    ViewBag.Title = "PricingView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Smart Global Pricing</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+        
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+
+                <li>
+                    <a href="~/Pricing/PricingView">Pricing</a>
+                </li>
+                <li class="active">Pricing View</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+
+        <div id="searchPanel" class="col-sm-zy1">
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4>Search</h4>
+                    <span class="widget-toolbar">
+                        <a href="@Url.Content("~/Pricing/Detail")" target="_blank" title="Create RFQ">
+                            <i class="icon-plus-sign bigger-140 green"></i>
+                        </a>
+                        <a href="javascript:void(0)" id="aNext" title="Submit">
+                            <i class="icon-arrow-right bigger-140"></i>
+                        </a>
+                        <a href="javascript:void(0)" id="aPDF" title="Batch PDF Export">
+                            <i class="icon-file-alt bigger-140 green"></i>
+                        </a>
+                        <a href="~/Import/ImportExcel" id="aUpload" title="Import">
+                            <i class="icon-cloud-upload bigger-140 purple"></i>
+                        </a>
+                        <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+                            <i class="icon-cloud-download bigger-140 pink"></i>
+                        </a>
+                        <a href="javascript:void(0)" id="aFieldSetting" title="Field Setting">
+                            <i class="icon-cog bigger-140 red"></i>
+                        </a>
+                        @*<a href="javascript:void(0)" id="aQuerySetting" title="Query Setting">
+                                <i class="icon-search bigger-140 yellow"></i>
+                            </a>*@
+                        <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+                            <i class="icon-refresh bigger-140 green"></i>
+                        </a>
+                        <a href="javascript:void(0)" data-action="collapse">
+                            <i class="icon-chevron-down"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div>
+                            <table align="center" style="width:100%">
+                                <tr>
+                                    <td>
+                                        <form id="fm" method="post">
+                                            @*@MvcHtmlString.Create(UIManager.GenerateQuery("DefaultSearch"))*@
+                                            @Html.Partial("~/Views/Export/ExportExcel.cshtml")
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <button id="btnSearch" class="btn btn-app btn-success btn-xs" onclick="searchGrid(); return false;">
+                                            <i class="icon-search bigger-160"></i>
+                                            Query
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-zy1">
+            <!-- PAGE CONTENT BEGINS -->
+            <table style="width:100%;">
+                <tr>
+                    <td>
+                        <table id="grid-table" class="bi-grid" listname="DefaultGrid" key="RFQID" userid='@ViewBag.UserID' pager="grid-pager" editaction="editRow" delaction="delRow" downaction="downDoc" history="history" actionformatter="Number:$.bi.formatter.isNewFormatter,VIForm:linkAction,WFStatus:$.bi.formatter.wfFormatter"></table>
+                        <!--<table id="grid-table" class="bi-grid" listname="DefaultGrid" key="RFQID" pager="grid-pager" editaction="editRow"  downaction="downDoc" history="history" actionformatter="Number:$.bi.formatter.isNewFormatter,VIForm:linkAction,WFStatus:$.bi.formatter.wfFormatter"></table>-->
+                        <div id="grid-pager"></div>
+                    </td>
+                </tr>
+            </table>
+        </div><!-- /.col -->
+
+        <div class="page-content" style="padding: 8px 12px 0px">
+            <div class="row">
+
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+    @*</div>*@
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+
+    <script src='~/assets/js/jquery-2.0.3.min.js'></script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="~/assets/js/jquery-1.10.2.min.js"></script>
+    <![endif]-->
+    <!--[if !IE]> -->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-2.0.3.min.js")'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-1.10.2.min.js")'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+    </script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/easyui/easyloader.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/publiclib.js")"></script>
+    <script src="@Url.Content("~/Scripts/leftmenu.js")"></script>
+
+    <!-- inline scripts related to this page -->
+    <style>
+        .tree:before {
+            border: 0px;
+        }
+
+        .timeline-container {
+            padding-top: 0px;
+            margin-bottom: 0px;
+        }
+    </style>
+    <script type="text/javascript">
+
+    var rootUrl = '@Url.Content("~/")';
+
+    function searchGrid() {
+        $.bi.grid.search($.bi.form.getData("fm"), "grid-table");
+    }
+
+    function editRow(gridId, rowId, keyValue) {
+        window.open('@Url.Content("~/Pricing/Detail")' + '?RFQID=' + keyValue);
+    }
+    function history(gridId, rowId, keyValue) {
+        window.open('@Url.Content("~/Report/RFQHistory")' + '?RFQID=' + keyValue);
+    }
+
+    function linkAction(cellvalue, options, rowObject) {
+        if (cellvalue == null) cellvalue = "";
+
+        return "<a href='javascript:void(0)' onclick='TransformGPToVI(\"" + rowObject["RFQID"] + "\", \"" + cellvalue + "\")'>" + cellvalue + "</a>";
+    }
+
+    function TransformGPToVI(id, programName) {
+        var buttons = [
+                 {
+                     html: "<i class='icon-fighter-jet bigger-110'></i>&nbsp; OK",
+                     "class": "btn btn-success btn-xs",
+                     click: function () {
+                         $(this).dialog("destroy");
+                         $.post('@Url.Content("~/GridData/TransformGPToVI")', { id: id, programName: programName }, function (data) {
+                             if (data.success) {
+                                 $.bi.dialog.show({ title: "Data To VI", content: data.Message });
+                             } else {
+                                 if (!data.success) {
+                                     $.bi.dialog.showErr({ title: "Message", content: data.Message, iconCss: "icon-warning-sign red" });
+                                 }
+                             }
+                         }, "json");
+                     }
+                 },
+                 {
+                     html: "<i class='icon-remove bigger-110'></i>&nbsp; Cancel",
+                     "class": "btn btn-xs",
+                     click: function () {
+                         $(this).dialog("destroy");
+                     }
+                 }
+        ]
+
+        $.bi.dialog.show({ title: "Data To VI", content: "You are updating the related info to VI system, please click ok to confirm", buttons: buttons });
+    }
+
+    function delRow(gridId, rowId, keyValue) {
+        $.post('@Url.Content("~/GridData/DelData")', { ID: keyValue }, function (data) {
+            if (data.success) {
+                searchGrid();
+            } else {
+                if (!data.success) {
+                    $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                }
+            }
+        }, "json");
+    }
+
+    function downDoc(gridId, rowId, keyValue) {
+        window.open('@Url.Content("~/Pricing/DownloadPDF")' + "?RFQID=" + keyValue);
+    }
+
+    function refresh() {
+        $.bi.form.generateQuery({ listName: 'DefaultSearch', parentId: "fm" });
+        $.bi.grid.reload();
+    }
+
+    $(document).ready(function () {
+
+        $(document).keydown(function (e) {
+            if (e.keyCode == 13) {
+                $("#btnSearch").click();
+                return false;
+            }
+        });
+
+        $.bi.form.generateQuery({ listName: 'DefaultSearch', parentId: "fm" });
+        $.bi.grid.load({ rootUrl: '@Url.Content("~/")' });
+
+        $("#searchPanel").resize(function (e) {
+            $("#grid-table").jqGrid('setGridWidth', $(".widget-box").width());
+        });
+
+        $("#aPDF").on('click', function (e) {
+            var gid = "#grid-table";
+            var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+            if (selectedIds != null && selectedIds.length > 0) {
+                var keyValues = "";
+                for (var i = 0; i < selectedIds.length; i++) {
+                    keyValues += $.bi.grid.setting[gid].rowObject[selectedIds[i]][$.bi.grid.setting[gid].key] + ",";
+                }
+                if (keyValues != "") {
+                    window.open('@Url.Content("~/Pricing/DownloadPDF")' + "?RFQID=" + keyValues);
+                }
+            }
+        })
+
+        $("#aFieldSetting").on('click', function (e) {
+            $.bi.fieldSetting.showDialog({
+                rootUrl: '@Url.Content("~/")', listName: 'DefaultGrid', title: 'Fields Setting', callBack: refresh
+            });
+        })
+
+        $("#aQuerySetting").on('click', function (e) {
+            $.bi.fieldSetting.showDialog({
+                rootUrl: '@Url.Content("~/")', listName: 'DefaultSearch', title: 'Query Setting', callBack: refresh
+            });
+        })
+
+        $("#aDownload").on('click', function (e) {
+            showExportDialog(e);
+        })
+
+        $("#aRefresh").on('click', function (e) {
+            refresh();
+        })
+
+        $("#aNext").on('click', function (e) {
+
+            var gid = "#grid-table";
+            var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+            if (selectedIds != null && selectedIds.length > 0) {
+                var keyValues = "";
+                for (var i = 0; i < selectedIds.length; i++) {
+                    keyValues += $.bi.grid.setting[gid].rowObject[selectedIds[i]][$.bi.grid.setting[gid].key] + ",";
+                }
+
+                $.bi.overlay.show();
+
+                $.post('@Url.Content("~/Pricing/WFRun")', { KeyValues: keyValues }, function (data) {
+                    $.bi.overlay.hide();
+                    if (data.isPass) {
+                        $.bi.dialog.show({ title: "Submit", content: "operation successfully completed!" });
+                    } else {
+                        $.bi.dialog.show({ title: "Message", content: data.MessageString, iconCss: "icon-warning-sign red" });
+                    }
+                    $('#grid-table').jqGrid().trigger("reloadGrid");
+                }, "json");
+            }
+
+        })
+    });
+    </script>
+
+
+
+}

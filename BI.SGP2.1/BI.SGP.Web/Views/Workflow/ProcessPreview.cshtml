@@ -1,0 +1,205 @@
+﻿@using BI.SGP.BLL.WF;
+@{
+    ViewBag.Title = "ProcessPreview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Multek Pricing System</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+<div class="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="~/Home/Home">Home</a>
+            </li>
+            <li>
+                Workflow
+            </li>
+            <li class="active">Process Preview</li>
+        </ul><!-- .breadcrumb -->
+    </div>
+    <div class="col-sm-zy1">
+        <div class="widget-box">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div id="fuelux-wizard" class="row-fluid" data-target="#step-container">
+                        <ul id="wizardWF"></ul>
+                    </div>
+                    <div class="tabbable">
+                        @MvcHtmlString.Create(ViewBag.OutputString)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.main-content -->
+<style>
+    .tab-content {
+        border: 1px solid #c5d0dc !important;
+    }
+    .itemdiv.memberdiv {
+        border-bottom: 0px;
+    }
+    .itemdiv {
+        min-height: 50px; 
+    }
+    .itemdiv>.body {
+        margin-left: 40px;
+    }
+    .widget-main.no-padding .table, .widget-main.padding-0 .table {
+        border: 1px solid #c5d0dc !important;
+    }
+    .widget-toolbar:before {
+        border: 0px; 
+    }
+
+</style>
+<script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+<script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+<script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+<script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+<script src="@Url.Content("~/assets/js/easyui/easyloader.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/syslib.js")"></script>
+<script src="@Url.Content("~/Scripts/wflib.js")"></script>
+
+<script type="text/javascript">
+    var rootUrl = '@Url.Content("~/")';
+    var templateName = '@ViewBag.TemplateName';
+    var templateId = @ViewBag.TemplateID;
+
+    $(document).ready(function () {
+        //$.bi.wizard.create({ rootUrl: rootUrl, wizardId: "wizardWF", templateName: templateName, entityId: -1 });
+        $("#wizardWF").biWizard({
+            templateName: templateName,
+            readonly: true,
+            entityId: -1
+        });
+        $(".act-content").each(function (index, element) {
+            loadTab($(this).attr("acitivtyId"), this);
+        });
+    });
+
+    function loadTab(actId, thisTable) {
+        var tableId = "act-content-" + actId;
+        $.bi.overlay.show(tableId);
+        $.post('@Url.Content("~/Workflow/GetActivityPreview/")' + actId, function (data) {
+            if (thisTable == null) {
+                thisTable = $("#" + tableId);
+            }
+            $(thisTable).html(data);
+        }, "html");
+    }
+
+    function showUserSetting(actId, userType) {
+        $.bi.overlay.show();
+        $.post('@Url.Content("~/Setting/UserMappingSetting")', function (data) {
+            $.bi.overlay.hide();
+            $.bi.dialog.show({
+                title: 'User Mapping',
+                content: data,
+                width: 580,
+                buttons: [],
+                create: function () {
+                    if (typeof (userMappingInit) == "function") {
+                        userMappingInit(actId, userType);
+                    }
+                },
+                close: function () {
+                    loadTab(actId);
+                }
+            });
+        }, 'html');
+    }
+
+    function showFieldSetting(actId, fieldType) {
+        $.bi.overlay.show();
+        $.post('@Url.Content("~/Setting/FieldMappingSetting")', function (data) {
+            $.bi.overlay.hide();
+            $.bi.dialog.show({
+                title: 'Fields Mapping',
+                content: data,
+                width: 580,
+                buttons: [],
+                create: function () {
+                    if (typeof (fieldMappingInit) == "function") {
+                        fieldMappingInit(actId, fieldType);
+                    }
+                },
+                beforeClose: function () {
+                    if (typeof (fieldMappingSave)) {
+                        fieldMappingSave(loadTab, actId);
+                    } else {
+                        loadTab(actId);
+                    }
+                }
+            });
+        }, 'html');
+    }
+
+    function delConfirm(okAction) {
+        var mw = document.createElement('div');
+        mw.innerHTML = '<div class="space-6"></div><p class="bigger-110 bolder center grey"> Are you sure ?</p>';
+
+        $(mw).dialog({
+            width: '250px',
+            resizable: false,
+            modal: true,
+            title: "<div class='widget-header'><h4 class='smaller'><i class='icon-warning-sign red'></i> Delete</h4></div>",
+            title_html: true,
+            close: function () {
+                $(this).dialog("destroy");
+            },
+            buttons: [
+                {
+                    html: "<i class='icon-trash bigger-110'></i>&nbsp; Delete",
+                    "class": "btn btn-danger btn-xs",
+                    click: function () {
+                        $(this).dialog("destroy");
+                        if (typeof (okAction) == "function") {
+                            okAction();
+                        }
+                    }
+                },
+                {
+                    html: "<i class='icon-remove bigger-110'></i>&nbsp; Cancel",
+                    "class": "btn btn-xs",
+                    click: function () {
+                        $(this).dialog("destroy");
+                    }
+                }
+            ]
+        });
+    }
+</script>
+}
+
+
+

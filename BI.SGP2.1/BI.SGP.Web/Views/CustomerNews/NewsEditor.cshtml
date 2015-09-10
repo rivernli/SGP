@@ -1,0 +1,216 @@
+﻿<div class="divEditor">
+    <form id="fm" method="post">
+        <input type="hidden" id="ID" name="ID" />
+        <input type="hidden" id="CustomerId" name="CustomerId" />
+        <table width="100%">
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Topic
+                </td>
+                <td width="80%" align="left" colspan="3">
+                    <input style=" width:100% !important" id="Topic" name="Topic" type="text" />
+                </td>               
+            </tr>       
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Attachment
+                </td>
+                <td width="80%" align="left" colspan="3">
+                    <a href="javascript:void(0)" id="UploadAttachment" title="Upload Attachment" onclick="showFilesDialog(); return false;">
+                        <i class="icon-paper-clip"></i>
+                    </a>
+                </td>
+            </tr>    
+            <tr>
+                <td width="90%" colspan="4">
+                        <!-- PAGE CONTENT BEGINS -->
+                    <div class="wysiwyg-editor" id="editor1" contenteditable="true" ></div>
+                        <!-- PAGE CONTENT ENDS -->
+                </td>
+            </tr>
+            <tr id="FormError" style="display: none">
+                <td class="ui-state-error" colspan="4">
+                    <i class="icon-warning-sign red"></i><label id="lblErrorMessage"></label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" align="center">
+                    <button id="btnSave" class="btn btn-primary" title="" onclick="saveData(); return false;">
+                        Save
+                        <i class="icon-save small-30"></i>
+                    </button> 
+                </td>
+            </tr>
+        </table>
+        @Html.Partial("~/Views/Export/FileUpload.cshtml")
+    </form>
+</div>
+
+<script type="text/javascript">
+    var _dataId;
+    
+    jQuery(function ($) {
+        function showErrorAlert(reason, detail) {
+            var msg = '';
+            if (reason === 'unsupported-file-type') { msg = "Unsupported format " + detail; }
+            else {
+                console.log("error uploading file", reason, detail);
+            }
+            $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+             '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+        }
+
+        //$('#editor1').ace_wysiwyg();//this will create the default editor will all buttons
+        //but we want to change a few buttons colors for the third style
+        $('#editor1').ace_wysiwyg({
+            toolbar:
+            [
+                'font',
+                null,
+                'fontSize',
+                null,
+                { name: 'bold', className: 'btn-info' },
+                { name: 'italic', className: 'btn-info' },
+                { name: 'strikethrough', className: 'btn-info' },
+                { name: 'underline', className: 'btn-info' },
+                null,
+                { name: 'insertunorderedlist', className: 'btn-success' },
+                { name: 'insertorderedlist', className: 'btn-success' },
+                { name: 'outdent', className: 'btn-purple' },
+                { name: 'indent', className: 'btn-purple' },
+                null,
+                { name: 'justifyleft', className: 'btn-primary' },
+                { name: 'justifycenter', className: 'btn-primary' },
+                { name: 'justifyright', className: 'btn-primary' },
+                { name: 'justifyfull', className: 'btn-inverse' },
+                null,
+                { name: 'createLink', className: 'btn-pink' },
+                { name: 'unlink', className: 'btn-pink' },
+                null,
+                { name: 'insertImage', className: 'btn-success' },
+                null,
+                'foreColor',
+                null,
+                { name: 'undo', className: 'btn-grey' },
+                { name: 'redo', className: 'btn-grey' }
+            ],
+            'wysiwyg': {
+                fileUploadError: showErrorAlert
+            }
+        }).prev().addClass('wysiwyg-style2');
+
+        $('[data-toggle="buttons"] .btn').on('click', function (e) {
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            var toolbar = $('#editor1').prev().get(0);
+            if (which == 1 || which == 2 || which == 3) {
+                toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g, '');
+                if (which == 1) $(toolbar).addClass('wysiwyg-style1');
+                else if (which == 2) $(toolbar).addClass('wysiwyg-style2');
+            }
+        });
+
+        //Add Image Resize Functionality to Chrome and Safari
+        //webkit browsers don't have image resize functionality when content is editable
+        //so let's add something using jQuery UI resizable
+        //another option would be opening a dialog for user to enter dimensions.
+        if (typeof jQuery.ui !== 'undefined' && /applewebkit/.test(navigator.userAgent.toLowerCase())) {
+
+            var lastResizableImg = null;
+            function destroyResizable() {
+                if (lastResizableImg == null) return;
+                lastResizableImg.resizable("destroy");
+                lastResizableImg.removeData('resizable');
+                lastResizableImg = null;
+            }
+            var enableImageResize = function () {
+                $('.wysiwyg-editor')
+                .on('mousedown', function (e) {
+                    var target = $(e.target);
+                    if (e.target instanceof HTMLImageElement) {
+                        if (!target.data('resizable')) {
+                            target.resizable({
+                                aspectRatio: e.target.width / e.target.height,
+                            });
+                            target.data('resizable', true);
+
+                            if (lastResizableImg != null) {//disable previous resizable image
+                                lastResizableImg.resizable("destroy");
+                                lastResizableImg.removeData('resizable');
+                            }
+                            lastResizableImg = target;
+                        }
+                    }
+                })
+                .on('click', function (e) {
+                    if (lastResizableImg != null && !(e.target instanceof HTMLImageElement)) {
+                        destroyResizable();
+                    }
+                })
+                .on('keydown', function () {
+                    destroyResizable();
+                });
+            }
+            enableImageResize();
+        }
+
+    });
+
+
+    function CustomeNewsloadData(keyValue, CustomerId) {
+        var id = keyValue;
+        $("#CustomerId").val(CustomerId);
+        if (id != null && id != "") {
+            $.post('@Url.Content("~/CustomerNews/GetCustomerNewsDetail")', { ID: id }, function (data) {
+                fillData(data);
+            });
+        } else {
+            _dataId='@Guid.NewGuid().ToString()';
+        }
+    }
+
+    //Edit View
+    function fillData(data) {
+        $("#ID").val(data.ID);
+        $("#CustomerId").val(data.CustomerId);
+        $("#Topic").val(data.Topic);
+        _dataId = data.AttachmentId;
+        $("#editor1").html(htmlDecode(data.NewsContent));
+    }
+
+    //Save Data
+    function saveData() {
+        if ($.trim($("#Topic").val()) == "") {
+            $("#FormError").show();
+            $("#lblErrorMessage").html('Topic is required');
+            return false;
+        }
+
+        if ($.trim($("#editor1").html()) == "") {
+            $("#FormError").show();
+            $("#lblErrorMessage").html('Content is required');
+            return false;
+        }
+        $("#FormError").hide();
+
+        $.bi.overlay.show();
+        var ID = $("#ID").val();        
+        var CustomerId = $("#CustomerId").val();
+        var Topic = $("#Topic").val();
+        var Content = htmlEncode($("#editor1").html()); //htmlEncode 把html格式转义
+
+        $.post('@Url.Content("~/CustomerNews/SaveData")', { ID: ID, CustomerId: CustomerId, Topic: Topic, NewsContent: Content, AttachmentId: _dataId }, function (data) {
+            $.bi.overlay.hide();
+            if (data.success) {
+                $.bi.dialog.show({ title: 'Success', content: ' Successful Operation', width: 300 });
+                fillData(data.data);
+            } else {
+                if (!data.success) {
+                    $.bi.dialog.showErr({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                }
+            }
+        }, "json");
+    }
+
+</script>
+

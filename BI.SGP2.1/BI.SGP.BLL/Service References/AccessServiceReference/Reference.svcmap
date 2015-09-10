@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f5800bd8-cc11-4663-96aa-2ad5ec5591ae" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://mcnnt800/Access_Wcf/Access.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Access1.wsdl" MetadataType="Wsdl" ID="4cbb4cea-ba4b-4f93-8ab3-fddb920d5f0a" SourceId="1" SourceUrl="http://mcnnt800.asia.ad.flextronics.com/Access_Wcf/Access.svc?wsdl" />
+    <MetadataFile FileName="Access3.xsd" MetadataType="Schema" ID="2240d428-8c34-457a-88d1-39b156ed6a7d" SourceId="1" SourceUrl="http://mcnnt800.asia.ad.flextronics.com/Access_Wcf/Access.svc?xsd=xsd0" />
+    <MetadataFile FileName="Access1.disco" MetadataType="Disco" ID="d9e347a0-b473-4a67-98e8-66ec8b79125a" SourceId="1" SourceUrl="http://mcnnt800.asia.ad.flextronics.com/Access_Wcf/Access.svc?disco" />
+    <MetadataFile FileName="Access31.xsd" MetadataType="Schema" ID="443433f1-2481-41ff-bfaa-1eea7f693695" SourceId="1" SourceUrl="http://mcnnt800.asia.ad.flextronics.com/Access_Wcf/Access.svc?xsd=xsd1" />
+    <MetadataFile FileName="Access32.xsd" MetadataType="Schema" ID="ada38ee0-407c-43db-9dee-38fd4c60081a" SourceId="1" SourceUrl="http://mcnnt800.asia.ad.flextronics.com/Access_Wcf/Access.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

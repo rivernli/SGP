@@ -1,0 +1,47 @@
+﻿<style type='text/css'>
+    p, span, div, table tr td {
+        font: 12px verdana,microsoft sans serif;
+    }
+</style>
+<div style='font:12px Verdana,microsoft sans serif'>
+    <div><img src='https://sgp-sys.multek.com/Common/Content/Images/Multek-ID-PMS.gif' /></div><br />
+    Dear <b> SMT team</b><br><br>
+
+    RFQ from <b>@{OEM} for @{CustomerPartNumber}, @{ProgramName},</b> has been submitted to Costing Stage.<br><br>
+
+    Please find below detailed summary.<br><br>
+
+    <table style="width:0in;border-collapse:collapse;border-spacing:1">
+        <tr>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">RFQ</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">OEM</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Customer Part# </td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">RFQ Date In</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Workflow Status</td>
+        </tr>
+        <tr>
+            <td style="border:inset #CCCCCC 1.0pt;border-top:none;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{Number}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{OEM}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{CustomerPartNumber}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{RFQDateIn}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{WFStatus}-SMT</td>
+        </tr>
+    </table>
+    <br />
+    @{VIFormRemark}
+    <p>
+
+        Click here to view detail. <a href="@{SystemURL}/B2F/Detail?RFQID=@{RFQID}">
+            LINK
+        </a>
+    </p>
+
+    <p>
+
+
+        Best,<br>
+        Sales & Pricing Team<br><br><br>
+
+        * Please do not reply to this email since it is from an automated mailbox. We are unable to respond to your queries via return email.
+    </p>
+</div>

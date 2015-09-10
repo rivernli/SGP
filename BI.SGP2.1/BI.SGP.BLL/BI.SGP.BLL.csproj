@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9F65CE13-3CFB-4F54-A64D-9185FD9C845B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BI.SGP.BLL</RootNamespace>
+    <AssemblyName>BI.SGP.BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\MCNSZHAN\Downloads\PDF\itextsharp-0.04-src\bin\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=1.0.4.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\MCNSZHAN\Downloads\PDF\itextsharp-0.04-src\bin\Debug\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.1.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.1.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.1.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.1.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CostEngine\CostBase.cs" />
+    <Compile Include="CostEngine\CostHelper.cs" />
+    <Compile Include="CostEngine\DataConverter\DataConverterBase.cs" />
+    <Compile Include="CostEngine\DataConverter\DataRowDataConverter.cs" />
+    <Compile Include="CostEngine\DataConverter\JsonDataConverter.cs" />
+    <Compile Include="CostEngine\Expression.cs" />
+    <Compile Include="CostEngine\ProjectCost\CostItemRateCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\DrillBitCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\DryFilmCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\EDMRateCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\OtherRateCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\BOMCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\CoinCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\GoldCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\RouterCost.cs" />
+    <Compile Include="CostEngine\ProjectCost\SMCMCost.cs" />
+    <Compile Include="DataModels\CostItem.cs" />
+    <Compile Include="DataModels\DataOptions.cs" />
+    <Compile Include="DataModels\TableParams.cs" />
+    <Compile Include="Export\ExcelHelper.cs" />
+    <Compile Include="Models\B2FPDFDownLoad.cs" />
+    <Compile Include="Export\GroupData.cs" />
+    <Compile Include="Models\B2FComputedField.cs" />
+    <Compile Include="Models\CustomerNewsManager.cs" />
+    <Compile Include="Models\CustomerOEMbasedDefaultsManager.cs" />
+    <Compile Include="Models\CustomerOrderInformationManager.cs" />
+    <Compile Include="Models\CustomerPeopleManager.cs" />
+    <Compile Include="Models\CustomerProfileManager.cs" />
+    <Compile Include="Models\CustomerVisitActionsTrackerManager.cs" />
+    <Compile Include="Models\CustomerVisitManager.cs" />
+    <Compile Include="Models\Detail\B2FQuotationDetail.cs" />
+    <Compile Include="Models\Detail\CostingInputDetail.cs" />
+    <Compile Include="Models\Detail\CostingMasterDetailData.cs" />
+    <Compile Include="Models\Detail\CostingOtherDetail.cs" />
+    <Compile Include="Models\Detail\CostingOutputDetail.cs" />
+    <Compile Include="Models\Detail\CostingPeriodDetail.cs" />
+    <Compile Include="Models\Detail\CostingVersionDetail.cs" />
+    <Compile Include="Models\Detail\CostModelBase.cs" />
+    <Compile Include="Models\Detail\CostModellingDetail.cs" />
+    <Compile Include="Models\Detail\CustomerDetailBase.cs" />
+    <Compile Include="Models\Detail\CustomerProfileDetail.cs" />
+    <Compile Include="Models\Detail\QuotationDetail.cs" />
+    <Compile Include="Models\Detail\DetailModelBase.cs" />
+    <Compile Include="Models\Detail\QuoteCalc.cs" />
+    <Compile Include="Models\Detail\SCMPriceMasterDetail.cs" />
+    <Compile Include="Models\Detail\VVIQuotationDetail.cs" />
+    <Compile Include="Models\FPCRFQDetail.cs" />
+    <Compile Include="Models\FPCRFQManager.cs" />
+    <Compile Include="Models\GridColumnModel.cs" />
+    <Compile Include="Models\GridColumns.cs" />
+    <Compile Include="Models\GridData.cs" />
+    <Compile Include="Models\MessageCollection.cs" />
+    <Compile Include="Models\MessageDialog.cs" />
+    <Compile Include="Models\PDFDownLoad.cs" />
+    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\StageSummary.cs" />
+    <Compile Include="Models\SupplierManager.cs" />
+    <Compile Include="Models\SupplierRFQDetail.cs" />
+    <Compile Include="Models\SystemMessages.cs" />
+    <Compile Include="Models\VVIPricingDeatil.cs" />
+    <Compile Include="Models\VVIRFQManager.cs" />
+    <Compile Include="Service References\AccessServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="UIManager\CostingMasterDataDetailHelper.cs" />
+    <Compile Include="UIManager\CostModelUIHelper.cs" />
+    <Compile Include="UIManager\CustomerProfileUIManager.cs" />
+    <Compile Include="UIManager\CustomerUIComponent.cs" />
+    <Compile Include="UIManager\CustomerUIManager.cs" />
+    <Compile Include="UIManager\DetailUIHelper.cs" />
+    <Compile Include="UIManager\FPCUIManager.cs" />
+    <Compile Include="UIManager\GridManager.cs" />
+    <Compile Include="UIManager\SupplierUIManager.cs" />
+    <Compile Include="UIManager\TableFormat.cs" />
+    <Compile Include="UIManager\TableFormatConverter.cs" />
+    <Compile Include="UIManager\TableFormatString.cs" />
+    <Compile Include="Models\RFQManager.cs" />
+    <Compile Include="Models\RFQDetail.cs" />
+    <Compile Include="UIManager\UIComponent.cs" />
+    <Compile Include="UIManager\UIManager.cs" />
+    <Compile Include="DataModels\FieldCategory.cs" />
+    <Compile Include="DataModels\FieldGroup.cs" />
+    <Compile Include="DataModels\FieldGroupDetail.cs" />
+    <Compile Include="DataModels\FieldGroupDetailCollection.cs" />
+    <Compile Include="DataModels\FieldInfo.cs" />
+    <Compile Include="DataModels\FieldInfoCollecton.cs" />
+    <Compile Include="DataModels\ModelHandler.cs" />
+    <Compile Include="Models\FieldsSettingModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIManager\VVIUIManager.cs" />
+    <Compile Include="Utils\AccessControl.cs" />
+    <Compile Include="Utils\FileHelperForVVI.cs" />
+    <Compile Include="Utils\ParseHelper.cs" />
+    <Compile Include="Utils\Email.cs" />
+    <Compile Include="Utils\Encryption.cs" />
+    <Compile Include="Utils\FileHelper.cs" />
+    <Compile Include="Utils\ObjectExtention.cs" />
+    <Compile Include="Utils\PowerManager.cs" />
+    <Compile Include="Utils\StringHelper.cs" />
+    <Compile Include="Utils\ZipHelper.cs" />
+    <Compile Include="WF\Action\GetVIAttachmentAction.cs" />
+    <Compile Include="WF\Action\IAction.cs" />
+    <Compile Include="WF\Action\SendMailAction.cs" />
+    <Compile Include="WF\Action\SubTimeStampAction.cs" />
+    <Compile Include="WF\Action\TimeStampAction.cs" />
+    <Compile Include="Models\Event\IDataChangedEvent.cs" />
+    <Compile Include="Models\Event\UserChangedEvent.cs" />
+    <Compile Include="WF\WFActivity.cs" />
+    <Compile Include="WF\WFActivityCollection.cs" />
+    <Compile Include="WF\WFActivityField.cs" />
+    <Compile Include="WF\WFCondition.cs" />
+    <Compile Include="WF\WFHelper.cs" />
+    <Compile Include="WF\WFProcessLog.cs" />
+    <Compile Include="WF\WFTemplate.cs" />
+    <Compile Include="WF\WFUser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="bin\itextsharp.dll" />
+    <Content Include="bin\NPOI.dll" />
+    <Content Include="bin\NPOI.OOXML.dll" />
+    <Content Include="bin\NPOI.OpenXml4Net.dll" />
+    <Content Include="bin\NPOI.OpenXmlFormats.dll" />
+    <None Include="Service References\AccessServiceReference\Access1.disco" />
+    <None Include="Service References\AccessServiceReference\Access1.wsdl" />
+    <None Include="Service References\AccessServiceReference\Access3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AccessServiceReference\Access31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AccessServiceReference\Access32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AccessServiceReference\BI.SGP.BLL.AccessServiceReference.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AccessServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\AccessServiceReference\configuration.svcinfo" />
+    <None Include="Service References\AccessServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DButility\DButility.csproj">
+      <Project>{340fa4bd-f2dc-401e-8455-ad001ee7085e}</Project>
+      <Name>DButility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBUtility\DBUtility.csproj">
+      <Project>{a9c6cd43-4dca-4483-af11-c8c5344e0c15}</Project>
+      <Name>DBUtility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AccessServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Report\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

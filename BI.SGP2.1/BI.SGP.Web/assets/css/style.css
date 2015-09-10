@@ -1,0 +1,63 @@
+﻿
+.page_content
+{
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 11pt;
+}
+
+.wrapper {
+	text-align: left;
+	width: 70%;
+	margin: auto;
+	padding: 0px;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
+	background-position: bottom;
+	position: relative;
+	border-left: 1px solid #8A8A8C;
+    border-right: 1px solid #8A8A8C;
+}
+
+.header {
+    margin:0,0,0,0;
+	height: 50px;
+	width: 100%;
+	padding-top: 6px;
+}
+
+.logo {
+	float: left;
+	width: 240px;
+}
+
+.page_title
+{
+	font-weight:bold;
+	font-size: 10pt;
+
+}
+
+.reply 
+{
+    padding:3px;
+    font-size: 10pt;
+    background-color:#F8F8FF;
+}
+
+.poster 
+{
+    background-color:#F8F8FF;
+    color:#666;
+    text-align: right;
+}
+
+.pipe {
+  margin: 0 5px;
+  color: #CCC;
+}
+
+.pls {
+  background: #C2D5E3;
+  padding: 0;
+  height: 4px;
+}

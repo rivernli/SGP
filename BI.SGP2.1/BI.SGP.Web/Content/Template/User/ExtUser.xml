@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Entity>
+    <Field>RequestVVI</Field>
+    <Values>
+      <Value>VVI</Value>
+      <Value>VVI/Multek</Value>
+    </Values>
+    <Users>
+      <User>mcnwenxu</User>
+      <User>mcnfhuan</User>
+      <User>mcnamhua</User>
+    </Users>
+    <Activities>
+      <ID>2</ID>
+    </Activities>
+  </Entity>
+</Root>

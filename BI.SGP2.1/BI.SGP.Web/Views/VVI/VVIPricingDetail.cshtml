@@ -1,0 +1,596 @@
+﻿@using BI.SGP.BLL.DataModels;
+@using BI.SGP.BLL.Models.Detail;
+@using BI.SGP.BLL.WF;
+@{
+    ViewBag.Title = "VVIRFQDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>VVI RFQ Detail</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">VVI RFQ Detail</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+        <div id="page-content" class="page-content" style="padding: 8px 12px 0px">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row-fluid wizard-actions" style="margin-top:5px; margin-bottom:5px;">
+                        <button id="btnAssign" class="btn btn-info" onclick="Assign()">
+                            Assign
+                            <i class="icon-save small-30"></i>
+                        </button>
+                        <button id="btnSave" class="btn btn-primary save-operation" onclick="saveData('Save')">
+                            Save
+                            <i class="icon-save small-30"></i>
+                        </button>
+                        <button id="btnSubmit" class="btn btn-success save-operation" title="">
+                            <i class="icon-arrow-right icon-on-right"></i>
+                            Submit
+                        </button>
+                        <button id="btnSkip" class="btn btn-danger save-operation" data-last="Finish " title="">
+                            Skip
+                            <i class="icon-reply small-30"></i>
+                        </button>
+                        <button id="btnCancel" class="btn btn-danger save-operation" title="">
+                            <i class="icon-remove icon-on-right"></i>
+                            Cancel
+                        </button>
+                    </div>
+
+                    <div class="widget-header widget-header-blue widget-header-flat">
+                        <h4 class="lighter">RFQ Detail</h4>
+
+                        <div class="widget-toolbar">
+                            <label>
+                                <a href="javascript:void(0)" onclick="return showFilesDialog();" id="UploadAttachment" title="Upload Attachment">
+                                    <i class="icon-paper-clip"></i>
+                                </a>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div id="fuelux-wizard" class="row-fluid" data-target="#step-container">
+                                <ul id="wizardWF"></ul>
+                            </div>
+                            <div id="MainRFQContent">
+                                @{
+                                    WFTemplate template = ViewBag.WFTemplate;
+                                    List<FieldCategory> lfc = ViewBag.Categories;
+                                    @MvcHtmlString.Create(BI.SGP.BLL.UIManager.DetailUIHelper.GenrateCategories(lfc, template));
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+    @*</div>*@
+    <!-- basic scripts -->
+
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.valida")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.formatCurrency-1.4.0.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/wflib.js")"></script>
+
+
+    <script type="text/javascript">
+    var _dataId = '@ViewBag.DataId';
+    var rootUrl = '@Url.Content("~/")';
+    var wfStatus = '@(template.Status == WorkflowStatus.Finished ? "Finished": "")';
+    var wfcurrid='@(template.CurrentActivity!= null ? template.CurrentActivity.ID.ToString() : "")';
+
+    $(document).ready(function () {
+        $("#page-content").resize(function (e) {
+            $(".detail-subdata-list").css("width", $("#page-content").width() - 31);
+        });
+        createWizard();
+        pageInit();
+        extfun();
+    });
+    function createWizard() {
+        $("#wizardWF").biWizard({
+            templateName: 'VVIWF',
+            readonly: false,
+            entityId: _dataId,
+            submitUrl: '@Url.Content("~/VVI/VVIWFSkip")',
+            getDataFunction: getPostData,
+            checkDataCondition: checkDataCondition,
+            onComplete: saveAfter,
+            checkSelectVendor:checkSelectVendor
+        });
+
+        $("#btnSkip").biSkip({
+            templateName: 'VVIWF',
+            entityId: _dataId,
+            wfcurrid: wfcurrid,
+            submitUrl: '@Url.Content("~/VVI/VVIWFSkip")',
+            getDataFunction: getPostData,
+            checkDataCondition: checkDataCondition,
+            onComplete: saveAfter,
+            checkSelectVendor:checkSelectVendor
+        });
+
+        $("#btnSubmit").unbind('click').click(function () {
+            $("#btnSkip").biSkip("submit");
+        });
+        $("#btnCancel").unbind('click').click(function () {
+            $("#HitRateStatus").val("Cancelled");
+            $("#btnSkip").biSkip("cancel", @template.LastActivity.ID);
+        });
+    }
+
+    function addDetail(obj) {
+        var striptString = "$('#tb-" + obj + "').append(subdata_" + obj + ")";
+        eval(striptString);
+        pageInit();
+    }
+
+    function removeDetail(obj) {
+        $(obj).parent().parent().remove();
+    }
+
+    function getPostData(operation) {
+        op = operation || 'Save';
+        var data = {
+            dataId: _dataId,
+            operation: op,
+            data: $.bi.form.getAllCategoryData()
+        };
+        return data;
+    }
+    //function Assign(operation) {
+    //    var postData = getPostData(operation);
+
+
+
+
+    //   // $.bi.wf.Assign.show(postData);
+    //}
+
+    function redovendorrfq(redoid)
+    {
+
+
+        // $.bi.overlay.show();
+        var postData = getPostData('Redo');
+        postData["redoid"]=redoid;
+        $.post('@Url.Content("~/VVI/VVIRedo")', { postData: JSON.stringify(postData) }, function (data) {
+            $.bi.overlay.hide();
+            if (data.SysMsg.isPass == false) {
+                $.bi.dialog.show({ title: 'Message', content: data.SysMsg.MessageString, buttons: [] });
+            } else {
+                $.bi.dialog.show({
+                    title: 'Success',
+                    content: ' Successful Return!',
+                    width: 300,
+                    close: function (event, ui) {
+                        var ProductionDetailPath = $.bi.getRootUrl() + 'VVI/RefreshVVIProductInformation';
+                        $.post(ProductionDetailPath,{ postData: JSON.stringify(postData) },function (data) {
+                            $("#faq-1-24").html(data.content);
+                        });
+                        $(this).dialog("destroy");
+                        
+                    },
+                    buttons: [
+                       {html: "<i class='icon-remove bigger-110'></i>&nbsp; Closed",
+                           "class": "btn btn-danger",
+                           click: function () {
+
+                               var ProductionDetailPath = $.bi.getRootUrl() + 'VVI/RefreshVVIProductInformation';
+                               $.post(ProductionDetailPath,{ postData: JSON.stringify(postData) },function (data) {
+                                   $("#faq-1-24").html(data.content);
+                               });
+                               $(this).dialog("destroy");
+                           }
+                       }]
+
+
+                });
+            }
+        }, "json");
+    }
+
+    function returnvendorrfq(returnid)
+    {
+        var postData = getPostData('Return');
+        postData["returnid"]=returnid;
+        $.post('@Url.Content("~/VVI/VVIReturn")', { postData: JSON.stringify(postData) }, function (data) {
+            $.bi.overlay.hide();
+            if (data.SysMsg.isPass == false) {
+                $.bi.dialog.show({ title: 'Message', content: data.SysMsg.MessageString, buttons: [] });
+            } else {
+                $.bi.dialog.show({
+                    title: 'Success',
+                    content: ' Successful Return!',
+                    width: 300,
+                    close: function (event, ui) {
+                        var ProductionDetailPath = $.bi.getRootUrl() + 'VVI/RefreshVVIProductInformation';
+                        $.post(ProductionDetailPath,{ postData: JSON.stringify(postData) },function (data) {
+                            $("#faq-1-24").html(data.content);
+                        });
+                        $(this).dialog("destroy");
+
+                    },
+                    buttons: [
+                       {html: "<i class='icon-remove bigger-110'></i>&nbsp; Closed",
+                           "class": "btn btn-danger",
+                           click: function () {
+
+                               var ProductionDetailPath = $.bi.getRootUrl() + 'VVI/RefreshVVIProductInformation';
+                               $.post(ProductionDetailPath,{ postData: JSON.stringify(postData) },function (data) {
+                                   $("#faq-1-24").html(data.content);
+                               });
+                               $(this).dialog("destroy");
+                           }
+                       }]
+
+
+                });
+            }
+            //  saveAfter(data);
+        }, "json");
+
+    }
+    function Assign(operation) {
+        var postData = getPostData(operation);
+        var actionPath = $.bi.getRootUrl() + 'VVI/SupplierName';
+        var AssignPath = $.bi.getRootUrl() + 'VVI/AssignSupplier';
+        $.post(actionPath, { postData: JSON.stringify(postData) }, function (data) {
+            if (data != null) {
+                if (data.Suppliers != null && data.Suppliers.length > 0) {
+                    var iHtml = '<table id="sample-table-1" class="table table-striped table-bordered table-hover" style="width:530px;">';
+                    iHtml += '<thead><tr><th class="center"><label><input type="checkbox" id="cbAll" onclick="allcheck()" checked = "checked" class="ace" value="1"><span class="lbl"></span></label></th><th>ID</th><th>SupplierCode</th><th>SupplierName</th><th class="hidden-480 sorting" >Status</th></tr></thead>';
+                    iHtml += ' <tbody><tr>';
+
+                    for (var i = 0; i < data.Suppliers.length; i++) {
+                        iHtml += '<tr>';
+                        iHtml += '<td class="center"><label><input type="checkbox" name="supplier" checked = "checked" class="ace" value="' + data.Suppliers[i].SupplyCode + '"><span class="lbl"></span></label></td>';
+
+                        iHtml += '<td>' + data.Suppliers[i].id + '</td>'
+                        iHtml += '<td>' + data.Suppliers[i].SupplyCode + '</td>'
+                        iHtml += '<td>' + data.Suppliers[i].name + '</td>';
+                        iHtml += '<td></td>'
+                        iHtml += '</tr>';
+
+                    }
+                    iHtml += '  </tr></tbody></table>';
+                    var title = 'Assign Supplier';
+                    $.bi.dialog.show({
+                        id: 'Assign' + postData.DataId,
+                        title: title,
+                        content: iHtml,
+                        width: 500,
+                        height: 600,
+                        close: function (event, ui) {
+                            var ProductionDetailPath = $.bi.getRootUrl() + 'VVI/RefreshVVIProductInformation';
+                            $.post(ProductionDetailPath,{ postData: JSON.stringify(postData) },function (data) {
+                                $("#faq-1-24").html(data.content);
+                            });
+                            $(this).dialog("destroy");
+                            createWizard();
+                        },
+                        buttons: [
+                            {html: "<i class='icon-remove bigger-110'></i>&nbsp; Closed",
+                                "class": "btn btn-danger",
+                                click: function () {
+
+                                    var ProductionDetailPath = $.bi.getRootUrl() + 'VVI/RefreshVVIProductInformation';
+                                    $.post(ProductionDetailPath,{ postData: JSON.stringify(postData) },function (data) {
+                                        $("#faq-1-24").html(data.content);
+                                    });
+                                    $(this).dialog("destroy");
+                                    createWizard();
+                                }
+                            },
+                            {html: "<i class='icon-ok bigger-110 green'></i>&nbsp;Assign",
+                                "class": "btn btn-info",
+                                click: function () {
+                                    $("input[name=supplier]:checked").each(function () {
+                                        var $this = $(this);
+                                        //var jsondata = {};
+                                        //$(":input").each(function (alldata) {
+                                        //    var id = $(this).eq(0).prop("id")
+                                        //    var value = $(this).val();
+                                        //    jsondata[id] = value;
+                                        //});
+                                        var suppliercode = $(this).val();
+                                        postData["SupplierCode"] = suppliercode;
+                                        $.post(AssignPath, { postData: JSON.stringify(postData) }, function (data) {
+                                            if (data.SysMsg.isPass == true) {
+                                                $this.parent().parent().parent().children("td:eq(4)").html("<span class='label label-sm label-success'>" + data.SysMsg.MessageType + "</span>");
+                                            } else {
+                                                $this.parent().parent().parent().children("td:eq(4)").html("<span class='label label-sm label-warning'>" + data.SysMsg.MessageType + "</span>");
+                                            }
+                                        }, "json");
+                                    });
+                                }
+                            }
+                        ]
+                    });
+                }
+            }
+        }, "json");
+    }
+
+    //$(function() {
+    //    $("#cb_grid-table").click(function() {
+            
+    //        $("input[name=supplier]:checked").each(function() {
+    //            $(this).attr("checked", false);
+    //        });
+    //    });
+    //});
+
+    function allcheck()
+    {
+        $("input[name='supplier']").each(function(){this.checked=document.getElementById("cbAll").checked;});
+    }
+
+
+
+    function saveData(operation) {
+        $.bi.overlay.show();
+        var postData = getPostData(operation);
+
+        $.post('@Url.Content("~/VVI/VVISaveData")', { postData: JSON.stringify(postData) }, function (data) {
+            $.bi.overlay.hide();
+            saveAfter(data);
+        }, "json");
+    }
+
+    function saveAfter(data) {
+        if (data.SysMsg.isPass == false) {
+            $.bi.dialog.show({ title: 'Message', content: data.SysMsg.MessageString, buttons: [] });
+        } else {
+            _dataId = data.DataId;
+            if (typeof (updateTempToNormal) == "function") {
+                updateTempToNormal();
+            }
+            if (data.Html != "") {
+                wfStatus = data.wfStatus;
+                $('#PDFContent').html(data.PDF);
+                $('#MainRFQContent').html(data.Html);
+                pageInit();
+            }
+
+            $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+            createWizard();
+        }
+    }
+
+    function checkDataCondition() {
+
+        if ($("#CapabilityCheck").val() == "Out of Capability" || $("#HitRateStatus").val() == "Cancelled") {
+            return false;
+        } else {
+            return true;
+        }
+        // return false;
+    }
+
+
+
+    function CheckBoxSingleCheck()
+    {
+
+        $(':checkbox[name=SupplierRFQ]').each(function(){
+            $(this).click(function(){
+                var clickId = $(this).attr("checkname");
+                $(':checkbox[name=SupplierRFQ]').each(function(){
+                    if($(this).attr("checkname") != clickId) {
+                        $(this).removeAttr('checked');
+                        $(this).removeAttr('id');
+                    }
+                    else
+                    {
+                        $(this).attr('checked','checked');
+                        $(this).attr('id','vendorrfqid');
+
+                    }
+                });
+            });
+        });
+    }
+    function checkSelectVendor()
+    {
+
+        var a = document.getElementsByName("SupplierRFQ"); 
+
+        var n = a.length;
+
+        var k = 0;
+
+        for (var i=0; i<n; i++){
+
+            if(a[i].checked){
+
+                k = 1;
+
+            }
+        }
+
+        if(k==0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+        //if ($("input[type=checkbox][name=SupplierRFQ][checked]").length== 0) {
+
+        //    return false;
+        //}
+        //else
+        //{
+        //    return true;
+        //}
+
+
+    }
+
+    function checkMainRFQStatus()
+    {
+        var postData = getPostData(operation);
+        var pass=true;
+        $.post('@Url.Content("~/VVI/CheckMainRFQStatus")', { postData: JSON.stringify(postData) }, function (data) {
+            if (data.SysMsg.isPass == false) {
+                pass= false;
+            } else {
+                pass=true;
+            }
+        }, "json");
+
+        return pass;
+    }
+    function checkVendorRFQStatus()
+    {
+        var postData = getPostData(operation);
+        var pass=true;
+        $.post('@Url.Content("~/VVI/CheckVendorRFQStatus")', { postData: JSON.stringify(postData) }, function (data) {
+            if (data.SysMsg.isPass == false) {
+                pass= false;
+            } else {
+                pass=true;
+            }
+        }, "json");
+
+        return pass;
+    }
+    function pageInit() {
+
+        //if (wfStatus == "Finished") {
+        //    $(".save-operation").attr("disabled", "true");
+        //} else {
+        //    $(".save-operation").removeAttr("disabled");
+        //}
+
+        $.bi.setComponentEvent();
+
+        $("#OEM").autocomplete({
+            source: '@Url.Content("~/Setting/GetAuotCompleteValue")'
+        });
+
+        CheckBoxSingleCheck();
+        $("#OEM").keydown(function (){
+            var e=$(this).event||window.event;
+            var code=parseInt(e.keyCode);
+
+            if(code==13)
+            {
+                $.post('@Url.Content("~/Setting/GetOEMInvolvedValue")', { OEM: $(this).val()}, function (data) {
+                    if(data.CustomerPartNumber!="")
+                    {
+                        $("#CustomerPartNumber").val(data.CustomerPartNumber);
+                    }
+                    if(data.GAMBDM!="")
+                    {
+                        $("#GAMBDM").val(data.GAMBDM);
+                    }
+                    if(data.Initiator!="")
+                    {
+                        $("#Initiator").val(data.Initiator);
+                    }
+                    if(data.PricingAnalyst!="")
+                    {
+                        $("#PricingAnalyst").val(data.PricingAnalyst);
+                    }
+                    if(data.TechnicalQuoting!="")
+                    {
+                        $("#TechnicalQuoting").val(data.TechnicalQuoting);
+                    }
+                    if(data.PrimaryContact!="")
+                    {
+                        $("#PrimaryContact").val(data.PrimaryContact);
+                    }
+                    if(data.CustomerContact!="")
+                    {
+                        $("#CustomerContact").val(data.CustomerContact);
+                    }
+                    if(data.ProgramName!="")
+                    {
+                        $("#ProgramName").val(data.ProgramName);
+                    }
+                }, "json");
+            }
+        })
+
+
+
+        $("#ShipmentTerms").autocomplete({
+            source: '@Url.Content("~/Setting/GetAuotCompleteValueForShipmentTerms")'
+        });
+        $("#Location").autocomplete({
+            source: '@Url.Content("~/Setting/GetAuotCompleteValueForLocation")'
+        });
+
+       
+        $('[id=FLOAT18]').unbind('change').change(GetComputedValue);
+    }
+
+
+    function GetComputedValue() {
+        var actionUrl = '@Url.Content("~/VVI/GetComputedValueForVVI")';
+        var postData = {};
+        var pricData = $.bi.form.getCategoryData("fm-24");
+        postData.OP=pricData["FLOAT17"];
+        postData.VendorXPlan=pricData["FLOAT18"];
+        postData.OPXPlan=pricData["FLOAT19"];
+
+      
+        $.post('@Url.Content("~/VVI/GetComputedValueForVVI")', { postData: JSON.stringify(postData) },
+            function (data) {
+                
+                $("[ID=FLOAT19]").each(function(){
+                
+                    var row=$(this).parent("td").parent("tr");
+                    var v=$("#FLOAT17",row).val();
+                    var f=$("#FLOAT18",row).val();
+                    var t=Number(v)+Number(f);                 
+                    $(this).val(t);
+                    
+                })
+            }, "json");
+
+    }
+</script>
+    @Html.Partial("~/Views/Export/FilesForVVI.cshtml")
+}

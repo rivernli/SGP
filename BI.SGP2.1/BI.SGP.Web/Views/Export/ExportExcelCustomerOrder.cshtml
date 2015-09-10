@@ -1,0 +1,9 @@
+﻿<script language="javascript">
+    function CustomerOrderToExcel() {
+        var myrad = $("input[name='myrad']:checked").val();
+        var site = $("#site").val();
+        var PartNo = $("#PartNo").val(); 
+        var Item = $("#Item").val();
+        window.open('@Url.Content("~/CustomerOrderInformation/ToExcel?site=")' + site + '&PartNo=' + PartNo + '&Item=' + Item + '&myrad=' + myrad);
+    }
+</script>

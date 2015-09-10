@@ -1,0 +1,308 @@
+﻿@{
+    ViewBag.Title = "Customer Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using BI.SGP.BLL.DataModels;
+@model BI.SGP.BLL.Models.CustomerProfileManager
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Customer Profile</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">Customer Profile</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+        <div class="page-content" style="padding: 0px 0px 0px"> 
+            <div class="col-sm-12" style="padding: 0px 0px 0px">
+                <div class="tabbable" style="padding: 0px 0px 0px">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active">
+                            <a data-toggle="tab" href="#Profile">
+                                <i class="green icon-book bigger-110"></i>
+                                Profile
+                            </a>
+                        </li>
+                        <li id="liPeople" class="" style="display:none">
+                            <a data-toggle="tab" href="#People" id="aPeople">
+                                <i class="blue icon-user bigger-110"></i>
+                                People
+                                <span class="badge badge-danger"><label id="lblPeopleTotal" style="height:10px"></label></span>
+                            </a>
+                        </li>
+                        <li id="liNews" class="">
+                            <a data-toggle="tab" href="#News" id="aNews">
+                                <i class="blue icon-comment bigger-110"></i>
+                                News
+                                <span class="badge badge-danger"><label id="lblnewTotal" style="height:10px"></label></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="padding: 0px 0px 0px">
+                        <div id="Profile" class="tab-pane active" style="padding: 0px 0px 0px">
+                            <div class="row-fluid wizard-actions" style="margin-top:5px; margin-bottom:5px;">
+                                <button id="btnSave" class="btn btn-primary" title="">
+                                    Save
+                                    <i class="icon-save small-30"></i>
+                                </button>
+                                <button id="btnExcel" class="btn btn-primary" title="">
+                                    Excel Export
+                                    <i class="icon-file-alt small-30"></i>
+                                </button>
+                                <button id="btnPrint" class="btn btn-primary" title="">
+                                    Print
+                                    <i class="icon-print small-30"></i>
+                                </button>
+                            </div>
+                            <div>
+                                @*@MvcHtmlString.Create(@BI.SGP.BLL.UIManager.CustomerProfileUIManager.GenrateModelCustomerProfileDetail(Model, @Request["ID"], "edit"))*@
+
+                                @{
+                                    List<FieldCategory> lfc = ViewBag.Categories;
+                                    @MvcHtmlString.Create(BI.SGP.BLL.UIManager.CustomerUIManager.GenrateCategories(lfc, "Detail"));
+                                }
+
+                                @*@Html.Partial("~/Views/CustomerProfile/CustomerPrint.cshtml")*@
+                                @Html.Partial("~/Views/Export/ExportExcelCustomerProfileForm.cshtml")
+                            </div>
+
+                        </div>
+                        <div id="People" class="tab-pane" style="padding: 0px 0px 0px" style="display:none">
+                            <iframe id="iframPeople" src="" style="width:100%;height:500px" frameborder="no"></iframe>
+                        </div>
+                        <div id="News" class="tab-pane" style="padding: 0px 0px 0px">
+                            <iframe id="iframNews" src="" style="width:100%;height:500px" frameborder="no"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+    @*</div>*@
+ <!-- basic scripts -->
+<!--[if !IE]> -->
+
+ <script src='~/assets/js/jquery-2.0.3.min.js'></script>
+
+ <!-- <![endif]-->
+<!--[if IE]>
+<script src="~/assets/js/jquery-1.10.2.min.js"></script>
+ <![endif]-->
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-2.0.3.min.js")'>" + "<" + "/script>");
+</script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-1.10.2.min.js")'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+  if ("ontouchend" in document) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+</script>
+<script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+<script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+<!-- page specific plugin scripts -->
+ <!-- ace scripts -->
+<script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+<script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery.valida")"></script>
+<script src="@Url.Content("~/Scripts/publiclib.js")"></script>
+<script src="@Url.Content("~/Scripts/syslib.js")"></script>
+<!--format Currency-->
+<script src="@Url.Content("~/Scripts/jquery.formatCurrency-1.4.0.js")"></script>
+<!--Print-->
+<script src="@Url.Content("~/Scripts/jquery.jqprint.js")"></script>
+
+<script type="text/javascript">
+    var _dataId = '@ViewBag.DataId';
+
+    $(document).ready(function () {
+
+        $("#btnExcel").on('click', function (e) {
+            CustomerToExcel(e);
+        });
+
+        $("#btnPrint").on('click', function (e) {
+            window.open('@Url.Content("~/CustomerProfile/CustomerPrint?ID=")' + _dataId);
+        });
+
+        $('#btnSave').click(function () {
+            saveData('Save');
+        });
+
+        $("#aPeople").on('click', function (e) {
+            if (_dataId>0) {
+                $('#iframPeople').attr("src", "@Url.Content("~/CustomerPeople/CustomerPeopleList?CustomerId=")" + _dataId);
+            } else {
+                return false;
+            }
+        })
+
+        $("#aNews").on('click', function (e) {
+            if (_dataId>0) {
+                $('#iframNews').attr("src", "@Url.Content("~/CustomerNews/News?CustomerId=")" + _dataId);
+            } else {
+                return false;
+            }
+        })
+
+        FormatCurrency('#CustomersAnnualRevenue');
+        FormatCurrency('#TAM');
+        FormatCurrency('#MultekSAM');
+        FormatCurrency('#FY14Revenue');
+        FormatCurrency('#FY15Forecast');
+        FormatCurrency('#FY16Forecast');
+        FormatCurrency('#FY17Forecast');
+        FormatCurrency('#FY18Forecast');
+
+        ConvertCurrency('#CustomersAnnualRevenue');
+        ConvertCurrency('#TAM');
+        ConvertCurrency('#MultekSAM');
+        ConvertCurrency('#FY14Revenue');
+        ConvertCurrency('#FY15Forecast');
+        ConvertCurrency('#FY16Forecast');
+        ConvertCurrency('#FY17Forecast');
+        ConvertCurrency('#FY18Forecast');
+
+        var Roles = '@ViewBag.Roles';
+        if (Roles == 0)
+        {
+            $("#btnSave").hide();
+        }
+
+        if (_dataId<=0) {
+            //hide button
+            $("#btnExcel").hide();
+            $("#btnPrint").hide();
+
+            //default Sales Person
+            //$("#MultekSalesPerson").val('@BI.SGP.BLL.Utils.AccessControl.CurrentLogonUser.Name');
+        }
+
+        //CustomerPeopleSum();
+        CustomerNewSum();
+        SetTabsDisabled();
+    });
+
+    function SetTabsDisabled()
+    {
+        if (_dataId>0) {
+            $("#liPeople,#liNews").removeClass("disabled");
+        } else {
+            $("#liPeople,#liNews").attr("class", "disabled");
+        }
+    }
+
+    function CustomerPeopleSum() {
+        $.post('@Url.Content("~/CustomerProfile/PeopleTotal")', { ID: _dataId }, function (data) {
+            $("#lblPeopleTotal").html(data);
+        }, "json");
+    }
+
+    function CustomerNewSum()
+    {
+        $.post('@Url.Content("~/CustomerProfile/NewTotal")', { ID: _dataId }, function (data) {
+            if (data > 0) {
+                $("#lblnewTotal").html(data);
+            } else {
+                $("#lblnewTotal").hide();
+            }
+        }, "json");
+    }
+
+    function FormatCurrency(ControlsName) {
+        $(ControlsName).formatCurrency({ colorize: true, negativeFormat: '-%s%n', roundToDecimalPlace: 0 });
+    }
+
+
+    function ConvertCurrency(ControlsName) {
+        $(ControlsName).blur(function () {
+            $(ControlsName).html(null);
+            $(this).formatCurrency({ colorize: true, negativeFormat: '-%s%n', roundToDecimalPlace: 0 });
+        })
+        .keyup(function (e) {
+            var e = window.event || e;
+            var keyUnicode = e.charCode || e.keyCode;
+            if ((keyUnicode < 48 || keyUnicode > 57) && keyUnicode != 188 && keyUnicode != 189 && keyUnicode != 16 && keyUnicode != 52 && keyUnicode != 8 && keyUnicode != 9 && keyUnicode != 37 && keyUnicode != 39)
+            {
+                alert('Data is incorrectly formatted');
+                return false;
+            }
+        });
+    }
+
+    function getPostData(operation) {
+        op = operation || 'Save';
+        var data = {
+            dataId: _dataId,
+            operation: op,
+            data: $.bi.form.getCustomerData()
+        };
+        return data;
+    }
+
+    function saveData(operation) {
+        if ($.trim($("#Customer").val()) == "") {
+            $.bi.dialog.show({ title: 'Message', content: ' Customer is required', width: 300 });
+            return false;
+        }
+        $.bi.overlay.show();
+        var postData = getPostData(operation);
+        $.post('@Url.Content("~/CustomerProfile/SaveData")', { postData: JSON.stringify(postData) }, function (data) {
+            $.bi.overlay.hide();
+            if (data.SysMsg.isPass==true) {
+                $.bi.dialog.show({ title: 'Success', content: ' Successful Operation', width: 300 });
+                _dataId = data.DataId;
+                SetTabsDisabled();
+            } else {
+                if (!data.success) {                    
+                    $.bi.dialog.showErr({ title: "Message", content: data.SysMsg.MessageString, iconCss: "icon-warning-sign red"});
+                }
+            }
+        }, "json");
+    }
+
+    function adjustIFramesHeightOnLoad(iframe) {
+        var iframeHeight = Math.min(iframe.contentWindow.window.document.documentElement.scrollHeight, iframe.contentWindow.window.document.body.scrollHeight);
+        $(iframe).height(iframeHeight);
+    }
+
+</script>
+}                                       

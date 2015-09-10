@@ -1,0 +1,135 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
+}
+@section ActionButton{
+ 
+
+    <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+        <i class="icon-cloud-download bigger-140 pink"></i>
+    </a>
+    <a href="javascript:void(0)" id="aFieldSetting" title="Field Setting">
+        <i class="icon-cog bigger-140 red"></i>
+    </a>
+    <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+        <i class="icon-refresh bigger-140 green"></i>
+    </a>
+}
+@section FootScript {
+    <script type="text/javascript">
+    var gridRowsObject = {};
+    $(document).ready(function () {
+
+        $("#form-searchBox").biSearchBox({
+            groupName: searchGroup,
+            searchButton: 'btnSearch'
+        });
+
+        $("#grid-table").biGrid({
+            groupName: gridGroup,
+            pager: 'grid-pager',
+            sortname: 'RFQID',
+            sortorder: 'DESC',
+            widthRelateElement: 'searchPanel',
+            extSqlColumns: 'RFQID,StatusID,TemplateID',
+            extColumns: [
+                { index: 0, title: ' ', model: { name: 'myac', width: 100, sortable: false, resizable: false, align: 'center' } }
+            ],
+            formatters: {
+                myac: function (cellvalue, options, rowObject) {
+                    gridRowsObject[options.rowId] = rowObject;
+                    return '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["TemplateID"] + '\', \'' + rowObject["RFQID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>' +
+                           '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="doDelete(\'' + rowObject["RFQID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>' +
+                           '<div title="history" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-edit" onclick="history(\'' + rowObject["RFQID"] + '\');" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon icon-calendar orange"></span></div>';
+                },
+                Number: function (cellvalue, options, rowObject) {
+                    cellvalue = cellvalue || "";
+                    var ahref = rowObject["TemplateID"] == "2" ? '@Url.Content("~/VVI/VVIPricingDetail")' : '@Url.Content("~/VVI/VVIPricingDetail")';
+                    cellvalue = "<a href='" + ahref + "?RFQID=" + rowObject["RFQID"] + "' target='_blank'>" + cellvalue + "</a>";
+                    return cellvalue;
+                },
+                WFStatus: function (cellvalue, options, rowObject) {
+                    if (cellvalue == null || cellvalue == "") {
+                        return "";
+                    } else {
+                        var labelClass;
+                        if (rowObject["StatusID"] == "9") {
+                            labelClass = "label-success";
+                        } else {
+                            labelClass = "label-info";
+                        }
+                        return '<span class="label ' + labelClass + ' arrowed arrowed-right" style="cursor:pointer" onclick="$.bi.timeline.show(' + rowObject["TemplateID"] + ',\'' + rowObject["RFQID"] + '\')">' + cellvalue + '</span>';
+                    }
+                },
+                VIForm: function (cellvalue, options, rowObject) {
+                    cellvalue = cellvalue || "";
+                    return "<a href='javascript:void(0)' onclick='TransformGPToVI(\"" + rowObject["RFQID"] + "\", \"" + cellvalue + "\")'>" + cellvalue + "</a>";
+                }
+            },
+        });
+
+        $("#aDownload").on('click', function (e) {
+            showExportDialog(e);
+        })
+
+        $("#btnSearch").on('click', function (e) {
+            $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+        })
+
+        $("#aRefresh").on('click', function (e) {
+            refresh();
+        })
+
+        $("#aFieldSetting").on('click', function (e) {
+            $.bi.fieldSetting.showDialog({
+                rootUrl: '@Url.Content("~/")', listName: 'PricingGridForFPC', title: 'Fields Setting', callBack: refresh
+            });
+        })
+
+    });
+
+    function refresh() {
+        location.replace(location);
+    }
+
+    function doEdit(templateid, id) {
+    
+            window.open('@Url.Content("~/VVI/VVIPricingDetail")' + '?RFQID=' + id);
+        
+    }
+
+    function doDelete(id) {
+        $.bi.dialog.showDelete({
+            okAction: function () {
+                $.post('@Url.Content("~/VVI/VVIPricingDel")', { ID: id }, function (data) {
+                    if (data.success) {
+                        $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+                    } else {
+                        if (!data.success) {
+                            $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                        }
+                    }
+                }, "json");
+                return true;
+            }
+        });
+    }
+    function history(id) {
+        window.open('@Url.Content("~/Report/RFQHistory")' + '?RFQID=' + id);
+    }
+
+    function getSelectedValues() {
+        var gid = "#grid-table";
+        var keyValues = new Array();
+        var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+        if (selectedIds != null && selectedIds.length > 0) {
+
+            for (var i = 0; i < selectedIds.length; i++) {
+                keyValues.push(gridRowsObject[selectedIds[i]]["RFQID"]);
+            }
+        }
+
+        return keyValues.join();
+    }
+    </script>
+}

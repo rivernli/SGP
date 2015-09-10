@@ -1,0 +1,36 @@
+﻿<style type='text/css'>
+    p, span, div, table tr td {
+        font: 12px verdana,microsoft sans serif;
+    }
+</style>
+<div style='font:12px Verdana,microsoft sans serif'>
+    <div><img src='https://sgp-sys.multek.com/Common/Content/Images/Multek-ID-PMS.gif' /></div><br />
+    Dear @{ToUser}<br><br>
+    <b>Workflow status has been changed</b> please check below RFQ:<br /><br />
+    <table style="width:0in;border-collapse:collapse;border-spacing:1">
+        <tr>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">RFQ</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">OEM</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Customer Part# </td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">RFQ Date In</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Workflow Status</td>
+        </tr>
+        <tr>
+            <td style="border:inset #CCCCCC 1.0pt;border-top:none;padding:1.5pt 1.5pt 1.5pt 1.5pt">@{Number}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt">@{OEM}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt">@{CustomerPartNumber}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt">@{RFQDateIn}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt">@{WFStatus}</td>
+        </tr>
+    </table>
+    <p>
+
+        Click here to view detail. <a href="@{SystemURL}/Pricing/Detail?RFQID=@{RFQID}">
+            LINK
+        </a>
+    </p>
+    <p>
+        Thanks & Regards.<br />
+        * Please do not reply to this email since it is from an automated mailbox. We are unable to respond to your queries via return email.
+    </p>
+</div>

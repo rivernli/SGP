@@ -1,0 +1,82 @@
+﻿@{
+    Layout = null;
+}
+<div id="filesDialog" class="hide">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        @*<tr>
+            <td><script>document.write('<a href="@Url.Content("~/CostingMasterData/DownloadTemplate/")' + categoryName + '" target="_blank"><h4 class="lighter"><i class="icon-download-alt"></i> Template</h4></a>')</script></td>
+        </tr>*@
+        <tr>
+            <td><input type="file" name="file_upload" id="file_upload" /></td>
+            <td>
+                <div id="file_template" class="uploadify" style="height: 30px; width: 120px;">
+                    <div id="file_template-button" class="uploadify-button " style="height: 30px; line-height: 30px; width: 120px; cursor:pointer">
+                        <span class="uploadify-button-text" onclick="downTemplate()">Template</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="file_upload-queue"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/uploadify/uploadify.css")">
+<script type="text/javascript" src="@Url.Content("~/Scripts/uploadify/jquery.uploadify.min.js")"></script>
+<script language="javascript">
+    function showFilesDialog() {
+        $("#file_upload").uploadify({
+            height: 30,
+            successTimeout: 3600,
+            removeTimeout: 0,
+            fileSizeLimit: '20MB',
+            swf: '@Url.Content("~/Scripts/uploadify/uploadify.swf")',
+            formData: { tableKey: categoryName },
+            uploader: '@Url.Content("~/CostingMasterData/UploadFile")',
+            width: 120,
+            queueID: 'file_upload-queue',
+            onUploadStart: function (file) {
+                $(".ui-dialog").append('<div id="documentOverlady" class="widget-box-overlay"><i class="icon-spinner icon-spin icon-2x white"></i></div>');
+            },
+            onUploadSuccess: function (file, data, response) {
+                $.bi.overlay.hide();
+                var obj = eval('(' + data + ')');
+                if (obj.success) {
+                    closeFileDialog();
+                    $("#btnSearch").click();
+                    $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+                } else {
+                    //closeFileDialog();
+                    $.bi.dialog.showErr({ title: "Message", content: obj.errMessage, iconCss: "icon-warning-sign red" });
+                }
+            }
+        });
+
+        var dialog = $("#filesDialog").removeClass('hide').dialog({
+            modal: true,
+            width: 280,
+            minHeight: 180,
+            maxHeight: 230,
+            resizable: false,
+            title: "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='icon-ok'></i> Import</h4></div>",
+            title_html: true,
+            close: function () {
+                closeFileDialog();
+            }
+        });
+    }
+
+    function closeFileDialog() {
+        $("#filesDialog").addClass("hide");
+        $("#file_upload").uploadify('destroy');
+        $("#file_upload-queue").html('');
+        $("#filesDialog").dialog("destroy");
+    }
+
+    function downTemplate() {
+        window.open('@Url.Content("~/CostingMasterData/DownloadTemplate/")' + categoryName);
+    }
+</script>

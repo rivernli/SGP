@@ -1,0 +1,143 @@
+﻿@using System.Data;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Smart Global Pricing</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">Data Maintenance</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+
+        <div class="col-sm-zy1">
+            <div class="widget-box">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <h4 class="lighter"><i class="icon-star orange"></i>Master Data</h4>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                @{
+                                    DataTable dt = ViewBag.TableData;
+                                    int index = 0;
+                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    {
+                                        if (Convert.ToString(dt.Rows[i]["TableType"]) == "1")
+                                        {
+                                            index++;
+                                            @:<td align="center" width="30%"><a href='@Url.Content("~/CostingMasterData/List/")@dt.Rows[i]["TableKey"]' target="_blank">
+                                            @:<h5 class='green'>@dt.Rows[i]["DisplayName"]</h5></a></td>  
+                                            @:
+                                            if (index == 3)
+                                            {
+                                                index = 0;
+                                                @:</tr><tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tr>
+                        </table>
+                        <h4 class="lighter"><i class="icon-star orange"></i>Version Data</h4>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                @{
+                                    index = 0;
+                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    {
+                                        if (Convert.ToString(dt.Rows[i]["TableType"]) == "2")
+                                        {
+                                            index++;
+                                            @:<td align="center" width="30%"><a href='@Url.Content("~/CostingMasterData/List/")@dt.Rows[i]["TableKey"]' target="_blank">
+                                            @:<h5 class='blue'>@dt.Rows[i]["DisplayName"]</h5></a></td>  
+                                            @:
+                                            if (index == 3)
+                                            {
+                                                index = 0;
+                                                @:</tr><tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tr>
+                        </table>
+                        <h4 class="lighter"><i class="icon-star orange"></i>Price Master</h4>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                @{
+                                    index = 0;
+                                    for (int i = 0; i < dt.Rows.Count; i++)
+                                    {
+                                        if (Convert.ToString(dt.Rows[i]["TableType"]) == "3")
+                                        {
+                                            index++;
+                                            @:<td align="center" width="30%"><a href='@Url.Content("~/CostingMasterData/List/")@dt.Rows[i]["TableKey"]' target="_blank">
+                                            @:<h5 class='orange'>@dt.Rows[i]["DisplayName"]</h5></a></td>  
+                                            @:
+                                            if (index == 3)
+                                            {
+                                                index = 0;
+                                                @:</tr><tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div><!-- /.main-content -->
+
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/easyui/easyloader.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/wflib.js")"></script>
+    <script src="@Url.Content("~/Scripts/leftmenu.js")"></script>
+
+    <style>
+        .infobox {
+            width:250px
+        }
+    </style>
+}

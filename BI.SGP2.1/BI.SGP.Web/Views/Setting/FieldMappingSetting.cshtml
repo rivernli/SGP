@@ -1,0 +1,156 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .form-actions {
+        border-top: 0px solid #e5e5e5;
+        margin-bottom: 5px;
+        margin-top: 0px;
+        padding: 15px 15px 15px;
+    }
+</style>
+
+<script language="javascript">
+    var _activityId = 0;
+    var _fieldType = "Required";
+    function fieldMappingInit(actId, fieldType) {
+        _activityId = actId;
+        _fieldType = fieldType;
+        var html = "";
+        var requiredHtml = "";
+        var notRequiredHtml = "";
+        $.post('@Url.Content("~/Setting/GetPreviewFields")', { actId: actId }, function (data) {
+            if (data != null) {
+                var fieldHtml = createField(data);
+                requiredHtml += fieldHtml[0];
+                notRequiredHtml += fieldHtml[1];
+            }
+
+            if (fieldType == "Required") {
+                $("#field-mapping-clearfix").html(requiredHtml);
+                $("#field-mapping-clearfix .icon-edit").addClass("blue")
+            } else {
+                $("#field-mapping-clearfix").html(notRequiredHtml);
+                $("#field-mapping-clearfix .icon-edit").addClass("light-grey")
+            }
+
+            var acUrl = '@Url.Content("~/Setting/GetFieldMappingList?templateId=")' + templateId;
+
+            $("#txtAddFieldMapping").autocomplete({
+                source: acUrl
+            });
+
+        }, 'json');
+    }
+
+    function createField(fields) {
+        var requiredHtml = "";
+        var notRequiredHtml = "";
+        if (fields != null && fields.length > 0) {
+            for (var i = 0; i < fields.length; i++) {
+                if (fields[i].IsRequired) {
+                    requiredHtml += createMember(fields[i]);
+                } else {
+                    notRequiredHtml += createMember(fields[i]);
+                }
+            }
+        }
+
+        return [requiredHtml, notRequiredHtml];
+    }
+
+    function createMember(field) {
+        var memberHtml = '<div class="itemdiv memberdiv">'
+                        + '<div class="user"><i class="icon-edit icon-3x"></i></div>'
+                        + '<div class="body">'
+                        + '<div class="name">' + field.DisplayName + '</div>'
+                        + '<div><input type="textbox" id="' + field.ID + '" class="field-sort" style="width:40px;height:20px" value="' + field.Sort + '"></div>'
+                        + '</div>'
+                        + '<span class="tools action-buttons"><a href="javascript:void(0)" class="red" onclick="delField(' + field.ID + ')"><i class="icon-remove bigger-125"></i></a></span>'
+                        + '</div>';
+        return memberHtml;
+    }
+
+    function insertField() {
+        alert("add");
+        var fieldName = $.trim($("#txtAddFieldMapping").val());
+        if (fieldName != null && fieldName != "") {
+            $.post('@Url.Content("~/Setting/AddFieldMapping")', { fieldName: fieldName, activityId: _activityId, fieldType: _fieldType }, function (data) {
+                if (data != null) {
+                    if (data.Success) {
+                        $("#txtAddFieldMapping").val('');
+                        fieldMappingInit(_activityId, _fieldType);
+                    } else if (data.errMessage != "") {
+                        $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                    }
+                }
+            }, 'json');
+        }
+    }
+
+    function addField() {
+        var fieldName = $.trim($("#txtAddFieldMapping").val());
+        if (fieldName != null && fieldName != "") {
+            $.post('@Url.Content("~/Setting/AddFieldMapping")', { fieldName: fieldName, activityId: _activityId, fieldType: _fieldType }, function (data) {
+                if (data != null) {
+                    if (data.Success) {
+                        $("#txtAddFieldMapping").val('');
+                        fieldMappingSave(fieldMappingInit, _activityId, _fieldType);
+                    } else if (data.errMessage != "") {
+                        $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                    }
+                }
+            }, 'json');
+        }
+    }
+
+    function delField(fieldId) {
+        delConfirm(function () {
+            $.post('@Url.Content("~/Setting/DelFieldMapping")', { id: fieldId }, function (data) {
+                if (data != null) {
+                    if (data.success) {
+                        fieldMappingSave(fieldMappingInit, _activityId, _fieldType);
+                    } else if (data.errMessage != "") {
+                        $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                    }
+                }
+            }, 'json');
+        });
+    }
+
+    function fieldMappingSave(saveCallback, args1, args2) {
+        var saveData = { actId: _activityId };
+        $(".field-sort").each(function () {
+            saveData[this.id] = this.value;
+        });
+        
+        $.post('@Url.Content("~/Setting/SaveFieldSort")', saveData, function (data) {
+            if (data != null) {
+                if (!data.success && data.errMessage != "") {
+                    $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                }
+            }
+            if (typeof (saveCallback) == "function") {
+                saveCallback(args1, args2);
+            }
+        }, 'json');
+    }
+</script>
+
+<div id="field-mapping-member-tab" class="tab-pane active" style="overflow-y:auto; height:300px">
+    <div id="field-mapping-clearfix" class="clearfix">
+
+    </div>
+</div>
+
+<div class="form-actions">
+    <div class="input-group">
+        <input placeholder="input name here ..." type="text" id="txtAddFieldMapping" class="form-control">
+        <span class="input-group-btn">
+            <button class="btn btn-sm btn-info no-radius" type="button" id="btnAddFieldMapping" onclick="addField()">
+                <i class="icon-ok"></i>
+                Add
+            </button>
+        </span>
+    </div>
+</div>

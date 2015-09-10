@@ -1,0 +1,134 @@
+﻿<script language="javascript">
+    var queryDataObject = {};
+    var querySelectObject = {};
+    function openQuery(options) {
+        var tableKey = options.tableKey;
+        var multiselect = options.multiselect;
+        var opts = options;
+        var dialog = $("#queryDialog").removeClass('hide').dialog({
+            modal: true,
+            width: 950,
+            height: 540,
+            resizable: false,
+            title: "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='icon-ok'></i> Query</h4></div>",
+            title_html: true,
+            close: function (event, ui) {
+                $("#form-searchBox-query").html("");
+                $("#grid-table-query").GridUnload();
+                $("#searchPanelQuery").unbind("resize");
+            },
+        });
+
+        $("#form-searchBox-query").biSearchBox({
+            groupName: tableKey,
+            dataUrl: '@Url.Content("~/CostingMasterData/GenerateQuery")',
+            searchButton: 'btnSearch-Query',
+            onComplete: function () {
+                var periodElem = $("#form-searchBox-query").find("#Period");
+                var versionElem = $("#form-searchBox-query").find("#Version");
+                var plantElem = $("#form-searchBox-query").find("#Plant");
+                if (periodElem != null && periodElem.length > 0) {
+                    $(periodElem).val($("#CostPeriod").val());
+                    $(periodElem).attr("disabled", "disabled");
+                }
+                if (versionElem != null && versionElem.length > 0) {
+                    $(versionElem).val($("#CostVersion").val());
+                    $(versionElem).attr("disabled", "disabled");
+                }
+                if (plantElem != null && plantElem.length > 0) {
+                    var plant = $(opts.trObj).find("#Plant").val();
+                    if (plant != "") {
+                        $(plantElem).parent().html('<input style="width:100% !important" id="Plant" name="Plant" type="text" value="' + plant + '" disabled="disabled">');
+                    }
+                }
+
+                var extSqlColumns, extColumns;
+                extSqlColumns = "ID";
+                var girdPostData = $("#form-searchBox-query").biSearchBox('getData');
+
+                $("#grid-table-query").biGrid({
+                    groupName: tableKey,
+                    dataUrl: '@Url.Content("~/CostingMasterData/GetGridData")',
+                    pager: 'grid-pager-query',
+                    sortname: 'ID',
+                    sortorder: 'ASC',
+                    multiselect: multiselect,
+                    multiboxonly: false,
+                    widthRelateElement: 'queryDialog',
+                    widthRelateOffset: 0,
+                    extSqlColumns: extSqlColumns,
+                    postData: girdPostData,
+                    onSelectRow: function (rowId, status, e) {
+                        var rowElem = queryDataObject[rowId]
+                        if (multiselect) {
+                            if (querySelectObject[tableKey] == null) {
+                                querySelectObject[tableKey] = {}
+                            }
+                            if (status == true) {
+                                if (querySelectObject[tableKey][rowElem.ID] == null) {
+                                    querySelectObject[tableKey][rowElem.ID] = 'selected';
+                                    options.onSelect(opts, status, rowElem);
+                                }
+                            } else {
+                                querySelectObject[tableKey][rowElem.ID] = null;
+                                options.onSelect(opts, status, rowElem);
+                            }
+                        } else {
+                            options.onSelect(opts, status, rowElem);
+                            $("#queryDialog").dialog("close");
+                        }
+                    },
+                    loadComplete: function () {
+                        var headerCheckBox = $("#jqgh_grid-table-query_cb");
+                        if (headerCheckBox[0] != null) {
+                            headerCheckBox.hide();
+                        }
+                    },
+                    afterInsertRow: function (rowId, rowData, rowElem) {
+                        queryDataObject[rowId] = rowElem;
+                        if (querySelectObject[tableKey] != null && querySelectObject[tableKey][rowElem.ID] != null) {
+                            $("#grid-table-query").setSelection(rowId);
+                        }
+                    },
+                });
+
+            }
+        });
+
+        $("#btnSearch-Query").unbind('click').on('click', function (e) {
+            $("#grid-table-query").biGrid('search', $("#form-searchBox-query").biSearchBox('getData'));
+        })
+    }
+</script>
+<div id="queryDialog" class="hide">
+    <table align="center" style="width:100%" class="table-bordered" id="searchPanelQuery">
+        <tr>
+            <td>
+                <table align="center" style="width:100%">
+                    <tr>
+                        <td>
+                            <form id="form-searchBox-query" method="post" onsubmit="return false;"></form>
+                        </td>
+                        <td>
+                            <button id="btnSearch-Query" class="btn btn-app btn-success btn-xs">
+                                <i class="icon-search bigger-160"></i>
+                                Query
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+    <table style="width:100%;" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <table id="grid-table-query"></table>
+                <div id="grid-pager-query"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+    
+

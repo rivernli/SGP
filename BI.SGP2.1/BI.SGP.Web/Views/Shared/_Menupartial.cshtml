@@ -1,0 +1,692 @@
+﻿@using BI.SGP.BLL.Utils;
+<a class="menu-toggler" id="menu-toggler" href="#">
+    <span class="menu-text"></span>
+</a>
+
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+    </script>
+    @{
+        if (AccessControl.CurrentLogonUser.Roles.Contains("VVI_VENDOR"))
+        {
+             <ul class="nav nav-list">
+               
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> VVI </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                     
+                        <li>
+                            <a href="~/VVI/SupplierPricingView">
+                                <i class="icon-double-angle-right"></i>
+                                Vendor Technical Costing
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/VVI/VendorRfqReport">
+                                <i class="icon-double-angle-right"></i>
+                                Vendor pending RFQ report
+                            </a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            </ul><!-- /.nav-list -->
+        }
+        else if (AccessControl.CurrentLogonUser.Roles.Contains("SGP_VVI") == false)
+        {
+              <ul class="nav nav-list">
+                <li class="Homepageactive">
+                    <a href="~/Pricing/PricingView">
+                        <i class="icon-dashboard"></i>
+                        <span class="menu-text"> Home </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-toggle">
+                        <i class="icon-desktop"></i>
+                        <span class="menu-text"> Pricing</span>
+
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Pricing/PricingView">
+                                <i class="icon-double-angle-right"></i>
+                                View
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="~/Pricing/Detail">
+                                <i class="icon-double-angle-right"></i>
+                                Create One
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Import/ImportExcel">
+                                <i class="icon-double-angle-right"></i>
+                                Batch Create/Update
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> B2F Pricing </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/B2F/PricingView">
+                                <i class="icon-double-angle-right"></i>
+                                B2F View
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/B2F/Detail">
+                                <i class="icon-double-angle-right"></i>
+                                Create One For B2F
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="~/B2F/ImportExcel">
+                                <i class="icon-double-angle-right"></i>
+                                B2F Batch Create/Update
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*<li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-list-alt"></i>
+                            <span class="menu-text"> FPC Pricing </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="~/FPC/PricingView">
+                                    <i class="icon-double-angle-right"></i>
+                                    FPC View
+                                </a>
+                            </li>
+                            <li>
+                                <a href="~/FPC/Detail">
+                                    <i class="icon-double-angle-right"></i>
+                                    Create One For FPC
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="~/B2F/ImportExcel">
+                                    <i class="icon-double-angle-right"></i>
+                                    FPC Batch Create/Update
+                                </a>
+                            </li>
+                        </ul>
+                    </li>*@
+
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> Report </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Report/RFQHistory">
+                                <i class="icon-double-angle-right"></i>
+                                History
+                            </a>
+                        </li>
+                        @{
+            if (AccessControl.CurrentLogonUser.IsAdmin() || AccessControl.CurrentLogonUser.Roles.Contains("SGP_CostingCheck"))
+            {
+                @MvcHtmlString.Create(@"
+                            <li>
+                                <a href='" + Url.Content("~/Report/CostingCheckList") + @"'>
+                                    <i class=""icon-double-angle-right""></i>
+                                    Costing Checklist
+                                </a>
+                            </li>");
+            }
+                        }
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> Dashboard </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Report/TATReport">
+                                <i class="icon-double-angle-right"></i>
+                                TATReport
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Report/QuotesCompleted">
+                                <i class="icon-double-angle-right"></i>
+                                Summary by Tech Costing
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Report/TechnicalCostCompleted">
+                                <i class="icon-double-angle-right"></i>
+                                Summary by Pricing Analyst
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> Workflow </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Workflow/ProcessPreview">
+                                <i class="icon-double-angle-right"></i>
+                                Process Preview
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Workflow/B2FProcessPreview">
+                                <i class="icon-double-angle-right"></i>
+                                Process Preview For B2F
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+             
+
+                @foreach (BI.SGP.BLL.AccessServiceReference.Role role in BI.SGP.BLL.Utils.AccessControl.CurrentLogonUser.Roles)
+                {
+
+
+                    if (role.Name == "ITAdmin")
+                    {
+
+
+                        @MvcHtmlString.Create(@"<li>
+                                        <a href=""#"" class=""dropdown-toggle"">
+                                            <i class=""icon-list""></i>
+                                            <span class=""menu-text""> Setting </span>
+
+                                            <b class=""arrow icon-angle-down""></b>
+                                        </a>
+                                        <ul class=""submenu"">
+                                            <li>
+                                                <a href=""" + Request.Url.GetLeftPart(UriPartial.Authority) + @"/SGP/Setting/FieldSetting"">
+                                                    <i class=""icon-double-angle-right""></i>
+                                                    Field Setting
+                                                </a>
+                                            </li>
+                                            <li>
+
+                                                <a href=""" + Request.Url.GetLeftPart(UriPartial.Authority) + @"/SGP/Setting/KeyValueSetting"">
+                                                    <i class=""icon-double-angle-right""></i>
+                                                    KeyValue Setting
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href=""" + Request.Url.GetLeftPart(UriPartial.Authority) + @"/CustomerOEMBasedDefaults/CustomerOEMbasedDefaultsList"">
+                                                    <i class=""icon-double-angle-right""></i>
+                                                    OEM/Customer based Defaults
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>");
+
+
+                    }
+
+                }
+
+
+                @*<li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-list"></i>
+                            <span class="menu-text"> Setting </span>
+
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="~/Setting/FieldSetting">
+                                    <i class="icon-double-angle-right"></i>
+                                    Field Setting
+                                </a>
+                            </li>
+                            <li>
+                                <a href="~/Setting/KeyValueSetting">
+                                    <i class="icon-double-angle-right"></i>
+                                    KeyValue Setting
+                                </a>
+                            </li>
+                        </ul>
+                    </li>*@ 
+                 
+                <li>
+                    <a href="~/Helper/VideoIntroduction" class="dropdown-toggle">
+                        <i class="icon-warning-sign bigger-120"></i>
+                        <span class="menu-text"> Help </span>
+                        <b class="arrow icon-angle-down"></b>
+
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Helper/VideoIntroduction">
+                                <i class="icon-warning-sign bigger-120"></i>
+                                Overview Demo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Helper/FAQ">
+                                <i class="icon-double-angle-right"></i>
+                                Questions and Answers
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+                  <li>
+                      <a href="#" class="dropdown-toggle">
+                          <i class="icon-list-alt"></i>
+                          <span class="menu-text"> Cost Modeling</span>
+                          <b class="arrow icon-angle-down"></b>
+                      </a>
+                      <ul class="submenu">
+                          <li>
+                              <a href="~/CostRate/List">
+                                  <i class="icon-double-angle-right"></i>
+                                  Cost Rate
+                              </a>
+                          </li>
+                          <li>
+                              <a href="~/CostIO/List">
+                                  <i class="icon-double-angle-right"></i>
+                                  Costing View
+                              </a>
+                          </li>
+                          <li>
+                              <a href="~/CostIO/Input">
+                                  <i class="icon-double-angle-right"></i>
+                                  Create Costing
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
+                  <li>
+                      <a href="#" class="dropdown-toggle">
+                          <i class="icon-list-alt"></i>
+                          <span class="menu-text"> Data Maintenance</span>
+                          <b class="arrow icon-angle-down"></b>
+                      </a>
+                      <ul class="submenu">
+                          <li>
+                              <a href="~/CostingVersion/List">
+                                  <i class="icon-double-angle-right"></i>
+                                  Version
+                              </a>
+                          </li>
+                          <li>
+                              <a href="~/CostingPeriod/List">
+                                  <i class="icon-double-angle-right"></i>
+                                  Period
+                              </a>
+                          </li>
+                          <li>
+                              <a href="~/CostingMasterData/MasterData">
+                                  <i class="icon-double-angle-right"></i>
+                                  Master Data
+                              </a>
+                          </li>
+                          <li>
+                              <a href="~/CostingMasterData/VersionData">
+                                  <i class="icon-double-angle-right"></i>
+                                  Version Data
+                              </a>
+                          </li>
+                          <li>
+                              <a href="~/CostingMasterData/PriceMaster">
+                                  <i class="icon-double-angle-right"></i>
+                                  Period Data
+                              </a>
+                          </li>
+                          <li>
+                              <a href="~/CostingMasterData/ProcFlowGroup">
+                                  <i class="icon-double-angle-right"></i>
+                                  Process Flow Group
+                              </a>
+                          </li>
+
+                      </ul>
+                  </li>
+                <li>
+                    <a href="http://mcnnt800.asia.ad.flextronics.com/SGPOLD">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text">  Old SGP System </span>
+                        <b class="icon-double-angle-right"></b>
+                    </a>
+
+                </li>
+
+
+            </ul><!-- /.nav-list -->
+        }
+        else
+        {
+            <ul class="nav nav-list">
+                <li class="Homepageactive">
+                    <a href="~/Pricing/PricingView">
+                        <i class="icon-dashboard"></i>
+                        <span class="menu-text"> Home </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-toggle">
+                        <i class="icon-desktop"></i>
+                        <span class="menu-text"> Pricing</span>
+
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Pricing/PricingView">
+                                <i class="icon-double-angle-right"></i>
+                                View
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="~/Pricing/Detail">
+                                <i class="icon-double-angle-right"></i>
+                                Create One
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Import/ImportExcel">
+                                <i class="icon-double-angle-right"></i>
+                                Batch Create/Update
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> B2F Pricing </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/B2F/PricingView">
+                                <i class="icon-double-angle-right"></i>
+                                B2F View
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/B2F/Detail">
+                                <i class="icon-double-angle-right"></i>
+                                Create One For B2F
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="~/B2F/ImportExcel">
+                                <i class="icon-double-angle-right"></i>
+                                B2F Batch Create/Update
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @*<li>
+                        <a href="#" class="dropdown-toggle">
+                            <i class="icon-list-alt"></i>
+                            <span class="menu-text"> FPC Pricing </span>
+                            <b class="arrow icon-angle-down"></b>
+                        </a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="~/FPC/PricingView">
+                                    <i class="icon-double-angle-right"></i>
+                                    FPC View
+                                </a>
+                            </li>
+                            <li>
+                                <a href="~/FPC/Detail">
+                                    <i class="icon-double-angle-right"></i>
+                                    Create One For FPC
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="~/B2F/ImportExcel">
+                                    <i class="icon-double-angle-right"></i>
+                                    FPC Batch Create/Update
+                                </a>
+                            </li>
+                        </ul>
+                    </li>*@
+
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> Report </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Report/RFQHistory">
+                                <i class="icon-double-angle-right"></i>
+                                History
+                            </a>
+                        </li>
+                        @{
+            if (AccessControl.CurrentLogonUser.IsAdmin() || AccessControl.CurrentLogonUser.Roles.Contains("SGP_CostingCheck"))
+            {
+                @MvcHtmlString.Create(@"
+                            <li>
+                                <a href='" + Url.Content("~/Report/CostingCheckList") + @"'>
+                                    <i class=""icon-double-angle-right""></i>
+                                    Costing Checklist
+                                </a>
+                            </li>");
+            }
+                        }
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> Dashboard </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Report/TATReport">
+                                <i class="icon-double-angle-right"></i>
+                                TATReport
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Report/QuotesCompleted">
+                                <i class="icon-double-angle-right"></i>
+                                Summary by Tech Costing
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Report/TechnicalCostCompleted">
+                                <i class="icon-double-angle-right"></i>
+                                Summary by Pricing Analyst
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> Workflow </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Workflow/ProcessPreview">
+                                <i class="icon-double-angle-right"></i>
+                                Process Preview
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Workflow/B2FProcessPreview">
+                                <i class="icon-double-angle-right"></i>
+                                Process Preview For B2F
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text"> VVI </span>
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/VVI/VVIPricingView">
+                                <i class="icon-double-angle-right"></i>
+                                VVI RFQ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/VVI/VVIMasterReport">
+                                <i class="icon-double-angle-right"></i>
+                                VVI Master Report
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/VVI/SupplierPricingView">
+                                <i class="icon-double-angle-right"></i>
+                                Vendor Technical Costing
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/VVI/VendorRfqReport">
+                                <i class="icon-double-angle-right"></i>
+                                Vendor pending RFQ report
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/VVI/SupplierView">
+                                <i class="icon-double-angle-right"></i>
+                                Supplier Database
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                @foreach (BI.SGP.BLL.AccessServiceReference.Role role in BI.SGP.BLL.Utils.AccessControl.CurrentLogonUser.Roles)
+                {
+
+
+                    if (role.Name == "ITAdmin")
+                    {
+
+
+                        @MvcHtmlString.Create(@"<li>
+                                        <a href=""#"" class=""dropdown-toggle"">
+                                            <i class=""icon-list""></i>
+                                            <span class=""menu-text""> Setting </span>
+
+                                            <b class=""arrow icon-angle-down""></b>
+                                        </a>
+                                        <ul class=""submenu"">
+                                            <li>
+                                                <a href=""" + Request.Url.GetLeftPart(UriPartial.Authority) + @"/SGP/Setting/FieldSetting"">
+                                                    <i class=""icon-double-angle-right""></i>
+                                                    Field Setting
+                                                </a>
+                                            </li>
+                                            <li>
+
+                                                <a href=""" + Request.Url.GetLeftPart(UriPartial.Authority) + @"/SGP/Setting/KeyValueSetting"">
+                                                    <i class=""icon-double-angle-right""></i>
+                                                    KeyValue Setting
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href=""" + Request.Url.GetLeftPart(UriPartial.Authority) + @"/CustomerOEMBasedDefaults/CustomerOEMbasedDefaultsList"">
+                                                    <i class=""icon-double-angle-right""></i>
+                                                    OEM/Customer based Defaults
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>");
+
+
+                    }
+
+                }
+ 
+                <li>
+                    <a href="~/Helper/VideoIntroduction" class="dropdown-toggle">
+                        <i class="icon-warning-sign bigger-120"></i>
+                        <span class="menu-text"> Help </span>
+                        <b class="arrow icon-angle-down"></b>
+
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="~/Helper/VideoIntroduction">
+                                <i class="icon-warning-sign bigger-120"></i>
+                                Overview Demo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/Helper/FAQ">
+                                <i class="icon-double-angle-right"></i>
+                                Questions and Answers
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="http://mcnnt800.asia.ad.flextronics.com/SGPOLD">
+                        <i class="icon-list-alt"></i>
+                        <span class="menu-text">  Old SGP System </span>
+                        <b class="icon-double-angle-right"></b>
+                    </a>
+
+                </li>
+
+
+            </ul><!-- /.nav-list -->
+        }
+
+    }
+
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+    </script>
+</div>

@@ -1,0 +1,530 @@
+﻿
+<div class="divEditor">
+        <table style="width:100%">
+            <tr>
+                <td align="right">
+                    <button id="btnSave" class="btn btn-primary" title="" onclick="saveData(); return false;">
+                        Save
+                        <i class="icon-save small-30"></i>
+                    </button>
+                </td>
+            </tr>
+        </table>   
+            <div id="mainContent">
+                <div class='panel panel-default'>
+                    <div class='panel-heading'>
+                        <a href="#faq-1-1" data-parent="#faq-list-1" data-toggle="collapse" class="accordion-toggle">
+                            <i class="pull-right icon-chevron-down" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+                            <i class="icon-user bigger-130"></i>&nbsp; Customer Visit Schedule:
+                        </a>
+                    </div>
+                    <div class='panel-collapse in' id='faq-1-1' style='height: auto;'>
+                        <div class='panel-body'>
+                            <form id='fmCustomerVisitSchedule' class='fm-category'>
+                                <table style="width:100%">
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Visit Purpose</td>
+                                        <td align="left" colspan="3">
+                                            <input style="width:100% !important" id="VisitPurpose" name="VisitPurpose" type="text" />
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Site</td>
+                                        <td align="left">
+                                            <input style="width:100% !important" id="Site" name="Site" type="text" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Conference Time</td>
+                                        <td colspan="5">
+                                            <table>
+                                                <tr> 
+                                                    <td align="left">
+                                                        <div class="input-group">
+                                                            <input class="date-picker" id="ConferenceStartDate" name="ConferenceStartDate" type="text" style="height:27px;width:100px" data-date-format="mm/dd/yyyy">
+                                                            <span class="input-group-addon">
+                                                                <i class="icon-calendar bigger-110"></i>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td align="left">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <input id="ConferenceStartTime" type="text" class="timepicker" style="height:27px;width:70px">
+                                                            <span class="input-group-addon">
+                                                                <i class="icon-time bigger-110"></i>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td align="left">-</td>
+                                                    <td align="left">
+                                                        <div class="input-group">
+                                                            <input class="date-picker" id="ConferenceEndDate" name="ConferenceEndDate" type="text" style="height:27px;width:100px" data-date-format="mm/dd/yyyy">
+                                                            <span class="input-group-addon">
+                                                                <i class="icon-calendar bigger-110"></i>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td align="left">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <input id="ConferenceEndTime" type="text" class="timepicker" style="height:27px;width:70px">
+                                                            <span class="input-group-addon">
+                                                                <i class="icon-time bigger-110"></i>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Conference Room</td>
+                                        <td><input style="width:100% !important" id="ConferenceRoom" name="ConferenceRoom" type="text" /></td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Working Lunch</td>
+                                        <td>
+                                            <select style="width:100% !important" id="WorkingLunch" name="WorkingLunch">
+                                                <option value=""></option>
+                                                <option value="No">No</option>
+                                                <option value="Yes">Yes</option>
+                                            </select>
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Responsible Person</td>
+                                        <td><input style="width:100% !important" id="ResponsiblePerson" name="ResponsiblePerson" type="text" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Remarks</td>
+                                        <td colspan="5">
+                                            <textarea style=" width:100% !important" id="ConferenceRemark" name="ConferenceRemark"></textarea>
+                                        </td>
+                                    </tr>
+                                 </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class='panel panel-default'>
+                    <div class='panel-heading'>
+                        <a href="#faq-1-2" data-parent="#faq-list-2" data-toggle="collapse" class="accordion-toggle">
+                            <i class="pull-right icon-chevron-down" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+                            <i class="icon-user bigger-130"></i>&nbsp; Customer Information:
+                        </a>
+                    </div>
+                    <div class='panel-collapse in' id='faq-1-2' style='height: auto;'>
+                        <div class='panel-body'>
+                            <form id='fmCustomerInformation' class='fm-category'>
+                                <table style="width:100%">
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:15%">Date this form completed</td>
+                                        <td align="left">
+                                            <div class="input-group">
+                                                <input class="date-picker" id="DateThisFormCompleted" name="DateThisFormCompleted" type="text" style="height:27px" data-date-format="mm/dd/yyyy">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">Sales Organization</td>
+                                        <td align="left" colspan="3">
+                                            <input style="width:100% !important" id="SalesOrganization" name="SalesOrganization" type="text" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="background-color:#edf3f4;border:1px solid #dcebf7;">
+                                            Which Sales Representatives will attend tour?
+                                        </td>
+                                        <td colspan="3" align="left">
+                                            <input style=" width:100% !important" id="SalesRepresentatives" name="SalesRepresentatives" type="text" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Tour Date
+                                        </td>
+                                        <td align="left" style="width:20%">
+                                            <div class="input-group">
+                                                <input class="date-picker" id="TourDate" name="TourDate" type="text" style="height:27px" data-date-format="mm/dd/yyyy">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">
+                                            Arrival Time
+                                        </td>
+                                        <td align="left" style="width:20%">
+                                            <div class="input-group">
+                                                <input class="date-picker" id="ArrivalTime" name="ArrivalTime" type="text" style="height:27px" data-date-format="mm/dd/yyyy">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:13%">
+                                            Departure Time
+                                        </td>
+                                        <td align="left" style="width:20%">
+                                            <div class="input-group">
+                                                <input class="date-picker" id="DepartureTime" name="DepartureTime" type="text" style="height:27px" data-date-format="mm/dd/yyyy">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Customer
+                                        </td>
+                                        <td align="left">
+                                            <input style=" width:100% !important" id="Customer" name="Customer" type="text" />
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Location
+                                        </td>
+                                        <td colspan="3" align="left">
+                                            <input style=" width:100% !important" id="Location" name="Location" type="text" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Contact Name
+                                        </td>
+                                        <td align="left">
+                                            <input style=" width:100% !important" id="ContactName" name="ContactName" type="text" />
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Title
+                                        </td>
+                                        <td colspan="3" align="left">
+                                            <input style=" width:100% !important" id="Title" name="Title" type="text" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Name(s) of Others To Attend Tour
+                                        </td>
+                                        <td colspan="3" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Title
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <textarea style=" width:100% !important" id="OthersTOAttendTour" name="OthersTOAttendTour" rows="4"></textarea>
+                                        </td>
+                                        <td colspan="3">
+                                            <textarea style=" width:100% !important" id="OthersTOAttendTourTitle" name="OthersTOAttendTourTitle" rows="4"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Is This A New Customer?
+                                        </td>
+                                        <td colspan="4">
+                                            <select style="width:100% !important" id="IsNewCustomer" name="IsNewCustomer">
+                                                <option value=""></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <textarea style=" width:100% !important" id="IsNewCustomerRemarks" name="IsNewCustomerRemarks" rows="2"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Customer Background:  Current Customer?
+                                        </td>
+                                        <td colspan="4">
+                                            <select style="width:100% !important" id="CustomerBackground" name="CustomerBackground">
+                                                <option value=""></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <textarea style=" width:100% !important" id="CustomerBackgroundRemarks" name="CustomerBackgroundRemarks" rows="2"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Any Issues?  Financial?  Quality?  Delivery?  Explain?
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <textarea style=" width:100% !important" id="AnyIssues" name="AnyIssues" rows="2"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Please explain any Special Interests for the Tour:
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <textarea style=" width:100% !important" id="AnySpecialInterests" name="AnySpecialInterests" rows="2"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Is there a written survey to complete?
+                                        </td>
+                                        <td colspan="2">
+                                            <select style="width:100% !important" id="WrittenSurveyComplete" name="WrittenSurveyComplete">
+                                                <option value=""></option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </td>
+                                        <td style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Date Due
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input class="date-picker" id="WrittenSurveyCompleteDateDue" name="WrittenSurveyCompleteDateDue" type="text" style="height:27px" data-date-format="mm/dd/yyyy">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                            <form id='fmMultekUser' class='fm-category'>
+                                <table style="width:100%">
+                                    <tr>
+                                        <td colspan="6" style="background-color:#edf3f4;border:1px solid #dcebf7">
+                                            Who should be involved from Multek?
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead class="thin-border-bottom">
+                                                    <tr>
+                                                        <td style="width:5%;background-color:#edf3f4;border:1px solid #dcebf7"></td>
+                                                        <td style="width:40%;background-color:#edf3f4;border:1px solid #dcebf7;text-align:center">
+                                                            Name
+                                                        </td>
+                                                        <td style="width:40%;background-color:#edf3f4;border:1px solid #dcebf7;text-align:center">
+                                                            Title
+                                                        </td>
+                                                        <td style="width:10%;background-color:#edf3f4;border:1px solid #dcebf7">
+                                                            <a id="addPeople" name="addPeople" href="javascript:void(0)" onclick="add_line();"><i class="icon-plus bigger-180 green"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="MultekSalePeopleBody"></tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+        <script type="text/javascript">
+            var _VisitId = '';
+            var UserRight = '';
+
+            function CustomeVisitloadData(keyValue, PageType) { 
+                var id = keyValue;
+                UserRight = PageType;
+
+                if (id != null && id != "") {
+                    $.post('@Url.Content("~/CustomerVisit/GetCustomerVisitDetailData")', { ID: id }, function (data) {
+                        fillData(data);
+                        loadPeopleTable();
+                    });
+                }else
+                {
+                    add_line();
+                }
+
+                if(UserRight!=1)
+                {
+                    $("#btnSave").hide();
+                    $("#addPeople").hide();
+                }
+
+                $("#Customer").autocomplete({
+                    source: '@Url.Content("~/CustomerProfile/GetAuotCompleteValue")'
+                });
+            }
+
+            function fillData(data) {
+                //Edit View
+                _VisitId = data.ID;
+                $("#VisitPurpose").val(data.VisitPurpose);
+                $("#Site").val(data.Site);
+                $("#ConferenceStartDate").val(data.ConferenceStartDate);
+                $("#ConferenceStartTime").val(data.ConferenceStartTime);
+                $("#ConferenceEndDate").val(data.ConferenceEndDate);
+                $("#ConferenceEndTime").val(data.ConferenceEndTime);
+                $("#ConferenceRoom").val(data.ConferenceRoom);
+                $("#WorkingLunch").val(data.WorkingLunch);
+                $("#ResponsiblePerson").val(data.ResponsiblePerson);
+                $("#ConferenceRemark").val(data.ConferenceRemark);
+
+                $("#DateThisFormCompleted").val(data.DateThisFormCompleted);
+                $("#SalesOrganization").val(data.SalesOrganization);
+                $("#SalesRepresentatives").val(data.SalesRepresentatives);
+                $("#TourDate").val(data.TourDate);
+                $("#ArrivalTime").val(data.ArrivalTime);
+                $("#DepartureTime").val(data.DepartureTime);
+                $("#Customer").val(data.Customer);
+                $("#Location").val(data.Location);
+                $("#ContactName").val(data.ContactName);
+                $("#Title").val(data.Title);
+                $("#OthersTOAttendTour").val(data.OthersTOAttendTour);
+                $("#OthersTOAttendTourTitle").val(data.OthersTOAttendTourTitle);
+                $("#IsNewCustomer").val(data.IsNewCustomer);
+                $("#IsNewCustomerRemarks").val(data.IsNewCustomerRemarks);
+                $("#CustomerBackground").val(data.CustomerBackground);
+                $("#CustomerBackgroundRemarks").val(data.CustomerBackgroundRemarks);
+                $("#AnyIssues").val(data.AnyIssues);
+                $("#AnySpecialInterests").val(data.AnySpecialInterests);
+                $("#WrittenSurveyComplete").val(data.WrittenSurveyComplete);
+                $("#WrittenSurveyCompleteDateDue").val(data.WrittenSurveyCompleteDateDue);
+            }
+
+            var currentStep = 0;
+            var max_line_num = 0;
+            
+            //添加新记录
+            function add_line() {
+                max_line_num = $("#MultekSalePeopleBody tr:last-child").find("#indexId").html();
+                if (max_line_num == null) {
+                    max_line_num = 1;
+                    $('#MultekSalePeopleBody').append("<tr id='line" + max_line_num + "'>" +
+                    "<td style='width:5%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><label id='indexId' name='indexId'>" + max_line_num + "</label></td>" +
+                    "<td style='width:40%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><input type='text' id='MultekUserName' name='MultekUserName' style='width:100% !important'></input></td>" +
+                    "<td style='width:40%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><input type='text' id='MultekUserTitle' name='MultekUserTitle' style='width:100% !important'></input></td>" +
+                    "<td style='width:10%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'></td>" +
+                "</tr>");
+                }
+                else {
+                    max_line_num = parseInt(max_line_num);
+                    max_line_num += 1;
+                    $('#MultekSalePeopleBody').append("<tr id='line" + max_line_num + "'>" +
+                    "<td style='width:5%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><label id='indexId' name='indexId'>" + max_line_num + "</label></td>" +
+                    "<td style='width:40%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><input type='text' id='MultekUserName' name='MultekUserName' style='width:100% !important'></input></td>" +
+                    "<td style='width:40%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><input type='text' id='MultekUserTitle' name='MultekUserTitle' style='width:100% !important'></input></td>" +
+                    "<td style='width:10%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'>" +
+                        "<a href='javascript:void(0)' class='red' onclick='remove_line(this)'><i class='icon-remove bigger-125'></i></a>" +
+                    "</td>" +
+                "</tr>");
+                }
+            }
+
+            function loadPeopleTable() {
+                $.post('@Url.Content("~/CustomerVisit/CustomerVisitInvolvedPeople")', { VisitID: _VisitId }, function (data) {
+                    var strHtml = "";
+                    var strDisplay = "";
+                    if (UserRight == 1) {
+                        strDisplay = "block";
+                    } else {
+                        strDisplay = "none";
+                    }
+                    if (data != null && data.rows != null) {
+                        for (var i = 0; i < data.rows.length; i++) {
+                            max_line_num++;
+                            strHtml += "<tr id='line" + max_line_num + "'>" +
+                            "<td style='width:5%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><label id='indexId' name='indexId'>" + max_line_num + "</label><input type='hidden' id='ID' name='ID' value='" + data.rows[i]["ID"] + "'/></td>" +
+                            "<td style='width:40%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><input type='text' id='MultekUserName' name='MultekUserName' value='" + data.rows[i]["Name"] + "' style='width:100% !important'></input></td>" +
+                            "<td style='width:40%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'><input type='text' id='MultekUserTitle' name='MultekUserTitle' value='" + data.rows[i]["Title"] + "' style='width:100% !important'></input></td>" +
+                            "<td style='width:10%;border-right:1px solid #dcebf7;border-bottom:1px solid #dcebf7;'>"+
+                            "<a href='javascript:void(0)' class='red' onclick='remove_line(this)' style='display:" + strDisplay + "'><i class='icon-remove bigger-125'></i></a>" +
+                            "</td>"+
+                            "</tr>";
+                        }
+                    }                    
+                    $("#MultekSalePeopleBody").html(strHtml);
+                }, "json");
+            }
+
+            //删除选择记录
+            function remove_line(index) {
+                if (index != null) {
+                    currentStep = $(index).parent().parent().find("#indexId").html();
+                }
+                if (currentStep == 0) {
+                    alert('Please select!');
+                    return false;
+                }
+                if (confirm("Delete selected record？")) {
+                    var currentRowsID = $(index).parent().parent().find("#ID").val();
+                    
+                    if (currentRowsID != null)
+                    {
+                    //删除数据
+                        $.post('@Url.Content("~/CustomerVisit/DeleteInvolvedPeople")', { ID: currentRowsID }, function (data) {
+                            if (data.SysMsg.isPass == true) {
+                                currentStep = 0;
+                                max_line_num = 0
+                                loadPeopleTable();
+                            } else {
+                                if (!data.success) {
+                                    $.bi.dialog.showErr({ title: "Message", content: data.SysMsg.MessageString, iconCss: "icon-warning-sign red" });
+                                }
+                            }
+                        }, "json");
+                    } else
+                    {
+                        $("#MultekSalePeopleBody tr").each(function () {
+                            var seq = parseInt($(this).children("td").find("#indexId").html());
+                            if (seq == currentStep) { $(this).remove(); }
+                            if (seq > currentStep) { $(this).children("td").find("#indexId").each(function (i) { if (i == 0) $(this).html(seq - 1); }); }
+                        });
+                    } 
+                }
+
+            }            
+
+            function getPostData(operation) {
+                op = operation || 'Save';
+                var data = {
+                    dataId: _VisitId,
+                    operation: op,
+                    data: $.bi.form.getAllCategoryData()
+                };
+                return data;
+            }
+
+            function saveData() {
+                $.bi.overlay.show();
+                var postData = getPostData('Save');
+                $.post('@Url.Content("~/CustomerVisit/SaveData")', {postData: JSON.stringify(postData) }, function (data) {
+                    $.bi.overlay.hide();
+                    if (data.SysMsg.isPass == true) {
+                        $.bi.dialog.show({ title: 'Success', content: ' Successful Operation', width: 300 });
+                        _VisitId = data.DataId;
+                        currentStep = 0;
+                        max_line_num = 0
+                        loadPeopleTable();
+                    } else {
+                        if (!data.success) {
+                            $.bi.dialog.showErr({ title: "Message", content: data.SysMsg.MessageString, iconCss: "icon-warning-sign red" });
+                        }
+                    }
+                }, "json");
+            }
+
+            $('.date-picker').datepicker({ autoclose: true }).next().on(ace.click_event, function () {
+                $(this).prev().focus();
+            });
+
+            $('.timepicker').timepicker({
+                minuteStep: 1,
+                showSeconds: true,
+                showMeridian: false
+            }).next().on(ace.click_event, function () {
+                $(this).prev().focus();
+            });
+             
+        </script>
+

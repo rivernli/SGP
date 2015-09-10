@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="en" style=" background-color: #fff">
+@using BI.SGP.Web.Models;
+@using BI.SGP.BLL.UIManager;
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <title>Customer People</title>
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+    <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+</head>
+
+<body style="overflow-x:auto">
+    <div id="searchPanel" class="col-sm-zy1">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>Search</h4>
+                <span class="widget-toolbar">
+                    <a id="btnInsert" title="Create" style="cursor:pointer">
+                        <i class="icon-plus-sign bigger-140 green"></i>
+                    </a>
+                    <a href="javascript:void(0)" data-action="collapse">
+                        <i class="icon-chevron-down"></i>
+                    </a>
+                </span>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div>
+                        <table align="center" style="width:100%">
+                            <tr>
+                                <td>
+                                    <form id="fm" method="post">
+                                        <table style="width:100%" id="query-DefaultSearch">
+                                            <tr>
+                                                <td style="width:8%" align="right">&nbsp;Name&nbsp;</td>
+                                                <td style="width:17%"><input style="width:100% !important" id="txName" name="txName" type="text"></td>
+                                                <td style="width:8%" align="right">&nbsp;Title&nbsp;</td>
+                                                <td style="width:17%"><input style="width:100% !important" id="txTitle" name="txTitle" type="text"></td>
+                                                <td style="width:8%" align="right">&nbsp;&nbsp;</td>
+                                                <td style="width:17%"></td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </td>
+                                <td>
+                                    <button id="btnSearch" class="btn btn-app btn-success btn-xs" onclick="searchGrid(); return false;">
+                                        <i class="icon-search bigger-160"></i>
+                                        Query
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-zy1">
+        <!-- PAGE CONTENT BEGINS -->
+        <table style="width:100%;">
+            <tr>
+                <td>
+                    <table id="grid-table"></table>
+                    <div id="grid-pager"></div>
+                </td>
+            </tr>
+        </table>
+    </div><!-- /.col -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script src='~/assets/js/jquery-2.0.3.min.js'></script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="~/assets/js/jquery-1.10.2.min.js"></script>
+    <![endif]-->
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-2.0.3.min.js")'>" + "<" + "/script>");
+    </script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-1.10.2.min.js")'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+    </script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/publiclib.js")"></script>
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        var CustomerId = '@Request["CustomerId"]';
+        var rootUrl = '@Url.Content("~/")';
+
+        $(document).ready(function () {
+
+            if (CustomerId == null || CustomerId == "")
+            {
+                //hide button
+                $("#btnInsert").hide(); 
+            }
+
+            $(document).keydown(function (e) {
+                if (e.keyCode == 13) {
+                    $("#btnSearch").click();
+                    return false;
+                }
+            });
+
+            createGrid();
+
+            $("#searchPanel").resize(function (e) {
+                $("#grid-table").jqGrid('setGridWidth', $(".widget-box").width());
+            });
+
+            $("#btnInsert").on('click', function (e) {
+                editData();
+            })
+
+        });
+
+        function searchGrid() {
+            var postData = $.bi.form.getData("fm");
+            $('#grid-table').jqGrid('setGridParam', {
+                url: '@Url.Content("~/CustomerPeople/GetCusomerPeopleData")' + '?CustomerId=' + CustomerId,
+                postData: postData,
+                page: 1
+            }).trigger("reloadGrid");
+        }
+
+        function createGrid() {
+            var grid_selector = "#grid-table";
+            var pager_selector = "#grid-pager";
+
+            $(grid_selector).jqGrid({
+                url: '@Url.Content("~/CustomerPeople/GetCusomerPeopleData")' + '?CustomerId=' + CustomerId,
+                sortorder: 'desc',
+                datatype: "json",
+                sortname: 'ID',
+                height: 250,
+                colNames: [' ', 'Name', 'Gender', 'Age', 'Title', 'Country', 'City', 'Language', 'Phone', 'Mobile', 'Hobbies'],
+                colModel: [
+                    {
+                        name: 'myac', index: '', width: 60, fixed: true, sortable: false, resize: false,
+                        formatter: function (cellvalue, options, rowObject) {
+                            var returtString = '';
+                            returtString += '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="editData(' + rowObject["ID"] + ')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>';
+                            returtString += '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="delData(' + rowObject["ID"] + ')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>';
+                            return returtString;
+                        }
+                    },
+                    { name: 'Name', index: 'Name', width: 120 },
+                    { name: 'Gender', index: 'Gender', width: 150 },
+                    { name: 'Age', index: 'Age', width: 130 },
+                    { name: 'Title', index: 'Title', align: 'right', width: 110 },
+                    { name: 'Country', index: 'Country', align: 'right', width: 110 },
+                    { name: 'City', index: 'City', align: 'right', width: 110 },
+                    { name: 'Language', index: 'Language', align: 'right', width: 110 },
+                    { name: 'Phone', index: 'Phone', align: 'right', width: 150 },
+                    { name: 'Mobile', index: 'Mobile', align: 'right', width: 150 },
+                    { name: 'Hobbies', index: 'Hobbies', align: 'right', width: 150 }
+                ],
+
+                viewrecords: true,
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                pager: pager_selector,
+                altRows: true,
+
+                multiselect: true,
+                multiboxonly: true,
+
+                loadComplete: function () {
+                    var table = this;
+                    setTimeout(function () {
+                        $.bi.grid.updatePagerIcons(table);
+                    }, 0);
+                },
+                recordpos: "left",
+                height: "auto",
+                shrinkToFit: false,
+                autowidth: true
+            });
+        }
+
+        function editData(keyValue) {
+            $.post('@Url.Content("~/CustomerPeople/CustomerPeopleEditor")', function (data) {
+                $.bi.dialog.show({
+                    title: 'People',
+                    content: data,
+                    width: 800,
+                    buttons: [],
+                    create: function () {
+                        if (typeof (CustomePeopleloadData) == "function") {
+                            CustomePeopleloadData(keyValue, CustomerId);
+                        }
+                    },
+                    close: function () {
+                        searchGrid();
+                        //调用父页面函数
+                        $(window.parent.CustomerPeopleSum());
+                    }
+                });
+            }, 'html');
+        }
+
+        function delData(id) {
+            $.bi.dialog.show({
+                iconCss: 'icon-warning-sign red',
+                title: 'Delete',
+                width: '250px',
+                content: 'Delete selected record?',
+                buttons: [
+                    {
+                        html: "<i class='icon-trash bigger-110'></i>&nbsp; Delete",
+                        "class": "btn btn-danger btn-xs",
+                        click: function () {
+                            $.post('@Url.Content("~/CustomerPeople/DelData")', { ID: id }, function (data) {
+                                if (data.success) {
+                                    searchGrid();
+                                    //调用父页面函数
+                                    $(window.parent.CustomerPeopleSum());
+                                } else {
+                                    if (!data.success) {
+                                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                                    }
+                                }
+                            }, "json");
+                            $(this).dialog("destroy");
+                        }
+                    },
+                    {
+                        html: "<i class='icon-remove bigger-110'></i>&nbsp; Cancel",
+                        "class": "btn btn-xs",
+                        click: function () {
+                            $(this).dialog("destroy");
+                        }
+                    }
+                ]
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

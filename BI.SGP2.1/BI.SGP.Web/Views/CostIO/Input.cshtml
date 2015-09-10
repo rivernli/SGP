@@ -1,0 +1,547 @@
+﻿@using BI.SGP.BLL.DataModels;
+@{
+    ViewBag.Title = "Cost Modelling";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Multek Pricing System</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">Cost Modelling</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+        <div class="col-sm-zy1">
+            <div class="widget-box">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="row-fluid wizard-actions" style="margin-bottom:5px;">
+                            <table></table>
+                            <button id="btnSave" class="btn btn-primary" title="" onclick="return saveData();">
+                                Save
+                                <i class="icon-save small-30"></i>
+                            </button>
+                            <button id="btnSaveAsNew" class="btn btn-info" title="" onclick="return cloneData();">
+                                Clone
+                                <i class="icon-hdd small-30"></i>
+                            </button>
+                            @*<button id="btnSubmit" class="btn btn-success" title="">
+                                Submit to RFQ
+                                <i class="icon-arrow-right icon-on-right small-30"></i>
+                            </button>*@
+                            <button id="btnCosting" class="btn btn-success" title="" onclick="return generateCosting();">
+                                Cost Calculation
+                                <i class="icon-arrow-right icon-on-right"></i>
+                            </button>
+                        </div>
+                        <div class="widget-header widget-header-blue widget-header-flat">
+                            <h4 class="lighter">Cost Modelling</h4>
+                        </div>
+                        <div class="widget-body">
+                            <div id="MainRFQContent">
+
+                            </div>
+                            <br />
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#tabBasicInformation">
+                                            Basic Information
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabYieldTarget">
+                                            Yield Target
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabProcessFlow">
+                                            Process Flow
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabBOMMaterial">
+                                            BOM Material
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabEDMMaterial">
+                                            EDM Material
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabSpecialProcess">
+                                            Special Process
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="tabBasicInformation" class="tab-pane in active">
+
+                                    </div>
+                                    <div id="tabProcessFlow" class="tab-pane" style="padding:5px">
+                                        <div class="widget-box">
+                                            <div class="widget-header widget-header-flat widget-header-small">
+                                                <h5>
+                                                    <i class="icon-signal"></i>
+                                                    Flow
+                                                </h5>
+                                                <div class="widget-toolbar no-border">
+                                                    <table cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td class="procflow-confirm">
+                                                                Group:
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                @MvcHtmlString.Create(BI.SGP.BLL.Models.Detail.CostingInputDetail.CreateProcGroup("ProcGroupLisst", "100px"))
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                Step:
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                <input style="width:60px !important" id="InsertStep" name="InsertStep" type="text" class="NumberType1 form-field" value="">
+                                                            </td>
+                                                            <td class="procflow-confirm">&nbsp;</td>
+                                                            <td class="procflow-confirm">
+                                                                <button id="btnAddProcGroup" class="btn btn-minier btn-info" onclick="$.cost.procFlow.addFlowGroup();">
+                                                                    Add Process Group
+                                                                    <i class="icon-plus icon-on-right bigger-110"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                &nbsp;
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                <button id="btnAddProcGroup" class="btn btn-minier btn-info" onclick="$.cost.common.initProcFlowByProdType();">
+                                                                    Reset Standard Process
+                                                                    <i class="icon-undo icon-on-right bigger-110"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                &nbsp;
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                <button id="btnConfirm" class="btn btn-minier btn-primary" onclick="$.cost.procFlow.confirmFlow();">
+                                                                    Confirm
+                                                                    <i class="icon-pencil icon-on-right bigger-110"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                &nbsp;
+                                                            </td>
+                                                            <td class="procflow-confirm">
+                                                                <button id="btnRemoveAll" class="btn btn-minier btn-danger" onclick="$.cost.procFlow.removeAllFlow();">
+                                                                    Remove All
+                                                                    <i class="icon-remove icon-on-right bigger-110"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td class="procflow-modify">
+                                                                <button id="btnModify" class="btn btn-minier btn-danger" onclick="$.cost.procFlow.showConfirm();">
+                                                                    Modify
+                                                                    <i class="icon-reply small-30"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="widget-body" id="divProcFlowContent">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tabYieldTarget" class="tab-pane"></div>
+                                    <div id="tabBOMMaterial" class="tab-pane"></div>
+                                    <div id="tabEDMMaterial" class="tab-pane" style="padding:5px"></div>
+                                    <div id="tabSpecialProcess" class="tab-pane" style="padding:5px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        @Html.Partial("~/Views/CostingMasterData/Query.cshtml")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.main-content -->
+    <style>
+        .tab-content {
+          padding: 0px 0px !important;
+        }
+    </style>
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/leftmenu.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/costinput.js")"></script>
+
+    <script type="text/javascript">
+        var _dataId = @ViewBag.DataId;
+        var _rfqId = @ViewBag.RFQId;
+        var _rfqNumber = '@ViewBag.RFQNumber';
+        var pcbType = "";
+        var rootUrl = '@Url.Content("~/")';
+        var processFlowCategoryName = "SCIProcessFlow";
+        var basicInfoCategoryName;
+        var otherCategory = {
+            bom: { divName: 'tabBOMMaterial', categoryName: "SCIBOM" },
+            edm: { divName: 'tabEDMMaterial', categoryName: "" },
+            special: { divName: 'tabSpecialProcess', categoryName: "" }
+        }
+
+        var headEditCategory = "SCIProcessFlow";
+        var canEditCategory = "SCIProcessFlow,SCIBOM,SCIDrillBit,SCIRouter";
+
+        $(document).ready(function () {
+            loadCommon();
+        });
+
+        function saveData() {
+            $.bi.overlay.showStack();
+            var postData = getPostData();
+            $.post('@Url.Content("~/CostIO/SaveData")', { postData: JSON.stringify(postData) }, function (data) {
+                saveAfter(data);
+                $.bi.overlay.hideStack();
+            }, "json");
+        }
+
+        function cloneData() {
+            $.bi.dialog.show({
+                title: 'Clone', content: 'Are you sure you want to clone?', buttons: [
+                {
+                    html: "<i class='icon-ok bigger-110'></i>&nbsp; Yes",
+                    "class": "btn btn-success btn-xs",
+                    click: function () {
+                        $(this).dialog("destroy");
+                        $.bi.overlay.showStack();
+                        var postData = getPostData();
+                        $.post('@Url.Content("~/CostIO/Clone")', { postData: JSON.stringify(postData) }, function (data) {
+                            saveAfter(data);
+                            $.bi.overlay.hideStack();
+                        }, "json");
+                    }
+                },
+                {
+                    html: "<i class='icon-remove bigger-110'></i>&nbsp; No",
+                    "class": "btn btn-xs",
+                    click: function () {
+                        $(this).dialog("destroy");
+                    }
+                }]
+            });
+        }
+
+        function generateCosting() {
+            $.bi.overlay.showStack();
+            var postData = getPostData();
+            $.post('@Url.Content("~/CostIO/GenerateCosting")', { postData: JSON.stringify(postData) }, function (data) {
+                saveAfter(data, '@Url.Content("~/CostIO/Output")/');
+                $.bi.overlay.hideStack();
+            }, "json");
+        }
+
+        function saveAfter(data, redirectUrl) {
+            if (data.SysMsg.isPass == false) {
+                $.bi.dialog.show({ title: 'Message', content: data.SysMsg.MessageString, buttons: [] });
+            } else {
+                if(redirectUrl != null && redirectUrl != "") {
+                    var url = redirectUrl + data.DataId;
+                    $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+                    window.location = url;
+                } else {
+                    _dataId = data.DataId;
+                    loadCommon();
+                    $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+                }
+            }
+        }
+
+        function getPostData() {
+            var postData = {
+                dataId: _dataId,
+                commonCategoryName: 'SCICommonData',
+                basicInfoCategoryName: basicInfoCategoryName,
+                processFlowCategoryName: processFlowCategoryName,
+                bomCategoryName: otherCategory.bom.categoryName,
+                edmCategoryName:otherCategory.edm.categoryName,
+                specialCategoryName:otherCategory.special.categoryName,
+                data: $.bi.form.getAllCategoryData(),
+                yieldData: $.bi.form.getData("fm-yield")
+            };
+            return postData;
+        }
+
+        function loadCommon() {
+            $.bi.overlay.showStack();
+            $.post('@Url.Content("~/CostIO/GenrateCategory")', { dataId: _dataId, categoryName: 'SCICommonData' }, function (data) {
+                if (data.success) {
+                    $("#MainRFQContent").html(data.html);
+                    regEvent();
+                    loadTab();
+
+                    if(_rfqId > 0 && _rfqNumber != "" && _dataId == 0) {
+                        $("#RFQNumber").val(_rfqNumber);
+                        $.cost.common.setRFQInfo();
+                    }
+
+                    $.bi.overlay.hideStack();
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                    }
+                }
+            }, "json");
+        }
+
+        function loadTab() {
+            pcbType = getPCBType();
+            if (pcbType == "FPC") {
+                basicInfoCategoryName = "SCIBasicInfoFPC"
+                otherCategory.edm.categoryName = "SCIDryFilm,SCISMCMFPC,SCIDrillBit,SCIRouter";
+                otherCategory.special.categoryName = "SCILAS,SCILAC,SCPunching,SCSpeacialProcess,SCIGold";
+            } else {
+                basicInfoCategoryName = "SCIBasicInfoRigid";
+                otherCategory.edm.categoryName = "SCIDryFilm,SCISMCMRigid,SCIDrillBit,SCIRouter";
+                otherCategory.special.categoryName = "SCILAS,SCIGold";
+            }
+            $.bi.overlay.showStack();
+            $.post('@Url.Content("~/CostIO/GenrateCategory")', { dataId: _dataId, categoryName: basicInfoCategoryName }, function (data) {
+                if (data.success) {
+                    $("#tabBasicInformation").html(data.html);
+                    loadOtherTab();
+                    regBaseInfoEvent();
+                    $.bi.setComponentEvent();
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                    }
+                }
+                $.bi.overlay.hideStack();
+            }, "json");
+            loadYieldTab();
+        }
+
+        function loadYieldTab() {
+            $.bi.overlay.showStack();
+            var pcbType = getPCBType();
+            var version = $("#CostVersion").val();
+            $.post('@Url.Content("~/CostIO/GenrateYieldCategory")', { dataId: _dataId, pcbType: pcbType, version: version}, function (data) {
+                if (data.success) {
+                    $("#tabYieldTarget").html('');
+                    $("#tabYieldTarget").html(data.html);
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                    }
+                }
+                $.bi.overlay.hideStack();
+            }, "json");
+        }
+
+        function loadSubTab(divName, categoryName) {
+            $.bi.overlay.showStack();
+            $.post('@Url.Content("~/CostIO/GenrateSubCategories")', { dataId: _dataId, categoryName: categoryName, canEditCategory: canEditCategory, headEditCategory: headEditCategory }, function (data) {
+                if (data.success) {
+                    $(divName).html('');
+                    $(divName).html(data.html);
+                    $.cost.common.boundEvent();
+                    loadSubTabAfter(categoryName);
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                    }
+                }
+                $.bi.overlay.hideStack();
+            }, "json");
+        }
+
+        function loadOtherTab() {
+            loadSubTab("#divProcFlowContent", processFlowCategoryName);
+            for (var k in otherCategory) {
+                loadSubTab("#" + otherCategory[k].divName, otherCategory[k].categoryName);
+            }
+        }
+
+        function loadSubTabAfter(categoryName) {
+            if(categoryName == processFlowCategoryName) {
+                if($("#FlowConfirm").val() == "1") {
+                    $.cost.procFlow.hideConfirm();
+                } else {
+                    $.cost.procFlow.showConfirm();
+                }
+            }
+            
+            if(categoryName == otherCategory.bom.categoryName) {
+                $.cost.bom.setMaterialMapping();
+            }
+
+            $.cost.spec.boundPUNEvent(categoryName);
+            $.cost.spec.setSpecEnable(categoryName);
+            $.cost.spec.boundSpecEvent(categoryName);
+        }
+
+        function getPCBType()
+        {
+            if ($("#CostingBasedOn").val() == "B2FPC") {
+                return "FPC";
+            } else {
+                return "Rigid";
+            }
+        }
+
+        function regEvent() {
+            $("#CostingBasedOn").unbind('change').on('change', function (e) {
+                loadTab();
+            });
+
+            $.cost.common.initRFQNumber();
+        }
+
+        function regBaseInfoEvent() {
+            $.cost.common.initPanelSize($("#CostingBasedOn").val());
+            if (pcbType != "FPC") {
+                $("#ViaStructure").unbind('change').on('change', function (e) {
+                    $.cost.common.setProductType();
+                });
+
+                $("#LayerCount").unbind('change').on('change', function (e) {
+                    $.cost.common.setProductType();
+                });
+            }
+        }
+
+        function addProcessFlowDetail(obj, tr, index) {
+            var _nextTr = addDetail(obj, tr, index);
+            $.cost.procFlow.boundEvent();
+            $.cost.procFlow.resetFlowStep();
+            return _nextTr;
+        }
+
+        function addBOMDetail(obj, tr, index, newTrData) {
+            var _nextTr = addDetail(obj, tr, index, true, newTrData);
+            $.cost.bom.boundEvent();  
+            $.cost.bom.setTrMaterialMapping(_nextTr);
+        }
+
+        function addDryFilmDetail(obj, tr, index, newTrData) {
+            addDetail(obj, tr, index, true, newTrData);
+        }
+
+        function addSMCMDetail(obj, tr, index, newTrData) {
+            var newTr = addDetail(obj, tr, index, true, newTrData);
+            $.cost.edm.setSMCMTrEnable(newTr);
+        }
+
+        function addDrillBitDetail(obj, tr, index, newTrData) {
+            addDetail(obj, tr, index, true, newTrData);
+        }
+
+        function addRouterDetail(obj, tr, index, newTrData) {
+            addDetail(obj, tr, index, true, newTrData);
+        }
+
+        function addLASDetail(obj, tr, index, newTrData) {
+            addDetail(obj, tr, index, true, newTrData);
+        }
+
+        function addLACDetail(obj, tr, index, newTrData) {
+            addDetail(obj, tr, index, true, newTrData);
+        }
+
+        function addGoldDetail(obj, tr, index, newTrData) {
+            addDetail(obj, tr, index, true, newTrData);
+        }
+
+        function addPunchingDetail(obj, tr, index, newTrData) {
+            addDetail(obj, tr, index, true, newTrData);
+            $.cost.spec.boundPUNEvent();
+        }
+
+        function addSpeaProcDetail(obj, tr, index, newTrData) {
+            var newTr = addDetail(obj, tr, index, true, newTrData);
+            $.cost.spec.setSpecMaterial(newTr);
+            $.cost.spec.setSpecDefault(newTr);
+            $.cost.spec.boundSpecEvent();
+            $.cost.spec.calcSpecTime(newTr);
+        }
+
+        function addDetail(obj, tr, index, specVal, newTrData) {
+            eval("var subdataobj = subdata_" + obj + ";var subtbName='#tb-" + obj + "'");
+            var _thisTr = null;
+            var _nextTr = null;
+            if(index == -1) {
+                $(subtbName).append(subdataobj);
+                _nextTr = $(subtbName).find("tr:last");
+            } else {
+                if (tr == null) {
+                    _thisTr = $(subtbName).find("tr:first");
+                } else {
+                    _thisTr = $(tr).parent().parent();
+                }
+                $(_thisTr).after(subdataobj);
+                _nextTr = $(_thisTr).next();
+            }
+
+            if(_nextTr != null && newTrData != null) {
+                $(_nextTr).find("#PFID").val(newTrData.pfid);
+                $(_nextTr).find("#Plant").val(newTrData.plant);
+                $(_nextTr).find("#WorkCenter").val(newTrData.wc);
+                $(_nextTr).find("#MainWorkCenter").val(newTrData.mwc);
+                $(_nextTr).find("#Step").val(newTrData.step);
+            }
+
+            if(specVal && _thisTr != null && _nextTr != null) {
+                $(_nextTr).find("#PFID").val($(_thisTr).find("#PFID").val());
+                $(_nextTr).find("#Plant").val($(_thisTr).find("#Plant").val());
+                $(_nextTr).find("#WorkCenter").val($(_thisTr).find("#WorkCenter").val());
+                $(_nextTr).find("#MainWorkCenter").val($(_thisTr).find("#MainWorkCenter").val());
+                $(_nextTr).find("#Step").val($(_thisTr).find("#Step").val());
+            }
+
+            $.bi.setComponentEvent();
+
+            return _nextTr;
+        }
+
+        function removeDetail(obj, subDataType) {
+            $(obj).parent().parent().remove();
+            $.cost.common.removeAfter(subDataType);
+        }
+    </script>
+}

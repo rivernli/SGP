@@ -1,0 +1,63 @@
+﻿<style type='text/css'>
+    p, span, div, table tr td {
+        font: 12px verdana,microsoft sans serif;
+    }
+</style>
+<div style='font:12px Verdana,microsoft sans serif'>
+    <div><img src='https://sgp-sys.multek.com/Common/Content/Images/Multek-ID-PMS.gif' /></div><br />
+    Dear  @{ToUser}<br><br>
+
+    The vendor RFQ <b>@{NVARCHAR1},</b> has been Submitted.<br><br>
+
+    Please find below detailed summary.<br><br>
+
+    <table style="width:0in;border-collapse:collapse;border-spacing:1">
+        <tr>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">RFQ</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Customer Part#</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Revision</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Market Segment</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Product Application</td>
+            <td style="border:inset #CCCCCC 1.0pt;background:#CCCCCC;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">Mass Production EAU</td>
+        </tr>
+        <tr>
+            <td style="border:inset #CCCCCC 1.0pt;border-top:none;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{NVARCHAR1}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{NVARCHAR2}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{NVARCHAR3}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{NVARCHAR4}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{NVARCHAR5}</td>
+            <td style="border-top:none;border-left:none;border-bottom:inset #CCCCCC 1.0pt;border-right:inset #CCCCCC 1.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt;white-space:nowrap">@{NVARCHAR6}</td>
+        </tr>
+    </table>
+
+    <p>
+        Deadline for Quotation: @{DATETIME1}
+    </p>
+
+    <p>
+
+        Click here to view detail. <a href="@{SystemURL}/VVI/SupplierPricingDetail?ID=@{RFQID}&number=@{NVARCHAR1}">
+    LINK
+</a>
+    </p>
+
+    <p>
+
+        If there are any issues, a team member from Multek Commodity will reach out to you.<br><br>
+
+        Best,<br>
+        Multek Commodity Team<br><br>
+    </p>
+
+    <p style="font: 12px Verdana,microsoft sans serif;color:red">
+        IMPORTANT NOTE:<br>
+        重要提示:<br><br>
+
+        The information contained in this message, including any attachments, is strictly private and confidential and is the confidential information and proprietary information of Multek under the nondisclosure agreement signed between Multek and you (“NDA”). All information shall be treated, managed and handled strictly according to the provisions of the NDA. Multek will take all necessary legal actions to protect its rights and interests in case of any unauthorized disclosure of Multek’s confidential information or any other breach of the NDA by you.<br>
+        本邮件（含所有附件）所包含之信息均属严格保密的信息，为超毅与贵司所签署保密协议项下超毅的保密信息及专有信息。所有信息均需严格按照保密协议的规定予以对待、进行管理及处理。如发生任何未经授权的披露或其他违反保密协议的行为，超毅定必采取一切必要行动予以追究，以保护自身合法权益。
+    </p>
+
+    <p>
+        * Please do not reply to this email since it is from an automated mailbox. We are unable to respond to your queries via return email.
+    </p>
+</div>

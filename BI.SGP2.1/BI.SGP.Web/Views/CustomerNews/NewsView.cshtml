@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en" style="">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Customer News</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/style.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />   
+
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+
+<body style="overflow-x:auto;">
+    <div class="wrapper">        
+        <div>
+            <div>
+                <div id="divCustomer"></div>
+            </div> 
+        </div> 
+        <div>
+            <table style="width:100%">
+                <tr>
+                    <td align="center" height="70px"><label id="lblTopic" class="page_title"></label></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table width="100%" border="0">
+                            <tr>
+                                <td align="left">
+                                    Views:&nbsp;<label id="lblViews"></label>&nbsp;&nbsp;<span class="pipe">|</span> Replies:&nbsp;<label id="lblReplies"></label>
+</td>
+                                <td align="right">
+                                    Posted By :&nbsp;<label id="lblUserName"></label>&nbsp;&nbsp;<label id="lblPostDate"></label>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pls"></td> 
+                </tr> 
+                <tbody style="text-align:right" id="filesBody"></tbody>
+                <tr>
+                    <td class="page_content"><div id="News"></div></td>
+                </tr>
+            </table>            
+        </div> 
+        <hr style="border:dotted 1px #ccc"> 
+        <h3 class="header smaller lighter green">
+            <i class="icon-bullhorn"></i>
+            -Reply-
+        </h3> 
+         <div id="divCommentLists">
+         </div>              
+        <div>
+            <table width="100%"> 
+                <tr>
+                    <td><div class="wysiwyg-editor" id="editor1" contenteditable="true" style="height:100px"></div></td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <button id="btnReply" class="btn btn-primary" title="" onclick="saveData(); return false;">
+                            Reply
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>     
+    </div>
+   
+
+    <script src='~/assets/js/jquery-2.0.3.min.js'></script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="~/assets/js/jquery-1.10.2.min.js"></script>
+     <![endif]-->
+    <!--[if !IE]> -->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-2.0.3.min.js")'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+    window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-1.10.2.min.js")'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+    </script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.valida")"></script>
+    <script src="@Url.Content("~/Scripts/publiclib.js")"></script>
+    <script src="@Url.Content("~/Scripts/common.js")"></script>
+
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.custom.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/markdown/markdown.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/markdown/bootstrap-markdown.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.hotkeys.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap-wysiwyg.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootbox.min.js")"></script>
+
+
+    <script type="text/javascript">
+        var _dataId = '@Request["ID"]';
+    $(document).ready(function () {
+        if (_dataId != null && _dataId != "") {
+            $.post('@Url.Content("~/CustomerNews/GetNewsView")', { ID: _dataId }, function (data) {
+                if (data != null && data.rows != null) {
+                    for (var i = 0; i < data.rows.length; i++) {                        
+                        //$("#lblCustomer").html(data.rows[i]["Customer"]);
+                        $("#lblViews").html(data.rows[i]["SumViews"]);
+                        $("#lblReplies").html(data.rows[i]["Replies"]);
+                        $("#lblTopic").html(data.rows[i]["Topic"]);
+                        $("#lblUserName").html(data.rows[i]["UserName"]);
+                        $("#lblPostDate").html(data.rows[i]["PostedDate"]);
+                        $("#News").html(htmlDecode(data.rows[i]["NewsContent"]));//htmlDecode 把格式转换成html
+
+                        LoadCustomerName(data.rows[i]["CustomerId"], data.rows[i]["Customer"]);
+                        loadFilesTable(data.rows[i]["AttachmentId"]);
+                        loadReplyTable();
+                    }
+                }
+            }, "json");
+        }
+
+
+
+        function showErrorAlert(reason, detail) {
+            var msg = '';
+            if (reason === 'unsupported-file-type') { msg = "Unsupported format " + detail; }
+            else {
+                console.log("error uploading file", reason, detail);
+            }
+            $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+             '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+        }
+
+        //$('#editor1').ace_wysiwyg();//this will create the default editor will all buttons
+        //but we want to change a few buttons colors for the third style
+        $('#editor1').ace_wysiwyg({
+            toolbar:
+            [
+                'font',
+                null,
+                'fontSize',
+                null,
+                { name: 'bold', className: 'btn-info' },
+                { name: 'italic', className: 'btn-info' },
+                { name: 'strikethrough', className: 'btn-info' },
+                { name: 'underline', className: 'btn-info' },
+                null,
+                { name: 'insertunorderedlist', className: 'btn-success' },
+                { name: 'insertorderedlist', className: 'btn-success' },
+                { name: 'outdent', className: 'btn-purple' },
+                { name: 'indent', className: 'btn-purple' },
+                null,
+                { name: 'justifyleft', className: 'btn-primary' },
+                { name: 'justifycenter', className: 'btn-primary' },
+                { name: 'justifyright', className: 'btn-primary' },
+                { name: 'justifyfull', className: 'btn-inverse' },
+                null,
+                { name: 'createLink', className: 'btn-pink' },
+                { name: 'unlink', className: 'btn-pink' },
+                null,
+                { name: 'insertImage', className: 'btn-success' },
+                null,
+                'foreColor',
+                null,
+                { name: 'undo', className: 'btn-grey' },
+                { name: 'redo', className: 'btn-grey' }
+            ],
+            'wysiwyg': {
+                fileUploadError: showErrorAlert
+            }
+        }).prev().addClass('wysiwyg-style2');
+
+        $('[data-toggle="buttons"] .btn').on('click', function (e) {
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            var toolbar = $('#editor1').prev().get(0);
+            if (which == 1 || which == 2 || which == 3) {
+                toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g, '');
+                if (which == 1) $(toolbar).addClass('wysiwyg-style1');
+                else if (which == 2) $(toolbar).addClass('wysiwyg-style2');
+            }
+        });
+
+        //Add Image Resize Functionality to Chrome and Safari
+        //webkit browsers don't have image resize functionality when content is editable
+        //so let's add something using jQuery UI resizable
+        //another option would be opening a dialog for user to enter dimensions.
+        if (typeof jQuery.ui !== 'undefined' && /applewebkit/.test(navigator.userAgent.toLowerCase())) {
+
+            var lastResizableImg = null;
+            function destroyResizable() {
+                if (lastResizableImg == null) return;
+                lastResizableImg.resizable("destroy");
+                lastResizableImg.removeData('resizable');
+                lastResizableImg = null;
+            }
+            var enableImageResize = function () {
+                $('.wysiwyg-editor')
+                .on('mousedown', function (e) {
+                    var target = $(e.target);
+                    if (e.target instanceof HTMLImageElement) {
+                        if (!target.data('resizable')) {
+                            target.resizable({
+                                aspectRatio: e.target.width / e.target.height,
+                            });
+                            target.data('resizable', true);
+
+                            if (lastResizableImg != null) {//disable previous resizable image
+                                lastResizableImg.resizable("destroy");
+                                lastResizableImg.removeData('resizable');
+                            }
+                            lastResizableImg = target;
+                        }
+                    }
+                })
+                .on('click', function (e) {
+                    if (lastResizableImg != null && !(e.target instanceof HTMLImageElement)) {
+                        destroyResizable();
+                    }
+                })
+                .on('keydown', function () {
+                    destroyResizable();
+                });
+            }
+            enableImageResize();
+        }
+
+    });
+
+
+        function loadFilesTable(AttachmentId) {
+        $.post('@Url.Content("~/CustomerNews/GetFiles")', { FileID: AttachmentId }, function (data) {
+            var fileHtml = "";
+            if (data != null && data.rows != null) {
+                for (var i = 0; i < data.rows.length; i++) {                    
+                    fileHtml += '<tr><td style="padding:8px;font-size:12px"><a href="javascript:void(0)"><i class="icon-paper-clip"></i></a><a target="_blank" href="@Url.Content("~/Export/DownloadFile/")' + data.rows[i]["ID"] + '">' + data.rows[i]["SourceName"] + '</a></td></tr>';
+                }
+            }
+            $("#filesBody").html(fileHtml);
+        }, "json");
+        }
+
+
+        function saveData() {
+            if ($("#editor1").html().length == 0) {
+                $.bi.dialog.show({ title: 'Message', content: 'Please enter your comment', width: 300 });
+                return false;
+            }
+
+            $.bi.overlay.show();
+            var Comment = htmlEncode($("#editor1").html()); //htmlEncode 把html格式转义
+
+            $.post('@Url.Content("~/CustomerNews/SaveReplyData")', { NewsId: _dataId, Comment: Comment }, function (data) {
+                $.bi.overlay.hide();
+                if (data.success) {
+                    $.bi.dialog.show({ title: 'Success', content: ' Successful Operation', width: 300 });
+                    loadReplyTable();
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                    }
+                }
+            }, "json");
+        }
+
+        function loadReplyTable() {
+            $.post('@Url.Content("~/CustomerNews/GetReply")', { NewsId: _dataId }, function (data) {
+                var ReplyHtml = "";
+                if (data != null && data.rows != null) {
+                    for (var i = 0; i < data.rows.length; i++) {
+                        ReplyHtml += '<div class="reply">' + htmlDecode(data.rows[i]["Comment"]) + '</div><div class="poster"><div class="blue icon-user bigger-110"></div>Posted By:' + data.rows[i]["UserName"] + ' ' + data.rows[i]["PostedDate"] + '&nbsp;&nbsp;&nbsp;&nbsp;</div></br>';
+                    }
+                }
+
+                $("#divCommentLists").html(ReplyHtml);
+            }, "json");
+        }
+
+        //Customer Name
+        function LoadCustomerName(CustomerId, Customer)
+        {
+            if (Customer != null && Customer != "") {
+                var strHtml = 'Customer: &nbsp; <a target="_blank" href="@Url.Content("~/CustomerProfile/CustomerEditor?ID=")' + CustomerId + '">' + Customer + '</a>';
+                $("#divCustomer").html(strHtml);
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+

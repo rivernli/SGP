@@ -1,0 +1,307 @@
+﻿@{
+    ViewBag.Title = "FAQ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head
+{
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>FAQ</title>
+        <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="~/assets/css/chosen.css" />
+        <link rel="stylesheet" href="~/assets/css/datepicker.css" />
+        <link rel="stylesheet" href="~/assets/css/bootstrap-timepicker.css" />
+        <link rel="stylesheet" href="~/assets/css/daterangepicker.css" />
+        <link rel="stylesheet" href="~/assets/css/colorpicker.css" />
+        <link rel="stylesheet" href="~/assets/css/opensans.css" />
+        <link rel="stylesheet" href="~/assets/css/ace.min.css" />
+        <link rel="stylesheet" href="~/assets/css/ace-rtl.min.css" />
+        <link rel="stylesheet" href="~/assets/css/ace-skins.min.css" />
+
+        <script src="~/Scripts/jquery.min.js"></script>
+        <script src="~/assets/js/ace-extra.min.js"></script>
+        <script src="@Url.Content("~/Scripts/publiclib.js")"></script>
+        <script src="@Url.Content("~/Scripts/jsDetail.js")"></script>
+
+        <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+
+        <script src="~/assets/js/jquery.ui.touch-punch.min.js"></script>
+        <script src="~/assets/js/chosen.jquery.min.js"></script>
+        <script src="~/assets/js/fuelux/fuelux.spinner.min.js"></script>
+        <script src="~/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+        <script src="~/assets/js/date-time/bootstrap-timepicker.min.js"></script>
+        <script src="~/assets/js/date-time/moment.min.js"></script>
+        <script src="~/assets/js/date-time/daterangepicker.min.js"></script>
+        <script src="~/assets/js/bootstrap-colorpicker.min.js"></script>
+        <script src="~/assets/js/jquery.knob.min.js"></script>
+        <script src="~/assets/js/jquery.autosize.min.js"></script>
+        <script src="~/assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
+        <script src="~/assets/js/jquery.maskedinput.min.js"></script>
+        <script src="~/assets/js/bootstrap-tag.min.js"></script>
+
+        <!-- ace scripts -->
+        <script src="~/assets/js/bootbox.min.js"></script>
+
+        <script src="~/assets/js/bootstrap.min.js"></script>
+        <script src="~/assets/js/typeahead-bs2.min.js"></script>
+        <script src="~/assets/js/ace-elements.min.js"></script>
+        <script src="~/assets/js/ace.min.js"></script>
+
+
+    </head>
+}
+@section featured
+{
+<div class="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+
+            <li>
+                <a href="#">Help</a>
+            </li>
+            <li class="active"> Q &amp; A</li>
+        </ul><!-- .breadcrumb -->
+
+    </div>
+
+    <div class="page-content">
+      
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+
+                <div class="tabbable">
+          
+                    <div class="tab-content no-border padding-24" style="min-height:800px">
+                        <div id="faq-tab-1" class="tab-pane fade in active">
+                            <h4 class="blue">
+                                <i class="icon-facetime-video bigger-130"></i>
+                                Questions and Answers
+                            </h4>
+
+                            <div class="space-8"></div>
+
+                            <div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-1" data-parent="#faq-list-1" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; System Demo(All features)
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-1" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <a target="_blank" href="https://sactt106.sac.flextronics.com/orion/playback.do?rID=34760&rKey=010000006abbad59243a5db5540aed39da4616dbddd35dac2e556b99c49e77e200004cb5b8&siteurl=meeting&verified=true&rnd=0.9139839798244776">
+                                                https://sactt106.sac.flextronics.com/orion/playback.do?rID=34760&rKey=010000006abbad59243a5db5540aed39da4616dbddd35dac2e556b99c49e77e200004cb5b8&siteurl=meeting&verified=true&rnd=0.9139839798244776                                           <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div id="faq-list-2" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-2" data-parent="#faq-list-2" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; Quick Overview/short cuts introduction
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-2" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <a target="_blank" href="https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34558&rKey=010000006a5ee0ee67e6dce57e3864013fadc33ad97a90ef9d147243bc03c8fcfebbf85839">
+                                                https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34558&rKey=010000006a5ee0ee67e6dce57e3864013fadc33ad97a90ef9d147243bc03c8fcfebbf85839                                            <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                            </div>
+                            <div id="faq-list-3" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-3" data-parent="#faq-list-3" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; How to quick create via online page
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-3" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <a target="_blank" href="https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34560&rKey=010000006aae28f3edcabfb685a5c77ceac523143bd7ec417c71ce938c9edeeb4c89a98711">
+                                                https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34560&rKey=010000006aae28f3edcabfb685a5c77ceac523143bd7ec417c71ce938c9edeeb4c89a98711                                            <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div id="faq-list-4" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-4" data-parent="#faq-list-4" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; How to batch create via excel upload
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-4" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <a target="_blank" href="https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34562&rKey=010000006a455440d63da92eecf21526782b145ca0beeb4a425fa1fd68b396696bf26528d4">
+                                                https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34562&rKey=010000006a455440d63da92eecf21526782b145ca0beeb4a425fa1fd68b396696bf26528d4    <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div id="faq-list-5" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-5" data-parent="#faq-list-5" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; How to submit/skip workflow
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-5" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <a target="_blank" href="https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34564&rKey=010000006a66c51e6d7612209a16ce198ba418151921defd994e9bf9d745261c0d5af60144">
+                                                https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34564&rKey=010000006a66c51e6d7612209a16ce198ba418151921defd994e9bf9d745261c0d5af60144                                           <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div id="faq-list-6" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-6" data-parent="#faq-list-6" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; How to export/batch export the PDF file(Quotation file)
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-6" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <a target="_blank" href="https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34566&rKey=010000006a61f2cabc0945a032fe6ebe58c9999e265186d5a33c2e5430d061a08823dc6269">
+                                                https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34566&rKey=010000006a61f2cabc0945a032fe6ebe58c9999e265186d5a33c2e5430d061a08823dc6269  <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div id="faq-list-7" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-7" data-parent="#faq-list-7" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; How to search
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-7" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <a target="_blank" href="https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34570&rKey=010000006afe54d60163c84a70a84a8f636d8391bdb51be2b0ec2c928b43f55c32dbb4838f">
+                                                https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34570&rKey=010000006afe54d60163c84a70a84a8f636d8391bdb51be2b0ec2c928b43f55c32dbb4838f                                           <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div id="faq-list-8" class="panel-group accordion-style1 accordion-style2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a href="#faq-1-8" data-parent="#faq-list-8" data-toggle="collapse" class="accordion-toggle collapsed">
+                                            <i class="pull-right icon-chevron-left" data-icon-hide="icon-chevron-down" data-icon-show="icon-chevron-left"></i>
+
+                                            <i class="icon-facetime-video bigger-130"></i>
+                                            &nbsp; Other features
+                                        </a>
+                                    </div>
+
+                                    <div class="panel-collapse collapse" id="faq-1-8" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="space-8"></div>
+                                            <ul>
+                                                <li>How to re-quote/clone data?</li>
+                                                <li>How to link/post to VI system?</li>
+                                                <li>How to add attachment?</li>
+                                                <li>How to set delegation</li>
+                                            </ul>
+                                            <a target="_blank" href="https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34572&rKey=010000006a7f0f06a84475ae72a67361fb9742472be35629e5c131ab38e1375bb3743d2155">
+                                                https://meeting.flextronics.com/orion/playback.do?AT=pb&SP=MC&rID=34572&rKey=010000006a7f0f06a84475ae72a67361fb9742472be35629e5c131ab38e1375bb3743d2155                                           <div class="space-8"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+
+    
+}

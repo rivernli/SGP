@@ -1,0 +1,219 @@
+﻿@using BI.SGP.Web.Models;
+@using System.Data;
+@{
+    ViewBag.Title = "RFQHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model BI.SGP.Web.Models.SGP_RFQHistory
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Smart Global Pricing</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/js/easyui/themes/default/tree.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/js/easyui/themes/icon.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+   
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="~/Home/Home">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="~/Report/RFQHistory">Report</a>
+                    </li>
+                    <li class="active">RFQHistory</li>
+                </ul><!-- .breadcrumb -->
+            </div>
+
+           
+                @using (Html.BeginForm("RFQHistory", "Report", FormMethod.Post))
+                {
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h4>History Search</h4>
+                            <span class="widget-toolbar">
+
+
+
+                                <a href="#" id="aDownload">
+                                    <i class="icon-cloud-download bigger-140 pink"></i>
+                                </a>
+                                <a href="#" data-action="collapse">
+                                    <i class="icon-chevron-down"></i>
+                                </a>
+                            </span>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(m => m.RFQNumber, new { @class = "form-control search-query", @placeholder = "" })
+                                        @*<input id="txtSearch" name="RFQNumber" value="" type="text" class="form-control search-query" placeholder="Query RFQ Number">*@
+                                        <span class="input-group-btn">
+                                            <button id="btnSearch" type="submit" class="btn btn-purple btn-sm">
+                                                Search
+                                                <i class="icon-search icon-on-right bigger-110"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-zy1">
+
+
+                        <div class="table-responsive">
+
+                            @if (@ViewData["HistoryData"] != null)
+                            {
+                                @Html.GetHtmlContentforHistoryData(@ViewData["HistoryData"] as DataTable)
+                            }
+
+                        </div>
+                    </div>
+                }
+
+
+
+    </div>
+        
+
+
+
+
+    <script src='~/assets/js/jquery-2.0.3.min.js'></script>
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='~/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='~/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/typeahead-bs2.min.js"></script>
+
+    <!-- page specific plugin scripts -->
+
+    <script src="~/assets/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/js/jquery.dataTables.bootstrap.js"></script>
+
+    <!-- ace scripts -->
+
+    <script src="~/assets/js/ace-elements.min.js"></script>
+    <script src="~/assets/js/ace.min.js"></script>
+
+    <script type="text/javascript">
+
+        jQuery(function ($) {
+            var oTable1 = $('#sample-table-2').dataTable({
+                "bSort": false,
+                "bAutoWidth":true
+            });
+
+            $('table th input:checkbox').on('click', function () {
+                var that = this;
+                $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+            });
+
+
+            $('[data-rel="tooltip"]').tooltip({ placement: tooltip_placement });
+            function tooltip_placement(context, source) {
+                var $source = $(source);
+                var $parent = $source.closest('table')
+                var off1 = $parent.offset();
+                var w1 = $parent.width();
+
+                var off2 = $source.offset();
+                var w2 = $source.width();
+
+                if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+                return 'left';
+            }
+        })
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var $t1 = $('#sample-table-2');
+            var $col = $('.col-sm-6').eq(0);
+            var $col1 = $('.col-sm-6').eq(1);
+            var $col2 = $('.col-sm-6').eq(2);
+            var $col3 = $('.col-sm-6').eq(3);
+            var $row = $('.row').eq(0);
+            $col.remove();
+            $row.remove();
+            $col1.remove();
+            $col1.attr("style", "float:right;text-align:right");
+            $t1.wrapAll("<div style=\"overflow-x:scroll\"></div>");
+
+
+
+        });
+
+
+    </script>
+
+
+
+
+
+
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('#form-field-select-1').change(function (data) {
+                if ($(this).val() != null && $(this).val().trim() != '') {
+                    window.open('@Url.Content("~/Report/DownloadReport")' + "?filename=" + $(this).val().trim() + '.xlsx');
+                }
+
+            });
+        });
+
+    </script>
+    <script>
+        jQuery(function ($) {
+
+            
+            $("#aDownload").on('click', function (e) {
+                window.open('@Url.Content("~/Report/DownloadReport")' );
+            })
+
+        });
+
+
+
+    </script>
+
+
+    <div style="display:none"></div>
+
+
+
+}

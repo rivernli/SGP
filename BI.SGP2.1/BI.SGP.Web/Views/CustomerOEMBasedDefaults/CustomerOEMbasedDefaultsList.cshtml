@@ -1,0 +1,288 @@
+﻿@using BI.SGP.Web.Models;
+@using BI.SGP.BLL.UIManager;
+@{
+    ViewBag.Title = "OEM/Customer based Defaults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Smart Global Pricing</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="~/Home/Home">Home</a>
+            </li>
+            <li class="active">OEM/Customer based Defaults</li>
+        </ul><!-- .breadcrumb -->
+    </div>
+
+    <div id="searchPanel" class="col-sm-zy1">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>Search</h4>
+                <span class="widget-toolbar">
+                    <a id="btnInsert" title="Create" style="cursor:pointer">
+                        <i class="icon-plus-sign bigger-140 green"></i>
+                    </a>
+                    <a href="javascript:void(0)" data-action="collapse">
+                        <i class="icon-chevron-down"></i>
+                    </a>
+                </span>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div>
+                        <table align="center" style="width:100%">
+                            <tr>
+                                <td>
+                                    <form id="fm" method="post">
+                                        <table style="width:100%" id="query-DefaultSearch">
+                                            <tr>
+                                                <td style="width:8%" align="right">&nbsp;OEM&nbsp;</td>
+                                                <td style="width:17%"><input style="width:100% !important" id="Customer_OEM" name="Customer_OEM" type="text"></td>
+                                                <td style="width:8%" align="right">&nbsp;Program Name&nbsp;</td>
+                                                <td style="width:17%"><input style="width:100% !important" id="ProgramName" name="ProgramName" type="text"></td>
+                                                <td style="width:8%" align="right">&nbsp;Product Application&nbsp;</td>
+                                                <td style="width:17%"><input style="width:100% !important" id="ProductApplication" name="ProductApplication" type="text"></td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </td>
+                                <td>
+                                    <button id="btnSearch" class="btn btn-app btn-success btn-xs" onclick="searchGrid(); return false;">
+                                        <i class="icon-search bigger-160"></i>
+                                        Query
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-zy1">
+        <!-- PAGE CONTENT BEGINS -->
+        <table style="width:100%;">
+            <tr>
+                <td>
+                    <table id="grid-table"></table>
+                    <div id="grid-pager"></div>
+                </td>
+            </tr>
+        </table>
+    </div><!-- /.col -->
+
+    <div class="page-content" style="padding: 8px 12px 0px">
+        <div class="row">
+
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+@*</div>*@
+<!-- basic scripts -->
+<!--[if !IE]> -->
+
+<script src='~/assets/js/jquery-2.0.3.min.js'></script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+<script src="~/assets/js/jquery-1.10.2.min.js"></script>
+<![endif]-->
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-2.0.3.min.js")'>" + "<" + "/script>");
+</script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-1.10.2.min.js")'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if ("ontouchend" in document) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+</script>
+<script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+<script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+<!-- page specific plugin scripts -->
+<!-- ace scripts -->
+<script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+<script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+<script src="@Url.Content("~/Scripts/publiclib.js")"></script>
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+
+        var rootUrl = '@Url.Content("~/")';      
+
+        $(document).ready(function () {
+            $(document).keydown(function (e) {
+                if (e.keyCode == 13) {
+                    $("#btnSearch").click();
+                    return false;
+                }
+            });
+
+            createGrid();
+
+            $("#searchPanel").resize(function (e) {
+                $("#grid-table").jqGrid('setGridWidth', $(".widget-box").width());
+            });
+
+            $("#btnInsert").on('click', function (e) {
+                editData();
+            });
+
+        });
+
+        function searchGrid() {
+            var postData = $.bi.form.getData("fm");
+            $('#grid-table').jqGrid('setGridParam', {
+                url: '@Url.Content("~/CustomerOEMBasedDefaults/CustomerOEMbasedDefaultsData")',
+                postData: postData,
+                page: 1
+            }).trigger("reloadGrid");
+        }
+
+        function editData(keyValue) {
+            $.post('@Url.Content("~/CustomerOEMBasedDefaults/CustomerOEMBasedDefaultsEditor")', function (data) {
+                $.bi.dialog.show({
+                    title: 'People',
+                    content: data,
+                    width: 800,
+                    buttons: [],
+                    create: function () {
+                        if (typeof (CustomePeopleloadData) == "function") {
+                            CustomePeopleloadData(keyValue);
+                        }
+                    },
+                    close: function () {
+                        searchGrid();
+                    }
+                });
+            }, 'html');
+        }
+
+        function delData(id) {
+            $.bi.dialog.show({
+                iconCss: 'icon-warning-sign red',
+                width: '250px',
+                content: 'Delete selected record?',
+                buttons: [
+                    {
+                        html: "<i class='icon-trash bigger-110'></i>&nbsp; Delete",
+                        "class": "btn btn-danger btn-xs",
+                        click: function () {
+                            $.post('@Url.Content("~/CustomerOEMBasedDefaults/DelData")', { ID: id }, function (data) {
+                                if (data.success) {
+                                    searchGrid();
+                                } else {
+                                    if (!data.success) {
+                                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                                    }
+                                }
+                            }, "json");
+                            $(this).dialog("destroy");
+                        }
+                    },
+                    {
+                        html: "<i class='icon-remove bigger-110'></i>&nbsp; Cancel",
+                        "class": "btn btn-xs",
+                        click: function () {
+                            $(this).dialog("destroy");
+                        }
+                    }
+                ]
+            });
+        }
+
+        function createGrid() {
+            var grid_selector = "#grid-table";
+            var pager_selector = "#grid-pager";
+
+            $(grid_selector).jqGrid({
+                url: '@Url.Content("~/CustomerOEMBasedDefaults/CustomerOEMbasedDefaultsData")',
+                sortorder: 'desc',
+                datatype: "json",
+                sortname: 'ID',
+                height: 250,
+                colNames: [' ', 'Customer/OEM', 'Program Name', 'Product Application', 'RFQ Initiator', 'Tech Costing', 'Pricing Analyst', 'RFQ Primary Contact', 'GAM/BDM', 'Customer Contact', 'Terms Conditions', 'Market Segment'],
+                colModel: [
+                    {
+                        name: 'myac', index: '', width: 60, fixed: true, sortable: false, resize: false,
+                        formatter: function (cellvalue, options, rowObject) {
+                            var returtString = '';
+                            returtString += '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="editData(' + rowObject["ID"] + ')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>';
+                            returtString += '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="delData(' + rowObject["ID"] + ')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>';
+                            return returtString;
+                        }
+                    },                    
+                    { name: 'Customer_OEM', index: 'Customer_OEM', width: 100 },
+                    { name: 'ProgramName', index: 'ProgramName', width: 100 },
+                    { name: 'ProductApplication', index: 'ProductApplication', width: 120 },
+                    { name: 'RFQInitiator', index: 'RFQInitiator', width: 100 },
+                    { name: 'TechCosting', index: 'TechCosting', width: 100 },
+                    { name: 'PricingAnalyst', index: 'PricingAnalyst', width: 100 },
+                    { name: 'RFQPrimaryContact', index: 'RFQPrimaryContact', width: 120 },
+                    { name: 'GAMBDM', index: 'GAMBDM', width: 100 },
+                    { name: 'CustomerContact', index: 'CustomerContact', width: 110 },
+                    { name: 'TermsConditions', index: 'TermsConditions', width: 110 },
+                    { name: 'MarketSegment', index: 'MarketSegment', width: 100 } 
+                ],
+
+                viewrecords: true,
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                pager: pager_selector,
+                altRows: true,
+
+                multiselect: true,
+                multiboxonly: true,
+
+                loadComplete: function () {
+                    var table = this;
+                    setTimeout(function () {
+                        $.bi.grid.updatePagerIcons(table);
+                    }, 0);
+                },
+                recordpos: "left",
+                height: "auto",
+                shrinkToFit: false,
+                autowidth: true
+            });
+        }
+    </script>
+}

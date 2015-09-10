@@ -1,0 +1,287 @@
+﻿@using BI.SGP.BLL.DataModels;
+@using BI.SGP.BLL.Models.Detail;
+@using BI.SGP.BLL.WF;
+@{
+    ViewBag.Title = "SupplierRFQDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Supplier RFQ Detail</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">Supplier RFQ Detail</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+        <div id="page-content" class="page-content" style="padding: 8px 12px 0px">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row-fluid wizard-actions" style="margin-top:5px; margin-bottom:5px;">
+                        @*<button id="btnReQuote" class="btn btn-info" onclick="saveData('ReQuote')">
+                                Re-Quote
+                                <i class="icon-save small-30"></i>
+                            </button>*@
+                        @*<button id="btnClone" class="btn btn-info" onclick="saveData('Clone')">
+                                Clone
+                                <i class="icon-save small-30"></i>
+                            </button>*@
+                        <button id="btnSave" class="btn btn-primary save-operation" onclick="saveData('Save')">
+                            Save
+                            <i class="icon-save small-30"></i>
+                        </button>
+                        <button id="btnSubmit" class="btn btn-success save-operation" onclick="submitData('Submit')">
+                            <i class="icon-arrow-right icon-on-right"></i>
+                            Submit
+                        </button>
+                        @*<button id="btnSkip" class="btn btn-danger save-operation" data-last="Finish " title="">
+                                Skip
+                                <i class="icon-reply small-30"></i>
+                            </button>
+                            <button id="btnCancel" class="btn btn-danger save-operation" title="">
+                                <i class="icon-remove icon-on-right"></i>
+                                Cancel
+                            </button>*@
+                    </div>
+
+                    <div class="widget-header widget-header-blue widget-header-flat">
+                        <h4 class="lighter">Supplier RFQ Detail</h4>
+
+                        <div class="widget-toolbar">
+                            <label>
+                                    <a href="javascript:void(0)" onclick="return showFilesDialog();" id="UploadAttachment" title="Upload Attachment">
+                                        <i class="icon-paper-clip"></i>
+                                    </a>
+                                </label>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div id="fuelux-wizard" class="row-fluid" data-target="#step-container">
+                                    <ul id="wizardWF"></ul>
+                                </div>
+                            <div id="MainRFQContent">
+                                @{
+                                    WFTemplate template = ViewBag.WFTemplate;
+                                    List<FieldCategory> lfc = ViewBag.Categories;
+                                    @MvcHtmlString.Create(BI.SGP.BLL.UIManager.DetailUIHelper.GenrateCategories(lfc, template));
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+    @*</div>*@
+    <!-- basic scripts -->
+
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.valida")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.formatCurrency-1.4.0.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/wflib.js")"></script>
+
+    <script type="text/javascript">
+        var _dataId = '@ViewBag.DataId';
+        var _number = '@ViewBag.Number';
+        var rootUrl = '@Url.Content("~/")';
+        var wfStatus = '@(template.Status == WorkflowStatus.Finished ? "Finished": "")';
+
+        $(document).ready(function () {
+            $("#page-content").resize(function (e) {
+                $(".detail-subdata-list").css("width", $("#page-content").width() - 31);
+            });
+            createWizard();
+            pageInit();
+        });
+
+        function createWizard() {
+            $("#wizardWF").biWizard({
+                templateName: 'SUPPLIERWF',
+                readonly: false,
+                entityId: _dataId,
+                submitUrl: '@Url.Content("~/VVI/SUPPLIERRFQWFSkip")',
+                getWizardDataUrl:'@Url.Content("~/Workflow/GetWizardDataForSupplierRfq?number=")' + _number,
+                getDataFunction: getPostData,
+                onComplete: saveAfter
+            });
+
+            @*$("#btnSkip").biSkip({
+                templateName: 'SUPPLIERWF',
+                entityId: _dataId,
+                submitUrl: '@Url.Content("~/VVI/SUPPLIERRFQWFSkip")',
+                getDataFunction: getPostData,
+                onComplete: saveAfter
+            });*@
+
+            //$("#btnSubmit").unbind('click').click(function () {
+            //    $("#btnSkip").biSkip("submit");
+            //});
+
+
+        }
+
+        function addDetail(obj) {
+            var striptString = "$('#tb-" + obj + "').append(subdata_" + obj + ")";
+            eval(striptString);
+            $.bi.setComponentEvent();
+        }
+
+        function removeDetail(obj) {
+            $(obj).parent().parent().remove();
+        }
+
+        function getPostData(operation) {
+            op = operation || 'Submit';
+            var data = {
+                dataId: _dataId,
+                number: _number,
+                operation: op,
+                data: $.bi.form.getAllCategoryData()
+            };
+            return data;
+        }
+
+        function saveData(operation) {
+            $.bi.overlay.show();
+            var postData = getPostData(operation);
+
+            $.post('@Url.Content("~/VVI/SUPPLIERRFQSaveData")', { postData: JSON.stringify(postData) }, function (data) {
+                $.bi.overlay.hide();
+                saveAfter(data);
+            }, "json");
+        }
+
+        @*function submitData(operation) {
+            $.bi.overlay.show();
+            var postData = getPostData(operation);
+
+            $.post('@Url.Content("~/VVI/SUPPLIERRFQWFSkip")', { postData: JSON.stringify(postData) }, function (data) {
+                $.bi.overlay.hide();
+                saveAfter(data);
+            }, "json");
+        }*@
+
+        function submitData(operation) {
+            $.bi.dialog.show({
+                title: 'Submit', content: 'Are you sure you want to submit?', buttons: [{
+                    html: "<i class='icon-ok bigger-110'></i>&nbsp; Yes",
+                    "class": "btn btn-success btn-xs",
+                    click: function () {
+                        $(this).dialog("destroy");
+                        $.bi.overlay.show();
+                        var postData = getPostData(operation);
+
+                        $.post('@Url.Content("~/VVI/SUPPLIERRFQWFSkip")', { postData: JSON.stringify(postData) }, function (data) {
+                            $.bi.overlay.hide();
+                            saveAfter(data);
+                        }, "json");
+                    }
+                },
+                {
+                    html: "<i class='icon-remove bigger-110'></i>&nbsp; No",
+                    "class": "btn btn-xs",
+                    click: function () {
+                        $(this).dialog("destroy");
+                    }
+                }]
+            });
+        }
+
+        function saveAfter(data) {
+            if (data.SysMsg.isPass == false) {
+                $.bi.dialog.show({ title: 'Message', content: data.SysMsg.MessageString, buttons: [] });
+            } else {
+                _dataId = data.DataId;
+                if (typeof (updateTempToNormal) == "function") {
+                    updateTempToNormal();
+                }
+                if (data.Html != "") {
+                    wfStatus = data.wfStatus;
+                    $('#MainRFQContent').html(data.Html);
+                    pageInit();
+                }
+                $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+                createWizard();
+            }
+        }
+        function pageInit() {
+
+            if (wfStatus == "Finished") {
+                $(".save-operation").attr("disabled", "true");
+            } else {
+                $(".save-operation").removeAttr("disabled");
+            }
+
+            $.bi.setComponentEvent();
+
+            $('#FLOAT5').unbind('change').change(GetComputedValue);
+            $('#FLOAT6').unbind('change').change(GetComputedValue);
+            $('#FLOAT19').unbind('change').change(GetComputedValue);
+            $('#FLOAT18').unbind('change').change(GetComputedValue);
+            $('#FLOAT11').unbind('change').change(GetComputedValue);
+            $('#FLOAT7').unbind('change').change(GetComputedValue);
+            $('#FLOAT8').unbind('change').change(GetComputedValue);
+            $('#FLOAT16').unbind('change').change(GetComputedValue);
+            $('#FLOAT17').unbind('change').change(GetComputedValue);
+            $('#FLOAT12').unbind('change').change(GetComputedValue);
+        }
+
+        function GetComputedValue() {
+            var actionUrl = '@Url.Content("~/VVI/GetComputedValue")';
+            var postData = {};
+
+            postData.UnitSizeWidth = $('#FLOAT5').val(),
+            postData.UnitSizeLength = $('#FLOAT6').val(),
+            postData.UnitArea = $('#FLOAT19').val(),
+            postData.ArrayPerWorkingPanel = $('#FLOAT18').val(),
+            postData.UnitPerArray = $('#FLOAT11').val(),
+            postData.ArraySizeWidth = $('#FLOAT7').val(),
+            postData.ArraySizeLength = $('#FLOAT8').val(),
+            postData.PanelSizeWidth = $('#FLOAT16').val(),
+            postData.PanelSizeLength = $('#FLOAT17').val(),
+            postData.VariableCost = $('#FLOAT12').val()
+
+            $.post('@Url.Content("~/VVI/GetComputedValue")', { postData: JSON.stringify(postData) },
+                function (data) {
+                    $('#NVARCHAR16').val(data.PanelUtilization);
+                    $('#NVARCHAR37').val(data.SqInchPriceUSD);
+                }, "json");
+        }
+
+    </script>
+    @Html.Partial("~/Views/Export/FilesForSupplierRFQ.cshtml")
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://mcnnt800.asia.ad.flextronics.com/Access_Wcf/Access.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/BI.Access.Wcf" />
+  <xs:element name="GetCurrentUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AppID" type="xs:int" />
+        <xs:element minOccurs="0" name="Uid" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCurrentUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/BI.Access.Wcf" minOccurs="0" name="GetCurrentUserResult" nillable="true" type="q1:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogAdd">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AppID" type="xs:int" />
+        <xs:element minOccurs="0" name="Uid" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Url" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Action" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LogAddResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="LogAddResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

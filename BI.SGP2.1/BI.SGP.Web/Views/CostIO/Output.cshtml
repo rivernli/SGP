@@ -1,0 +1,311 @@
+﻿@using BI.SGP.BLL.DataModels;
+@{
+    ViewBag.Title = "Cost Modelling";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Multek Pricing System</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+            try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">Cost Modelling</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+        <div class="col-sm-zy1">
+            <div class="widget-box">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="row-fluid wizard-actions" style="margin-bottom:5px;">
+                            <table><tr><td style="text-align:center"></td></tr></table>
+                            <button id="btnExport" class="btn btn-success" title="" onclick="window.open('@Url.Content("~/CostIO/DownOutputExcel/")' + _dataId)">
+                                Export
+                                <i class="icon-file icon-on-right small-30"></i>
+                            </button>
+                            <button id="btnSave" class="btn btn-primary" title="" onclick="return toModify();">
+                                Back to Modify
+                                <i class="icon-pencil small-30"></i>
+                            </button>
+                            <button id="btnSubmit" class="btn btn-purple" title="" onclick="return submitToRFQ();">
+                                Submit to RFQ
+                                <i class="icon-arrow-right icon-on-right small-30"></i>
+                            </button>
+                        </div>
+                        <div class="widget-header widget-header-blue widget-header-flat">
+                            <h4 class="lighter">Cost Modelling</h4>
+                        </div>
+                        <div class="widget-body">
+                            <div id="MainRFQContent">
+
+                            </div>
+                            <br />
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#tabSummary">
+                                            Summary
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabCostBreakdown">
+                                            Cost Breakdown
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabProcessBreakdown">
+                                            Process Breakdown
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tabBOMReport">
+                                            BOM Report
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="tabSummary" class="tab-pane in active" style="margin:20px">
+                             
+                                    </div>
+                                    <div id="tabCostBreakdown" class="tab-pane">
+
+                                    </div>
+                                    <div id="tabProcessBreakdown" class="tab-pane">
+                                        <table id="grid-proc"></table>
+                                    </div>
+                                    <div id="tabBOMReport" class="tab-pane">
+                                        <table id="grid-bom"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.main-content -->
+    <style>
+        .tab-content {
+            padding: 0px 0px !important;
+        }
+    </style>
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/leftmenu.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/costinput.js")"></script>
+    <style>
+        .ui-jqgrid .ui-jqgrid-labels th {
+            text-align: center !important;
+        }
+        .ui-jqgrid .ui-jqgrid-htable th div {
+            padding-top: 12px;
+            padding-bottom: 2px;
+            height: 35px;
+        }
+        .ui-first-th-ltr {
+            border-right: 0px;
+        }
+
+        /*.header-color-orange {
+          background: #f5f5f5;
+          border-color: #ddd;
+          color: #333 !important;
+        }*/
+    </style>
+    <script type="text/javascript">
+        var _dataId = @ViewBag.DataId;
+        var pcbType = "";
+        var rootUrl = '@Url.Content("~/")';
+
+        $(document).ready(function () {
+            loadCommon();
+            loadCostBreakdown();
+            loadProcBreakdown();
+            loadBOMReport();
+        });
+
+        function loadCommon() {
+            $.bi.overlay.showStack();
+            $.post('@Url.Content("~/CostIO/GenrateCategory")', { dataId: _dataId, categoryName: 'SCOCommonData' }, function (data) {
+                if (data.success) {
+                    $("#MainRFQContent").html(data.html);
+                    $.bi.overlay.hideStack();
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                    }
+                }
+            }, "json");
+        }
+
+        function loadProcBreakdown() {
+            $.post('@Url.Content("~/CostIO/GetProcBDFields")', function (data) {
+                var colModel = data.colModel;
+                for(var i = 0; i < colModel.length; i++) {
+                    colModel[i].sortable = false;
+                }
+                $("#grid-proc").jqGrid({
+                    url: '@Url.Content("~/CostIO/GetProcBDData")',
+                    postData:{dataId:_dataId},
+                    datatype: "json",
+                    rownumbers: true,
+                    rowNum:0,
+                    sortname: 'ID',
+                    sortorder: 'ASC',
+                    height: 300,
+                    colNames: data.colNames,
+                    colModel: data.colModel,
+                    shrinkToFit: false,
+                    autowidth: true,
+                    loadComplete: function () {
+                        setTimeout(function() {
+                            $("#grid-proc").jqGrid('setGroupHeaders', {
+                                useColSpanStyle: true, 
+                                groupHeaders:[
+                                    {startColumnName: 'Laminate', numberOfColumns: 10, titleText: '<div>Project BOM Material<div>'},
+                                    {startColumnName: 'DryFilm', numberOfColumns: 5, titleText: 'Project EDM'},
+                                    {startColumnName: 'Board', numberOfColumns: 4, titleText: 'Process EDM'},
+                                    {startColumnName: 'VariableDLC', numberOfColumns: 1, titleText: 'Variable Direct Labor'},
+                                    {startColumnName: 'VariableEEC', numberOfColumns: 3, titleText: 'Variable MOH'},
+                                    {startColumnName: 'FixedDLC', numberOfColumns: 1, titleText: 'Fixed Direct Labor'},
+                                    {startColumnName: 'FixedIDL', numberOfColumns: 7, titleText: 'Fixed MOH'}
+                                ]
+                            });
+                        }, 0);
+                    }
+                });
+
+                $("#grid-proc").jqGrid('setGridWidth', $("#MainRFQContent").width() -2);
+                $("#MainRFQContent").resize(function (e) {
+                    $("#grid-proc").jqGrid('setGridWidth', $("#MainRFQContent").width() -2);
+                });
+ 
+            });
+        }
+
+        function loadCostBreakdown() {
+            $.post('@Url.Content("~/CostIO/GenrateCostBreakdownCategory")', { dataId: _dataId }, function (data) {
+                if (data.success) {
+                    $("#tabCostBreakdown").html(data.html.costBreakdown);
+                    $("#tabSummary").html(data.html.costSummary);
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                    }
+                }
+            }, "json");
+        }
+
+        function loadBOMReport() {
+            $.post('@Url.Content("~/CostIO/GetProcBDFields")', function (data) {
+                var colModel = data.colModel;
+                for(var i = 0; i < colModel.length; i++) {
+                    colModel[i].sortable = false;
+                }
+                $("#grid-bom").jqGrid({
+                    url: '@Url.Content("~/CostIO/GetBOMRptData")',
+                    postData:{dataId:_dataId},
+                    datatype: "json",
+                    rownumbers: true,
+                    rowNum:0,
+                    sortname: 'ID',
+                    sortorder: 'ASC',
+                    height: 300,
+                    colNames: ["Layer", "Step", "Material", "Work Center", "Main Work Center", "Consumption Qty Per PNL", "Unit", "Price(USD)", "Price Cost"],
+                    colModel: [ {name:"Layer", index:"Layer", width:100, sortable: false},
+                                {name:"Step", index:"Step", width:100, sortable: false},
+                                {name:"Material", index:"Material", width:100, sortable: false},
+                                {name:"WorkCenter", index:"WorkCenter", width:100, sortable: false},
+                                {name:"MainWorkCenter", index:"MainWorkCenter", width:100, sortable: false},
+                                {name:"LayupQtyPanel", index:"LayupQtyPanel", width:100, sortable: false},
+                                {name:"Unit", index:"Unit", width:100, sortable: false},
+                                {name:"ManualPrice", index:"ManualPrice", width:100, sortable: false},
+                                {name:"CostValue", index:"CostValue", width:100, sortable: false}],
+                    shrinkToFit: false,
+                    autowidth: true,
+                    loadComplete: function () {
+                    }
+                });
+
+                $("#grid-bom").jqGrid('setGridWidth', $("#MainRFQContent").width() -2);
+                $("#MainRFQContent").resize(function (e) {
+                    $("#grid-bom").jqGrid('setGridWidth', $("#MainRFQContent").width() -2);
+                });
+ 
+            });
+        }
+
+        function getPCBType()
+        {
+            if ($("#CostingBasedOn").val() == "B2FPC") {
+                return "FPC";
+            } else {
+                return "Rigid";
+            }
+        }
+
+        function toModify() {
+            window.location = "@Url.Content("~/CostIO/Input/")" + _dataId;
+        }
+
+        function submitToRFQ() {
+            $.bi.overlay.showStack();
+            $.post('@Url.Content("~/CostIO/SubmitToRFQ")', { dataId: _dataId }, function (data) {
+                if (data.SysMsg.isPass == false) {
+                    $.bi.dialog.show({ title: 'Message', content: data.SysMsg.MessageString, buttons: [] });
+                } else {
+                    $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+                }
+                $.bi.overlay.hideStack();
+            }, "json");
+        }
+
+        function collapseCostBreakdown() {
+            $("#tabCostBreakdown").find(".panel-collapse").each(function() {
+                $(this).collapse('hide');
+            });
+        }
+
+        function expandCostBreakdown() {
+            $("#tabCostBreakdown").find(".panel-collapse").each(function() {
+                $(this).collapse('show');
+            });
+        }
+    </script>
+}

@@ -1,0 +1,210 @@
+﻿@using BI.SGP.BLL.DataModels;
+@using BI.SGP.BLL.Models.Detail;
+@using BI.SGP.BLL.WF;
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Cost Model</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+        <script src="@Url.Content("~/angular/angular.min.js")"></script>
+        @*<script src="@Url.Content("~/angular/angularjs/angular.min.js")"></script>*@
+
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">Cost Modelling</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+
+        <div id="page-content" class="page-content" ng-controller="ControllerAction" style="padding: 1px 2px 0px">
+            <div class="page-header">
+                <div class="col-xs-6 col-sm-2">
+                    <h3 class="header smaller lighter green">Cost Modelling</h3>
+                </div>
+                <div class=".col-xs-6.col-sm-10">
+
+                    <table style="width:81%">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left; width:20%">RFQNumber</th>
+                                <th style="text-align:left; width:20%">OEM</th>
+                                <th style="text-align:left; width:20%">CustomerPartNumber</th>
+                                <th style="text-align:left; width:20%">CostingBasedOn</th>
+                                <th style="text-align:left; width:10%"></th>
+                                <th style="text-align:left; width:10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{RFQNumber}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{OEM}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{CustomerPartNumber}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{CostingBasedOn}}">
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:20%">LayerCount</th>
+                                <th style="text-align: left; width: 20%">ViaStructure</th>
+                                <th style="text-align: left; width: 20%">PanelSize</th>
+                                <th style="text-align: left; width: 20%">PanelUtilization</th>
+                                <th style="text-align: left; width: 20%"></th>
+                                <th style="text-align: left; width: 20%"></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{LayerCount}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{ViaStructure}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{PanelSizeWidth}}*{{PanelSizeLength}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{PanelUtilization}}">
+                                </td>
+                                <td align="right">
+                                    <button id="btnSaveAsNew" class="btn btn-warning" title="">
+                                        Clone
+                                    </button>
+                                </td>
+                                <td  align="left">
+                                    <button id="btnSave" class="btn btn-primary" ng-click="processForm('Save')" title="">
+                                        Save
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div  class="widget-body">
+                <div id="MainRFQContent">
+                    @{
+                        List<FieldCategory> lfc = ViewBag.Categories;
+                       @MvcHtmlString.Create(BI.SGP.BLL.UIManager.CostModelUIHelper.GenrateCategories(lfc));
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /.main-content -->
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.valida")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.formatCurrency-1.4.0.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/wflib.js")"></script>
+
+    @*<script>
+
+
+
+
+        function customersController($scope, $http) {
+            $http.get("http://www.w3cschool.cc/try/angularjs/data/Customers_JSON.php")
+            .success(
+            function (response) {
+                $scope.names = response;
+            });
+        }
+
+
+    </script>*@
+
+    <script>
+       
+        var _dataId = '@ViewBag.DataId';
+        function getPostData(operation) {
+            op = operation || 'Save';
+            var data = {
+                dataId: _dataId,
+                operation: op,
+                data: $.bi.form.getAllCategoryData()
+            };
+            return data;
+        }
+        function ControllerAction($scope) {
+            $scope.processForm = function (operation) {
+                location.href = '@Url.Content("~/CostModel/Save")';
+                @*var postData = getPostData(operation);
+                $.ajax({
+                    type: 'Post',
+                    url: '@Url.Content("~/CostModel/CostModelInput")',
+                    data: { postData: JSON.stringify(postData) },
+                    datatype: 'json',
+                    success: function (data) { 
+                    },
+                    complete: function () {
+                    }
+                });*@
+            };
+            $scope.Fvaltype = false;
+            $scope.Fclass = "ng-hide";
+            $scope.Rvaltype = true;
+            $scope.Rclass = "ng-show";
+            $scope.textChange = function (val) {
+                if ($scope.CostingBasedOn == "B2")
+                {
+                    $scope.Fvaltype = true;
+                    $scope.Fclass = "ng-show";
+                    $scope.Rvaltype = false;
+                    $scope.Rclass = "ng-hide";
+                }
+                else
+                {
+                    $scope.Rvaltype = true;
+                    $scope.Rclass = "ng-show";
+                    $scope.Fvaltype = false;
+                    $scope.Fclass = "ng-hide";
+                }
+            };
+        }
+
+
+
+
+    </script>
+}

@@ -1,0 +1,91 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
+}
+@section ActionButton{
+@{if (ViewBag.Roles == 1)
+{
+    <a href="@Url.Content("~/CustomerProfile/CustomerEditor")" target="_blank" title="Create Customer Profile">
+        <i class="icon-plus-sign bigger-140 green"></i>
+    </a>
+}
+}
+    <a href="~/CustomerProfile/CustomerImport" id="aImport" title="Import">
+    <i class="icon-cloud-upload bigger-140 purple"></i>
+</a>
+    <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+        <i class="icon-cloud-download bigger-140 pink"></i>
+    </a>
+}
+
+@section FootScript {    
+    <script type="text/javascript">
+    var UserRight = '@ViewBag.Roles';
+
+    $(document).ready(function () { 
+
+        $("#form-searchBox").biSearchBox({
+            groupName: searchGroup,
+            searchButton: 'btnSearch'
+        });
+
+        $("#grid-table").biGrid({
+            groupName: gridGroup,
+            pager: 'grid-pager',
+            sortname: 'Customer',
+            sortorder: 'asc',
+            widthRelateElement: 'searchPanel',
+            extSqlColumns: 'ID',
+            extColumns: [
+                { index: 0, title: ' ', model: { name: 'myac', width: 60, sortable: false, resizable: false, align: 'center' } }
+            ],
+            formatters: {
+                myac: function (cellvalue, options, rowObject) {
+                    var strEditorRows = '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>';
+                    if (UserRight == 1) {
+                        strEditorRows += '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="doDelete(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>';
+                    }
+                    return strEditorRows; 
+                }
+            },
+        });        
+
+        //不知为什么JGgrid横向的宽度不正确(可能字段太多?),   现重新计算
+        $(function () {
+            $(window).resize(function () {
+                $("#grid-table").setGridWidth($("#searchPanel").width() - 2);
+            });
+        });
+
+        $("#aDownload").on('click', function (e) {
+            showExportDialog(e);
+        })
+
+        $("#btnSearch").on('click', function (e) {
+            $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+        })
+    });
+
+    function doEdit(id) {
+        window.open('@Url.Content("~/CustomerProfile/CustomerEditor")' + '?ID=' + id);
+    }
+
+    function doDelete(id) {
+        $.bi.dialog.showDelete({
+            okAction: function () {
+                $.post('@Url.Content("~/CustomerProfile/DelData")', { ID: id }, function (data) {
+                    if (data.success) {
+                        $("#btnSearch").click();
+                    } else {
+                        if (!data.success) {
+                            $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                        }
+                    }
+                }, "json");
+                return true;
+            }
+        });
+    }
+
+    </script>
+}

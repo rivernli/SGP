@@ -1,0 +1,96 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
+}
+@section ActionButton{
+    @*<a href="@Url.Content("~/VVI/SupplierPricingDetail")" target="_blank" title="Create Customer Profile">
+        <i class="icon-plus-sign bigger-140 green"></i>
+    </a>*@
+    <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+        <i class="icon-cloud-download bigger-140 pink"></i>
+    </a>
+    <a href="~/VVI/SupplierRFQImportExcel" id="aUpload" title="Import">
+        <i class="icon-cloud-upload bigger-140 purple"></i>
+    </a>
+}
+@section FootScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#form-searchBox").biSearchBox({
+                groupName: 'SupplierRFQSearch',
+                searchButton: 'btnSearch'
+            });
+
+            $("#grid-table").biGrid({
+                groupName: 'SupplierRFQGrid',
+                pager: 'grid-pager',
+                sortname: 'ID',
+                sortorder: 'asc',
+                widthRelateElement: 'searchPanel',
+                extSqlColumns: 'ID,RFQID,StatusID',
+                extColumns: [
+                    { index: 0, title: ' ', model: { name: 'myac', width: 60, sortable: false, resizable: false, align: 'center' } }
+
+                ],
+                formatters: {
+                    myac: function (cellvalue, options, rowObject) {
+                        return '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["RFQID"] + '\',\'' + rowObject["NVARCHAR1"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>';
+                    },
+                    NVARCHAR1: function (cellvalue, options, rowObject) {
+                        cellvalue = cellvalue || "";
+                        var ahref = '@Url.Content("~/VVI/SupplierPricingDetail")';
+                        cellvalue = "<a href='" + ahref + "?ID=" + rowObject["RFQID"] + "&number=" + rowObject["NVARCHAR1"] + "' target='_blank'>" + cellvalue + "</a>";
+                        return cellvalue;
+                    },
+                    INT1: function (cellvalue, options, rowObject) {
+                        if (cellvalue == null || cellvalue == "") {
+                            return '<span class="label label-info arrowed arrowed-right" style="cursor:pointer">Launch</span>';
+                        } else {
+                            var labelClass;
+                            var cellDisplay;
+                            if (rowObject["INT1"] == "9") {
+                                labelClass = "label-success";
+                                cellDisplay = "Closed";
+                            } else {
+                                labelClass = "label-info";
+                                cellDisplay = "Launch";
+                            }
+                            return '<span class="label ' + labelClass + ' arrowed arrowed-right">' + cellDisplay + '</span>';
+                        }
+                    }
+                },
+            });
+
+             $("#aDownload").on('click', function (e) {
+                showExportDialog(e);
+            })
+
+            $("#btnSearch").on('click', function (e) {
+                $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+            })
+        });
+
+        function doEdit(id, number) {
+            window.open('@Url.Content("~/VVI/SupplierPricingDetail")' + '?ID=' + id + '&number=' + number);
+        }
+
+        function doDelete(id) {
+            $.bi.dialog.showDelete({
+                okAction: function () {
+                    $.post('@Url.Content("~/VVI/VVIPricingDel")', { ID: id }, function (data) {
+                        if (data.success) {
+                            $("#btnSearch").click();
+                        } else {
+                            if (!data.success) {
+                                $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                            }
+                        }
+                    }, "json");
+                    return true;
+                }
+            });
+        }
+
+    </script>
+}

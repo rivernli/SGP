@@ -1,0 +1,154 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Smart Global Pricing</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">@ViewBag.Title</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+
+        <div id="searchPanel" class="col-sm-zy1">
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4>Download Vendor RFQ Report</h4>
+                    <span class="widget-toolbar">
+                        <a href="javascript:void(0)" data-action="collapse">
+                            <i class="icon-chevron-down"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div>
+                            <table align="center" style="width:100%">
+                                <tr>
+                                    <td>
+                                        <form id="form-searchBox" method="post" onsubmit="return false;">
+                                            @{
+                                                string excelView = ViewBag.ExcelView == null ? "~/Views/Shared/_ExportExcel.cshtml" : ViewBag.ExcelView;
+                                                @Html.Partial(excelView)
+                                            }
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <button id="btnSearch" class="btn btn-app btn-success btn-xs">
+                                            <i class="icon-cloud-download bigger-160"></i>
+
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hide">
+            <!-- PAGE CONTENT BEGINS -->
+            <table style="width:100%;">
+                <tr>
+                    <td>
+                        <table id="grid-table"></table>
+                        <div id="grid-pager"></div>
+                    </td>
+                </tr>
+            </table>
+        </div><!-- /.col -->
+
+        <div class="page-content" style="padding: 8px 12px 0px">
+            <div class="row">
+
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/easyui/easyloader.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/wflib.js")"></script>
+    <script src="@Url.Content("~/Scripts/leftmenu.js")"></script>
+
+    <style>
+        .tree:before {
+            border: 0px;
+        }
+
+        .timeline-container {
+            padding-top: 0px;
+            margin-bottom: 0px;
+        }
+    </style>
+    <script type="text/javascript">
+        var rootUrl = '@Url.Content("~/")';
+        var gridGroup = '@ViewBag.GridGroup';
+        var searchGroup = '@ViewBag.SearchGroup';
+    </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#form-searchBox").biSearchBox({
+            groupName: 'VendorRFQReportSearch',
+            searchButton: 'btnSearch'
+        });
+
+        $("#grid-table").biGrid({
+            groupName: 'VendorRFQReportGrid',
+            pager: 'grid-pager',
+            sortname: 'ID',
+            sortorder: 'asc',
+            widthRelateElement: 'searchPanel',
+            extSqlColumns: 'ID,RFQID,StatusID',
+            extColumns: [
+                { index: 0, title: ' ', model: { name: 'myac', width: 60, sortable: false, resizable: false, align: 'center' } }
+
+            ],
+        });
+
+        $("#btnSearch").on('click', function (e) {
+            $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+            showExportDialog(e);
+        });
+    });
+
+</script>
+}

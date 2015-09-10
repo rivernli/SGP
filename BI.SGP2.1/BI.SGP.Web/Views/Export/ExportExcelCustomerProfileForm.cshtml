@@ -1,0 +1,7 @@
+﻿<script language="javascript">
+    function CustomerToExcel() {
+        
+        var id = '@Request["ID"]';
+        window.open('@Url.Content("~/CustomerProfile/ToExcel?ID=")' + id);
+    }
+</script>

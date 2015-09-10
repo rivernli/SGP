@@ -1,0 +1,359 @@
+﻿@using BI.SGP.BLL.DataModels;
+@using BI.SGP.BLL.Models.Detail;
+@using BI.SGP.BLL.WF;
+@{
+    ViewBag.Title = "CostOutput";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title>Cost Model</title>
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/chosen.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+        <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+        <script src="@Url.Content("~/angular/angular.min.js")"></script>
+        @*<script src="@Url.Content("~/angular/angularjs/angular.min.js")"></script>*@
+
+    </head>
+}
+@section featured {
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+                <li class="active">Output</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+
+        <div id="page-content" class="page-content" style="padding: 1px 2px 0px">
+            <div class="page-header">
+                <div class="col-xs-6 col-sm-2">
+                    <h3 class="header smaller lighter green">Output</h3>
+                </div>
+                <div class=".col-xs-6.col-sm-10">
+
+                    <table style="width:81%">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left; width:20%">RFQNumber</th>
+                                <th style="text-align:left; width:20%">OEM</th>
+                                <th style="text-align:left; width:20%">CustomerPartNumber</th>
+                                <th style="text-align:left; width:20%">CostingBasedOn</th>
+                                <th style="text-align:left; width:10%"></th>
+                                <th style="text-align:left; width:10%"></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{RFQNumber}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{OEM}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{CustomerPartNumber}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{CostingBasedOn}}">
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:left; width:20%">LayerCount</th>
+                                <th style="text-align: left; width: 20%">ViaStructure</th>
+                                <th style="text-align: left; width: 20%">PanelSize</th>
+                                <th style="text-align: left; width: 20%">PanelUtilization</th>
+                                <th style="text-align: left; width: 20%"></th>
+                                <th style="text-align: left; width: 20%"></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{LayerCount}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{ViaStructure}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{PanelSizeWidth}}*{{PanelSizeLength}}">
+                                </td>
+                                <td>
+                                    <input readonly="" type="text" id="form-input-readonly" style="color: #2E74B5;" value="{{PanelUtilization}}">
+                                </td>
+                                <td align="right">
+                                    <button id="btnSaveAsNew" onclick="BackToChange()" class="btn btn-warning" title="">
+                                        Back To Change
+                                    </button>
+                                </td>
+                                <td align="left">
+                                    <button id="btnSave" class="btn btn-primary" title="">
+                                        Post To RFQ
+                                    </button>
+                                </td>
+                                <td align="left">
+                                    <button id="btnSave" class="btn btn-primary" title="">
+                                        Export TO Excel
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+              
+                </div>
+            </div>
+            <div class="widget-body">
+                <div id="MainRFQContent">
+                  
+
+                        <table style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th width="30%"></th>
+                                    <th style="text-align:center" width="5%"></th>
+                                    <th width="30%"></th>
+                                    <th style="text-align:center" width="5%"></th>
+                                    <th width="30%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="pricing-box">
+                                            <div class="widget-box">
+                                                <div class="widget-header header-color-orange">
+                                                    <h5 class="bigger lighter">Variable Cost</h5>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <ul class="list-unstyled spaced2">
+                                                            <li>
+                                                                BOM Cost:
+                                                                <b class="red">$10</b>
+                                                            </li>
+                                                            <li>
+                                                                EDM Cost:
+                                                                <b class="red">$2</b>
+                                                            </li>
+
+                                                            <li>
+                                                                Direct Labor Cost:
+                                                                <b class="red">$3</b>
+                                                            </li>
+
+                                                            <li>
+                                                                Variable MOH:
+                                                                <b class="red">$2</b>
+                                                            </li>
+
+                                                            <li>
+                                                                Freight Cost:
+                                                                <b class="red">$3</b>
+                                                            </li>
+
+                                                            <li>
+                                                                
+                                                                Variable Scrap Cost:
+                                                                <b class="red">$2</b>
+                                                            </li>
+                                                            <li>
+                                                               
+                                                                Other Variable Cost:
+                                                                <b class="red">$3</b>
+                                                            </li>
+                                                        </ul>
+
+                                                        <hr>
+                                                        <div class="price">
+                                                            $25
+                                                            <small>/panel</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <a href="#" class="btn btn-block btn-warning">
+                                                            <i class="icon-shopping-cart bigger-110"></i>
+                                                            <span>Cost</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="align-content:center;text-align:center"><button style="font:bold;font-size:12px;font-family:Arial;" type="button" class="btn spinner-up btn-xs btn-primary" value="+">+</button></td>
+                                    <td>
+                                        <div class="pricing-box">
+                                            <div class="widget-box">
+                                                <div class="widget-header header-color-blue">
+                                                    <h5 class="bigger lighter">Fixed Cost</h5>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <ul class="list-unstyled spaced2" style="height: 202px !important">
+                                                            <li>
+                                                                Fixed MOH Cost:
+                                                                <b class="red">$2</b>
+                                                            </li>
+                                                            <li>
+                                                                Indirect Labor Cost:
+                                                                <b class="red">$2</b>
+                                                            </li>
+
+                                                            <li>
+                                                                Other Fixed Cost:
+                                                                <b class="red">$3</b>
+                                                            </li>
+
+                                                            <li>
+                                                                Fixed Scrap Cost:
+                                                                <b class="red">$2</b>
+                                                            </li>
+
+                                                            <li>
+
+                                                                <b class="red"></b>
+                                                            </li>
+
+                                                            <li>
+                                                                <b class="red"></b>
+
+                                                            </li>
+                                                            <li>
+                                                                <b class="red"></b>
+
+                                                            </li>
+                                                        </ul>
+
+                                                        <hr>
+                                                        <div class="price">
+                                                            $10
+                                                            <small>/panel</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <a href="#" class="btn btn-block btn-primary">
+                                                            <i class="icon-shopping-cart bigger-110"></i>
+                                                            <span>Cost</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+</td>
+                                    <td style="align-content:center;text-align:center"><button style="font:bold;font-size:12px;font-family:Arial;" type="button" class="btn spinner-up btn-xs btn-primary" value="=">=</button></td>
+                                    <td>
+                                        <div class="pricing-box">
+                                            <div class="widget-box">
+                                                <div class="widget-header header-color-green">
+                                                    <h5 class="bigger lighter">Total Cost</h5>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <ul class="list-unstyled spaced2" style="height:202px ! important">
+                                                            <li>
+                                                                Variable Cost:
+                                                                <b class="red">$25</b>
+                                                            </li>
+                                                            <li>
+                                                                Fixed Cost:
+                                                                <b class="red">$10</b>
+                                                            </li>
+
+                                                            <li>
+                                                                Target Yield:
+                                                                <b class="red">90%</b>
+                                                            </li>
+
+                                                            <li>
+                                                                Total Cost:
+                                                                <b class="red">31.5</b>
+                                                            </li>
+
+                                                            <li>
+                                                               
+                                                            </li>
+
+                                                            <li>
+
+                                                                
+                                                            </li>
+                                                            <li>
+
+                                                                
+                                                            </li>
+                                                        </ul>
+
+                                                        <hr>
+                                                        <div class="price">
+                                                            $31.5
+                                                            <small>/panel</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <a href="#" class="btn btn-block btn-success">
+                                                            <i class="icon-shopping-cart bigger-110"></i>
+                                                            <span>Cost</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @{
+                        List<FieldCategory> lfc = ViewBag.Categories;
+                        @MvcHtmlString.Create(BI.SGP.BLL.UIManager.CostModelUIHelper.GenrateCategories(lfc));
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /.main-content -->
+    <script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.valida")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.formatCurrency-1.4.0.js")"></script>
+    <script src="@Url.Content("~/Scripts/syslib.js")"></script>
+    <script src="@Url.Content("~/Scripts/wflib.js")"></script>
+    <script>
+
+        function BackToChange()
+        {
+           location.href = '@Url.Content("~/CostModel/BackToChange")';
+        }
+    </script>
+}

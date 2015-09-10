@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "WFTest";
+}
+
+<h2>WFTest</h2>
+<script src="@Url.Content("~/assets/js/jquery-2.0.3.min.js")"></script>
+<script language="javascript">
+    function submit(fromId) {
+        $.post('@Url.Content("~/CustomerProfile/WFSubmit/")' + fromId, { KeyValues: 1 }, function (data) {
+            alert(JSON.stringify(data));
+        }, "json");
+    }
+
+    function reject(fromId) {
+        $.post('@Url.Content("~/CustomerProfile/WFReject/")' + fromId, { KeyValues: 1 }, function (data) {
+            alert(JSON.stringify(data));
+        }, "json");
+    }
+
+    function rejectTo20301() {
+        $.post('@Url.Content("~/CustomerProfile/WFRejectChild")', { KeyValues: '20301' }, function (data) {
+            alert(JSON.stringify(data));
+        }, "json");
+    }
+
+    function rejectTo20301and302() {
+        $.post('@Url.Content("~/CustomerProfile/WFRejectChild")', { KeyValues: '20301,20302' }, function (data) {
+            alert(JSON.stringify(data));
+        }, "json");
+    }
+
+
+</script>
+<button onclick="submit(0)">Submit</button>
+<button onclick="reject(0)">Reject</button>
+<button onclick="submit(20301)">Submit31</button>
+<button onclick="submit(20302)">Submit32</button>
+<button onclick="submit(20303)">Submit33</button>
+<button onclick="reject(20301)">Reject31</button>
+<button onclick="reject(20302)">Reject32</button>
+<button onclick="reject(20303)">Reject33</button>
+
+<button onclick="rejectTo20301()">RejectTo20301</button>
+<button onclick="rejectTo20301and302()">RejectTo20301and302</button>

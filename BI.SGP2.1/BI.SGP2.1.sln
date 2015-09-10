@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BI.SGP.BLL", "BI.SGP.BLL\BI.SGP.BLL.csproj", "{9F65CE13-3CFB-4F54-A64D-9185FD9C845B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BI.SGP.Web", "BI.SGP.Web\BI.SGP.Web.csproj", "{9E815F9E-EAF3-43B8-A36C-F6A21D0C83FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBUtility", "DBUtility\DBUtility.csproj", "{A9C6CD43-4DCA-4483-AF11-C8C5344E0C15}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.flextronics.com:8080/tfs/enterprisecloudsolutions
+		SccProjectUniqueName0 = BI.SGP.BLL\\BI.SGP.BLL.csproj
+		SccProjectName0 = BI.SGP.BLL
+		SccLocalPath0 = BI.SGP.BLL
+		SccProjectUniqueName1 = BI.SGP.Web\\BI.SGP.Web.csproj
+		SccProjectName1 = BI.SGP.Web
+		SccLocalPath1 = BI.SGP.Web
+		SccProjectUniqueName2 = DBUtility\\DBUtility.csproj
+		SccProjectName2 = DBUtility
+		SccLocalPath2 = DBUtility
+		SccLocalPath3 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F65CE13-3CFB-4F54-A64D-9185FD9C845B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F65CE13-3CFB-4F54-A64D-9185FD9C845B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F65CE13-3CFB-4F54-A64D-9185FD9C845B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F65CE13-3CFB-4F54-A64D-9185FD9C845B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E815F9E-EAF3-43B8-A36C-F6A21D0C83FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E815F9E-EAF3-43B8-A36C-F6A21D0C83FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E815F9E-EAF3-43B8-A36C-F6A21D0C83FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E815F9E-EAF3-43B8-A36C-F6A21D0C83FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9C6CD43-4DCA-4483-AF11-C8C5344E0C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9C6CD43-4DCA-4483-AF11-C8C5344E0C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9C6CD43-4DCA-4483-AF11-C8C5344E0C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9C6CD43-4DCA-4483-AF11-C8C5344E0C15}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

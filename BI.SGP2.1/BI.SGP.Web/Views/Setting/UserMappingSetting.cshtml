@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    .form-actions {
+        border-top: 0px solid #e5e5e5;
+        margin-bottom: 5px;
+        margin-top: 0px;
+        padding: 15px 15px 15px;
+    }
+</style>
+
+<script language="javascript">
+    var _activityId = 0;
+    var _userType = "Owner";
+    function userMappingInit(actId, userType) {
+        _activityId = actId;
+        _userType = userType;
+        var html = "";
+        var ownerHtml = "";
+        var ccHtml = "";
+        $.post('@Url.Content("~/Setting/GetPreviewUser")', { actId: actId }, function (data) {
+            if (data != null) {
+                var userHtml = createUser(data.Specified, "Specified");
+                ownerHtml += userHtml[0];
+                ccHtml += userHtml[1];
+
+                userHtml = createUser(data.Fixed, "Fixed");
+                ownerHtml += userHtml[0];
+                ccHtml += userHtml[1];
+
+                userHtml = createUser(data.Role, "Role");
+                ownerHtml += userHtml[0];
+                ccHtml += userHtml[1];
+            }
+
+            if (userType == "Owner") {
+                $("#user-mapping-clearfix").html(ownerHtml);
+                $("#user-mapping-clearfix .icon-user").addClass("blue")
+            } else {
+                $("#user-mapping-clearfix").html(ccHtml);
+                $("#user-mapping-clearfix .icon-user").addClass("light-grey")
+            }
+
+            $("#txtAddUserMapping").autocomplete({
+                source: '@Url.Content("~/Setting/GetUserMappingList")'
+            });
+
+        }, 'json');
+    }
+
+    function createUser(users, userCategory) {
+        var ownerHtml = "";
+        var ccHtml = "";
+        if (users != null && users.length > 0) {
+            for (var i = 0; i < users.length; i++) {
+                if (users[i].IsKeyUser || users[i].IsApprover) {
+                    ownerHtml += createMember(users[i].DisplayName, userCategory, users[i].ID);
+                } else {
+                    ccHtml += createMember(users[i].DisplayName, userCategory, users[i].ID);
+                }
+            }
+        }
+
+        return [ownerHtml, ccHtml];
+    }
+
+    function createMember(userTitle, userCategory, userId) {
+        var memberHtml = '<div class="itemdiv memberdiv">'
+                        + '<div class="user"><i class="icon-user icon-3x"></i></div>'
+                        + '<div class="body">'
+                        + '<div class="name">' + userTitle + '</div>'
+                        + '<div><span class="label label-success label-sm">' + userCategory + '</span></div>'
+                        + '</div>'
+                        + '<span class="tools action-buttons"><a href="javascript:void(0)" class="red" onclick="delUser(' + userId + ')"><i class="icon-remove bigger-125"></i></a></span>'
+                        + '</div>';
+        return memberHtml;
+    }
+
+    function addUser() {
+        var userName = $.trim($("#txtAddUserMapping").val());
+        if (userName != null && userName != "") {
+            $.post('@Url.Content("~/Setting/AddUserMapping")', { userName: userName, activityId: _activityId, userType: _userType }, function (data) {
+                if (data != null) {
+                    if (data.Success) {
+                        $("#txtAddUserMapping").val('');
+                        userMappingInit(_activityId, _userType);
+                    } else if (data.errMessage != "") {
+                        $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                    }
+                }
+            }, 'json');
+        }
+    }
+
+    function delUser(userId) {
+        delConfirm(function () {
+            $.post('@Url.Content("~/Setting/DelUserMapping")', { id: userId }, function (data) {
+                if (data != null) {
+                    if (data.success) {
+                        userMappingInit(_activityId, _userType);
+                    } else if (data.errMessage != "") {
+                        $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                    }
+                }
+            }, 'json');
+        });
+    }
+</script>
+
+<div id="user-mapping-member-tab" class="tab-pane active" style="overflow-y:auto; height:300px">
+    <div id="user-mapping-clearfix" class="clearfix">
+
+    </div>
+</div>
+
+<div class="form-actions">
+    <div class="input-group">
+        <input placeholder="input name here ..." type="text" id="txtAddUserMapping" class="form-control">
+        <span class="input-group-btn">
+            <button class="btn btn-sm btn-info no-radius" type="button" id="btnAddUserMapping" onclick="addUser()">
+                <i class="icon-ok"></i>
+                Add
+            </button>
+        </span>
+    </div>
+</div>

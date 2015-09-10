@@ -1,0 +1,27 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model BI.SGP.Web.Models.test
+
+@section head{}
+@section featured{
+
+@using (Html.BeginForm("Test","Pricing",FormMethod.Post))
+{
+
+    <input id="ddd" value="adfasdfafasd"  disabled="disabled" />
+    @*@Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
+    @Html.TextBoxFor(Model => Model.id)*@
+    @*@Html.TextBoxFor(Model => Model.textname)*@
+
+    @*<input type="text" id="textname" name="dfadsfa" value="@ViewBag.test.id" />*@
+
+    <input type="submit" disabled="disabled"/>
+}
+}
+

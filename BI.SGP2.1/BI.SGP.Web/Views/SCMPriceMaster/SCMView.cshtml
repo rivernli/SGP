@@ -1,0 +1,258 @@
+﻿@using BI.SGP.BLL.Utils;
+@{
+    Layout = "~/Views/Shared/_SCMPriceMasterLayoutList.cshtml";
+}
+@section ActionButton{
+    @if (AccessControl.CurrentLogonUser.IsITAdmin())
+    {
+        @*<a href="javascript:void(0)" id="aCallback" title="CallBack">
+                <i class="icon-beaker bigger-140 green"></i>
+            </a>*@
+    }
+    @if (ViewBag.PageType == "Approval")
+    {
+        <a href="javascript:void(0)" id="aApproval" title="Approve">
+            <i class="icon-ok-sign bigger-140 green"></i>
+        </a>
+        <a href="javascript:void(0)" id="aReject" title="Reject">
+            <i class="icon-undo bigger-140 red"></i>
+        </a>
+        <a href="javascript:void(0)" id="aCancel" title="Cancel">
+            <i class="icon-trash bigger-140 red"></i>
+        </a>
+    }
+    @if (ViewBag.PageType == "Laminate" || ViewBag.PageType == "Prepreg")
+    {
+        <a href="javascript:void(0)" id="aRequest" title="Request">
+            <i class="icon-share-alt bigger-140"></i>
+        </a>
+    }
+    @if (ViewBag.PageType == "Laminate" || ViewBag.PageType == "Prepreg" || ViewBag.PageType == "Vendor")
+    {
+        <a href="javascript:void(0)" id="aUpload" title="Import">
+            <i class="icon-cloud-upload bigger-140 purple"></i>
+        </a>
+    }
+    @if (ViewBag.PageType == "Report")
+    {
+        <a href="javascript:void(0)" id="aReport" title="Report Export">
+            <i class="icon-download-alt bigger-140 blue"></i>
+        </a>
+    }
+    else
+    {
+        <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+            <i class="icon-cloud-download bigger-140 pink"></i>
+        </a>
+    }
+    <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+        <i class="icon-refresh bigger-140 green"></i>
+    </a>
+}
+@section FootScript{
+    <script type="text/javascript">
+        var gridRowsObject = {};
+        var pageType = '@ViewBag.PageType';
+        var categoryName = '@ViewBag.CategoryName';
+        var searchGroup = '@ViewBag.SearchGroup';
+        var gridGroup = '@ViewBag.GridGroup';
+        $(document).ready(function () {
+            $("#form-searchBox").biSearchBox({
+                groupName: searchGroup,
+                dataUrl: '@Url.Content("~/SCMPriceMaster/GenerateQuery")',
+                searchButton: 'btnSearch'
+            });
+
+            $("#grid-table").biGrid({
+                postData: { pageType: pageType },
+                groupName: gridGroup,
+                dataUrl: '@Url.Content("~/SCMPriceMaster/GetGridData")',
+                pager: 'grid-pager',
+                sortname: function () {
+                    if (pageType == "Vendor") {
+                        return 'QuoteID';
+                    } else if (pageType == "Approval") {
+                        return 'QuoteDate'
+                    } else if (pageType == "Laminate" || pageType == "Prepreg" || pageType == "Report") {
+                        return 'ID';
+                    }
+                },
+                sortorder: 'DESC',
+                widthRelateElement: 'searchPanel',
+                extSqlColumns: function () {
+                    if (pageType == "Vendor") {
+                        return 'ID,QuoteID,QuoteStatus';
+                    } else if (pageType == "Approval") {
+                        return 'ID,QuoteID,QuoteStatus,QuoteDate';
+                    } else if (pageType == "Laminate" || pageType == "Prepreg") {
+                        return 'ID,RequestStatus,QuoteDate';
+                    } else if (pageType == "Report") {
+                        return 'ID';
+                    }
+                },
+                extColumns: [
+                    { index: -1, title: ' ', model: { name: 'myac', width: 60, sortable: false, resizable: false, align: 'center' } }
+                ],
+                formatters: {
+                    myac: function (cellvalue, options, rowObject) {
+                        gridRowsObject[options.rowId] = rowObject;
+                    },
+                    RequestStatus: function (cellvalue, options, rowObject) {
+                        if (cellvalue == null || cellvalue == "") {
+                            return "";
+                        } else {
+                            var labelClass;
+                            if (rowObject["RequestStatus"] == "Free") {
+                                labelClass = "label-info";
+                            } else if (rowObject["RequestStatus"] == "InProcess") {
+                                labelClass = "label-warning";
+                            }
+                            return '<span class="label ' + labelClass + ' arrowed arrowed-right">' + cellvalue + '</span>';
+                        }
+                    },
+                    QuoteStatus: function (cellvalue, options, rowObject) {
+                        if (cellvalue == null || cellvalue == "") {
+                            return "";
+                        } else {
+                            var labelClass;
+                            if (rowObject["QuoteStatus"] == "Launch") {
+                                labelClass = "label-info";
+                            } else if (rowObject["QuoteStatus"] == "Quoted") {
+                                labelClass = "label-yellow";
+                            } else if (rowObject["QuoteStatus"] == "Rise") {
+                                labelClass = "label-warning";
+                            } else if (rowObject["QuoteStatus"] == "Reject") {
+                                labelClass = "label-danger";
+                            } else if (rowObject["QuoteStatus"] == "Approved") {
+                                labelClass = "label-success";
+                            }
+                            return '<span class="label ' + labelClass + ' arrowed arrowed-right">' + cellvalue + '</span>';
+                        }
+                    }
+                },
+            });
+
+            $("#btnSearch").on('click', function (e) {
+                $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+            })
+
+            $("#aApproval").on('click', function (e) {
+                if (confirm("Please confirm whether approving the selected records?")) {
+                    var gid = "#grid-table";
+                    var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+
+                    if (selectedIds != null && selectedIds.length > 0) {
+                        var keyValues = new Array();
+                        for (var i = 0; i < selectedIds.length; i++) {
+                            keyValues.push(gridRowsObject[selectedIds[i]]["QuoteID"]);
+                        }
+                        $.bi.overlay.show();
+                        $.post('@Url.Content("~/SCMPriceMaster/ApproveQuote")', { keyValues: keyValues.join() }, function (data) {
+                            $.bi.overlay.hide();
+                            if (data.success) {
+                                $.bi.dialog.show({ title: "Message", content: "Operation successfully completed!" });
+                            } else {
+                                $.bi.dialog.show({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                            }
+                            $('#grid-table').jqGrid().trigger("reloadGrid");
+                        }, "json");
+                    }
+                }
+            })
+
+            $("#aReject").on('click', function (e) {
+                if (confirm("Please confirm whether rejecting the selected records?")) {
+                    var gid = "#grid-table";
+                    var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+
+                    if (selectedIds != null && selectedIds.length > 0) {
+                        var keyValues = new Array();
+                        for (var i = 0; i < selectedIds.length; i++) {
+                            keyValues.push(gridRowsObject[selectedIds[i]]["QuoteID"]);
+                        }
+                        $.bi.overlay.show();
+                        $.post('@Url.Content("~/SCMPriceMaster/RejectQuote")', { keyValues: keyValues.join() }, function (data) {
+                            $.bi.overlay.hide();
+                            if (data.success) {
+                                $.bi.dialog.show({ title: "Message", content: "Operation successfully completed!" });
+                            } else {
+                                $.bi.dialog.show({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                            }
+                            $('#grid-table').jqGrid().trigger("reloadGrid");
+                        }, "json");
+                    }
+                }
+            })
+
+            $("#aCancel").on('click', function (e) {
+                if (confirm("Please confirm whether cancelling the selected records?")) {
+                    var gid = "#grid-table";
+                    var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+
+                    if (selectedIds != null && selectedIds.length > 0) {
+                        var keyValues = new Array();
+                        for (var i = 0; i < selectedIds.length; i++) {
+                            keyValues.push(gridRowsObject[selectedIds[i]]["QuoteID"]);
+                        }
+                        $.bi.overlay.show();
+                        $.post('@Url.Content("~/SCMPriceMaster/CancelQuote")', { keyValues: keyValues.join() }, function (data) {
+                            $.bi.overlay.hide();
+                            if (data.success) {
+                                $.bi.dialog.show({ title: "Message", content: "Operation successfully completed!" });
+                            } else {
+                                $.bi.dialog.show({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                            }
+                            $('#grid-table').jqGrid().trigger("reloadGrid");
+                        }, "json");
+                    }
+                }
+            })
+
+            $("#aRequest").on('click', function (e) {
+                if (confirm("Please confirm whether requesting the selected records?")) {
+                    var gid = "#grid-table";
+                    var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+
+                    if (selectedIds != null && selectedIds.length > 0) {
+                        var keyValues = new Array();
+                        for (var i = 0; i < selectedIds.length; i++) {
+                            keyValues.push(gridRowsObject[selectedIds[i]]["ID"]);
+                        }
+                        $.bi.overlay.show();
+                        $.post('@Url.Content("~/SCMPriceMaster/RequestToVendor")', { KeyValues: keyValues.join() }, function (data) {
+                            $.bi.overlay.hide();
+                            if (data.success) {
+                                $.bi.dialog.show({ title: "Message", content: "Operation successfully completed!" });
+                            } else {
+                                $.bi.dialog.show({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                            }
+                            $('#grid-table').jqGrid().trigger("reloadGrid");
+                        }, "json");
+                    }
+                }
+            })
+
+            $("#aRefresh").on('click', function (e) {
+                refresh();
+            })
+
+            $("#aUpload").on('click', function (e) {
+                showFilesDialog();
+            })
+
+            $("#aDownload").on('click', function (e) {
+                showExportDialog(e);
+            })
+
+            $("#aReport").on('click', function (e) {
+                var urlParam = "?categoryName=" + categoryName;
+                var queryParam = $.param($("#form-searchBox").biSearchBox('getData'));
+                if (queryParam != "") {
+                    urlParam += ("&" + queryParam);
+                }
+                window.open('@Url.Content("~/SCMPriceMaster/ExportReport")' + urlParam);
+            })
+        });
+    </script>
+    @Html.Partial("~/Views/SCMPriceMaster/Import.cshtml")
+}

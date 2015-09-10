@@ -1,0 +1,27 @@
+﻿<style type='text/css'>
+    p, span, div, table tr td {
+        font: 12px verdana,microsoft sans serif;
+    }
+</style>
+<div style='font:12px Verdana,microsoft sans serif'>
+    <div><img src='https://sgp-sys.multek.com/Common/Content/Images/Multek-ID-PMS.gif' /></div><br />
+    Dear @{GAMBDM}<br><br>
+    
+    The Quote for for <b>@{CustomerPartNumber}, @{Revision}, @{ProgramName}</b> has been submitted to <b>@{CustomerContact}</b> of <b>@{OEM}</b>.<br><br>
+
+    The RFQ is currently undergoing negotiation.<br><br>
+
+    <p>
+
+        Click here to view detail. <a href="@{SystemURL}/B2F/Detail?RFQID=@{RFQID}">
+            LINK
+        </a>
+    </p>
+
+    Best,<br>
+    @{PrimaryContact}<br><br>
+
+    <p>
+        * Please do not reply to this email since it is from an automated mailbox. We are unable to respond to your queries via return email.
+    </p>@{AttachPDF}
+</div>

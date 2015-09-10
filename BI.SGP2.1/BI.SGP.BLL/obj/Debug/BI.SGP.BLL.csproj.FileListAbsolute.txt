@@ -1,0 +1,16 @@
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\BI.SGP.BLL.dll.config
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\BI.SGP.BLL.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\BI.SGP.BLL.pdb
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\DBUtility.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\itextsharp.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\Newtonsoft.Json.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\NPOI.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\NPOI.OOXML.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\NPOI.OpenXml4Net.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\NPOI.OpenXmlFormats.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\DBUtility.pdb
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\bin\Debug\Newtonsoft.Json.xml
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\obj\Debug\BI.SGP.BLL.csprojResolveAssemblyReference.cache
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\obj\Debug\BI.SGP.BLL.dll
+D:\Company\tfs\Applications\BI.SGP2.1\BI.SGP.BLL\obj\Debug\BI.SGP.BLL.pdb

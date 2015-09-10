@@ -1,0 +1,25 @@
+﻿<style type='text/css'>
+    p, span, div, table tr td {
+        font: 12px verdana,microsoft sans serif;
+    }
+</style>
+<div style='font:12px Verdana,microsoft sans serif'>
+    <div><img src='https://sgp-sys.multek.com/Common/Content/Images/Multek-ID-PMS.gif' /></div><br />
+    Dear <b>@{PrimaryContact}</b><br><br>
+
+    Please find attached the Quote for for <b>@{CustomerPartNumber}, @{Revision}, @{ProgramName}</b> to be submitted to <b>@{CustomerContact}</b> of <b>@{OEM}</b>.
+
+    <p>
+
+        Click here to view detail. <a href="@{SystemURL}/B2F/Detail?RFQID=@{RFQID}">
+            LINK
+        </a>
+    </p>
+
+    <p>
+        Best,<br>
+        @{PricingAnalyst}<br><br><br>
+
+        * Please do not reply to this email since it is from an automated mailbox. We are unable to respond to your queries via return email.
+    </p>@{AttachPDF}
+</div>

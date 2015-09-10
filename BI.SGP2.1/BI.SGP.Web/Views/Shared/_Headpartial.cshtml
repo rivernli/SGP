@@ -1,0 +1,111 @@
+﻿
+<div class="navbar navbar-default" id="navbar">
+    <script type="text/javascript">
+        try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+    </script>
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    Smart Global Pricing1
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="purple" style="display:none">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="~/Pricing/PricingView">
+                        <i class="icon-tasks"></i>
+                        @{
+                            int taskCount = BI.SGP.BLL.WF.WFHelper.GetUserTaskCount(BI.SGP.BLL.Utils.AccessControl.CurrentLogonUser.Uid);
+                            <span class="badge badge-important" title="@taskCount task(s) to complete.">
+                                @taskCount
+                            </span>
+                        }
+                    </a>
+                </li>
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="javascript:void(0)" class="dropdown-toggle" onclick="showUserInfo()">
+                        <img class="nav-user-photo" src="~/assets/avatars/avatar2.png" />
+                        <span class="user-info">
+                            <small>
+                                @BI.SGP.BLL.Utils.AccessControl.CurrentLogonUser.Name
+                                <br />
+                                (@BI.SGP.BLL.Utils.AccessControl.CurrentLogonUser.Uid)
+                            </small>
+                        </span>
+                    </a>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div>
+</div>
+<script language="javascript">
+    var curUserId = '@BI.SGP.BLL.Utils.AccessControl.CurrentLogonUser.Uid';
+    function showUserInfo() {
+        $.bi.overlay.show();
+        $.post('@Url.Content("~/Accounts/Delegation")', function (data) {
+            $.bi.overlay.hide();
+            $.bi.dialog.show({
+                title: 'Delegation', content: data, width: 520, buttons: [], create: function () {
+                    $("#txtAddDelegation").autocomplete({
+                        source: '@Url.Content("~/Accounts/GetAccountList")'
+                    });
+                    $("#btnAddDelegation").on('click', function (e) {
+                        addDelegation();
+                    });
+                    initDelegationData();
+                }
+            });
+        }, 'html');
+    }
+
+    function addDelegation() {
+        var userName = $.trim($("#txtAddDelegation").val());
+        if (userName != null && userName != "") {
+            $.post('@Url.Content("~/Accounts/AddDelegation")', { userName: userName }, function (data) {
+                if (data != null) {
+                    if (data.success) {
+                        $("#txtAddDelegation").val('');
+                        loadDelegation(data.data);
+                    } else if (data.errMessage != "") {
+                        $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                    }
+                }
+            }, 'json');
+        }
+    }
+
+    function initDelegationData() {
+        $.post('@Url.Content("~/Accounts/GetDelegation")', function (data) {
+            loadDelegation(data);
+        }, 'json');
+    }
+
+    function loadDelegation(data) {
+        var iHtml = '';
+        if (data != null && data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                var userIcon = curUserId == data[i].ToUser ? "btn-info" : "btn-success";
+                iHtml += '<div class="profile-activity clearfix"><div><i class="pull-left thumbicon icon-user ' + userIcon + ' no-hover"></i>';
+                iHtml += '<b>' + data[i].FromUserName + '</b>(' + data[i].FromUser + ') Delegate To <b>' + data[i].ToUserName + '</b>(' + data[i].ToUser + ')';
+                iHtml += '<div class="time">Add on <i class="icon-time bigger-110"></i> ' + data[i].CreateTime + '</div></div>';
+                iHtml += '<div class="tools action-buttons"><a href="javascript:void(0)" class="red" onclick="delDelegation(\'' + data[i].ID + '\')"><i class="icon-remove bigger-125"></i></a></div>';
+                iHtml += '</div>';
+            }
+        }
+        $("#profileDelegation").html(iHtml);
+    }
+
+    function delDelegation(id) {
+        $.post('@Url.Content("~/Accounts/DelDelegation")', { id: id }, function (data) {
+            if (data != null) {
+                if (data.success) {
+                    initDelegationData();
+                } else if (data.errMessage != "") {
+                    $.bi.dialog.showErr({ title: "Error", content: data.errMessage });
+                }
+            }
+        }, 'json');
+    }
+</script>

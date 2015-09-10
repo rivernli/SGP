@@ -1,0 +1,122 @@
+﻿@using BI.SGP.Web.Models;
+@using BI.SGP.BLL.DataModels;
+@{
+    Layout = "~/Views/Shared/_CostingLayoutList.cshtml";
+}
+@section ActionButton{
+    <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+        <i class="icon-cloud-download bigger-140 pink"></i>
+    </a>
+    <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+        <i class="icon-refresh bigger-140 green"></i>
+    </a>
+}
+@section FootScript {
+    <script type="text/javascript">
+    var groupName = 'SCCostRate';
+    var gridGroup = 'SCCostRate';
+    var excelUrl = '@Url.Content("~/CostRate/DownExcel")';
+    $(document).ready(function () {
+        $("#form-searchBox").biSearchBox({
+            groupName: groupName,
+            dataUrl: '@Url.Content("~/CostRate/GenerateQuery")',
+            searchButton: 'btnSearch'
+        });
+
+        $("#btnSearch").on('click', function (e) {
+            loadGrid();
+        })
+
+        $("#aDownload").on('click', function (e) {
+            if (checkRequired()) {
+                showExportDialog(e);
+            }
+        })
+
+        $("#aRefresh").on('click', function (e) {
+            refresh();
+        })
+
+    });
+
+    function refresh() {
+        location.replace(location);
+    }
+
+    function checkRequired() {
+        var ver = $("#Version").val();
+        if (ver == null || ver == "") {
+            $.bi.dialog.show({ title: "Message", content: "\"Version\" is required", width: 200, iconCss: "icon-warning-sign red" });
+            return false;
+        }
+
+        return true;
+    }
+
+    function loadGrid() {
+        
+        if (!checkRequired()) {
+            return;
+        }
+
+        var searchData = $("#form-searchBox").biSearchBox('getData');
+        $.post('@Url.Content("~/CostRate/GetGridFields")', searchData, function (data) {
+            var rowNumCookieKey = "sgp_" + $.bi.getUrl() + "rowNum";
+            var cookieRowNum = $.bi.getCookie(rowNumCookieKey);
+            if (cookieRowNum == null || cookieRowNum == "") {
+                cookieRowNum = 10;
+            }
+            $('#grid-table').GridUnload();
+            $('#grid-table').jqGrid({
+                url: '@Url.Content("~/CostRate/GetGridData")',
+                postData: searchData,
+                sortname: 'Plant,CostMainItem,CostSecondItem,CostSubItem,MainWorkCenter',
+                sortorder: '',
+                datatype: "json",
+                rownumbers: true,
+                colNames: data.colNames,
+                colModel: data.colModel,
+                viewrecords: true,
+                rowNum: cookieRowNum,
+                multiselect: false,
+                multiboxonly: false,
+                rowList: [10, 20, 50, 100],
+                pager: 'grid-pager',
+                altRows: true,
+                loadComplete: function () {
+                    var table = this;
+                    $.bi.setCookie(rowNumCookieKey, $('#grid-table').jqGrid('getGridParam').rowNum);
+                    setTimeout(function () {
+                        updatePagerIcons();
+                        $("#grid-page").find(".ui-pg-selbox").val($('#grid-table').jqGrid('getGridParam').rowNum);
+                    }, 0);
+                },
+                recordpos: 'left',
+                height: 'auto',
+                shrinkToFit: false,
+                autowidth: true
+            });
+
+            $("#searchPanel").resize(function (e) {
+                $('#grid-table').jqGrid('setGridWidth', $("#searchPanel").width() - 2);
+            });
+
+        });
+    }
+
+    function updatePagerIcons() {
+        var replacement = {
+            'ui-icon-seek-first': 'icon-double-angle-left bigger-140',
+            'ui-icon-seek-prev': 'icon-angle-left bigger-140',
+            'ui-icon-seek-next': 'icon-angle-right bigger-140',
+            'ui-icon-seek-end': 'icon-double-angle-right bigger-140'
+        };
+        $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
+            var icon = $(this);
+            var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+            if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
+        });
+    }
+
+    </script>
+}

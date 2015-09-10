@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "UploadAttachment";
+}
+
+
+<html dir="ltr" lang="en-US">
+<head>
+    <meta charset="UTF-8" />
+
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="~/assets/fileupload/jquery-ui.min.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="~/assets/fileupload/jquery.ui.plupload.css" media="screen" />
+    <script type="text/javascript" src="~/assets/fileupload/jquery.js" charset="UTF-8"></script>
+</head>
+<body>
+                <div id="uploader">
+                </div>
+
+
+   
+          
+                <script type="text/javascript">
+                    // Initialize the widget when the DOM is ready
+                    $(function () {
+                        $("#uploader").plupload({
+                            // General settings
+                            runtimes: 'html5,flash,silverlight,html4',
+                            url: "/Export/UploadAttachment",
+                            max_file_size: '200mb',
+                            chunk_size: '1mb'
+                        });
+                    });
+                </script>
+    @*<script type="text/javascript">
+
+        $(function () {
+
+            $(".plupload_droptext").after("<li class=\"plupload_done ui-state-default plupload_file\" id=\"o_18v1ivr5oqrkjq91bo0p8r1v85a\" style=\"width:100px;\"><div class=\"plupload_file_thumb\" style=\"width:100px;height:60px;\"><div class=\"plupload_file_dummy ui-widget-content\" style=\"line-height:60px;\"><span class=\"ui-state-disabled\">gif </span></div></div><div class=\"plupload_file_status\"><div class=\"plupload_file_progress ui-widget-header\" style=\"width: 100%;\"> </div><span class=\"plupload_file_percent\">100%</span></div><div class=\"plupload_file_name\" title=\"action_refresh.gif\"><span class=\"plupload_file_name_wrapper\">action_refresh.gif </span></div><div class=\"plupload_file_action\"><img src='~/assets/img/done.gif' /></div><div class=\"plupload_file_size\">248 b</div> </li>");
+        });
+    </script>*@
+    <script type="text/javascript" src="~/assets/fileupload/jquery-ui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="~/assets/fileupload/plupload.full.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="~/assets/fileupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
+  
+</body>
+</html>

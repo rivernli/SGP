@@ -1,0 +1,166 @@
+﻿
+<div class="divEditor">
+    <form id="fm" method="post">
+        <input type="hidden" id="ID" name="ID" />
+        <table width="100%">
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Customer/OEM
+                </td>
+                <td width="28%" align="left">
+                    <input style=" width:100% !important" id="txCustomer_OEM" name="txCustomer_OEM" type="text" />
+                </td>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Program Name
+                </td>
+                <td width="31%" align="left">
+                    <input style=" width:100% !important" id="txProgramName" name="txProgramName" type="text" />                    
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Product Application
+                </td>
+                <td width="28%" align="left">
+                    <input style=" width:100% !important" id="txProductApplication" name="txProductApplication" type="text" />
+                </td>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    RFQ Initiator
+                </td>
+                <td width="31%" align="left">
+                    <input style=" width:100% !important" id="txRFQInitiator" name="txRFQInitiator" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Tech Costing
+                </td>
+                <td width="28%" align="left">
+                    <input style=" width:100% !important" id="txTechCosting" name="txTechCosting" type="text" />
+                </td>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Pricing Analyst
+                </td>
+                <td width="31%" align="left">
+                    <input style=" width:100% !important" id="txPricingAnalyst" name="txPricingAnalyst" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    RFQ Primary Contact
+                </td>
+                <td width="28%" align="left">
+                    <input style=" width:100% !important" id="txRFQPrimaryContact" name="txRFQPrimaryContact" type="text" />
+                </td>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    GAM BDM
+                </td>
+                <td width="31%" align="left">
+                    <input style=" width:100% !important" id="txGAMBDM" name="txGAMBDM" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Customer Contact
+                </td>
+                <td width="28%" align="left">
+                    <input style=" width:100% !important" id="txCustomerContact" name="txCustomerContact" type="text" />
+                </td>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Terms Conditions
+                </td>
+                <td width="31%" align="left">
+                    <input style=" width:100% !important" id="txTermsConditions" name="txTermsConditions" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    Market Segment
+                </td>
+                <td width="28%" align="left">
+                    <input style=" width:100% !important" id="txMarketSegment" name="txMarketSegment" type="text" />
+                </td>
+                <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;"> 
+                </td>
+                <td width="31%" align="left"> 
+                </td>
+            </tr> 
+            <tr>
+                <td colspan="4" align="center">
+                    <button id="btnSave" class="btn btn-primary" title="" onclick="saveData(); return false;">
+                        Save
+                        <i class="icon-save small-30"></i>
+                    </button> 
+                </td>
+            </tr>         
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    function CustomePeopleloadData(keyValue) {
+        var id = keyValue;
+        if (id != null && id != "") {
+            $.post('@Url.Content("~/CustomerOEMBasedDefaults/GetCustomerOEMbasedDefaultsDetail")', { ID: id }, function (data) {
+                fillData(data);
+            });
+        }
+    }
+
+    //Edit View
+    function fillData(data) {
+        $("#ID").val(data.ID);
+        $("#txCustomer_OEM").val(data.Customer_OEM);
+        $("#txProgramName").val(data.ProgramName);
+        $("#txProductApplication").val(data.ProductApplication);
+        $("#txRFQInitiator").val(data.RFQInitiator);
+        $("#txTechCosting").val(data.TechCosting);
+        $("#txPricingAnalyst").val(data.PricingAnalyst);
+        $("#txRFQPrimaryContact").val(data.RFQPrimaryContact);
+        $("#txGAMBDM").val(data.GAMBDM);
+        $("#txCustomerContact").val(data.CustomerContact);
+        $("#txTermsConditions").val(data.TermsConditions);
+        $("#txMarketSegment").val(data.MarketSegment);
+    }
+
+    //Save Data
+    function saveData() {
+        if ($.trim($("#txCustomer_OEM").val()).length == 0) {
+            $.bi.dialog.show({ title: 'Message', content: ' Customer/OEM is required', width: 300 });
+            return false;
+        }
+                
+
+        $.bi.overlay.show();
+        var ID = $("#ID").val();
+        var Customer_OEM = $("#txCustomer_OEM").val();
+        var ProgramName = $("#txProgramName").val();
+        var ProductApplication = $("#txProductApplication").val();
+        var RFQInitiator = $("#txRFQInitiator").val();
+        var TechCosting = $("#txTechCosting").val();
+        var PricingAnalyst =$("#txPricingAnalyst").val();
+        var RFQPrimaryContact = $("#txRFQPrimaryContact").val();
+        var GAMBDM = $("#txGAMBDM").val();
+        var CustomerContact = $("#txCustomerContact").val();
+        var TermsConditions = $("#txTermsConditions").val();
+        var MarketSegment = $("#txMarketSegment").val();
+        
+        $.post('@Url.Content("~/CustomerOEMBasedDefaults/SaveData")', { ID: ID, Customer_OEM: Customer_OEM, ProgramName: ProgramName, ProductApplication: ProductApplication, RFQInitiator: RFQInitiator, TechCosting: TechCosting, PricingAnalyst: PricingAnalyst, RFQPrimaryContact: RFQPrimaryContact, GAMBDM: GAMBDM, CustomerContact: CustomerContact, TermsConditions: TermsConditions, MarketSegment: MarketSegment }, function (data) {
+            $.bi.overlay.hide();
+            if (data.success) {
+                $.bi.dialog.show({ title: 'Success', content: ' Successful Operation', width: 300 });
+                fillData(data.data);
+            } else {
+                if (!data.success) {
+                    $.bi.dialog.showErr({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                }
+            }
+        }, "json");
+    }
+
+</script>
+
+
+
+

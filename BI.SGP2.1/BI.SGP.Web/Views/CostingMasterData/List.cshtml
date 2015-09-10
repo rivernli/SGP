@@ -1,0 +1,217 @@
+﻿@using BI.SGP.Web.Models;
+@using BI.SGP.BLL.DataModels;
+@{
+    Layout = "~/Views/Shared/_CostingLayoutList.cshtml";
+    FieldCategory category = ViewBag.Category;
+    TableParams tableParams = ViewBag.TableParams;
+}
+@section ActionButton{
+    @if (ViewBag.History != "yes")
+    { 
+        <a href="javascript:void(0)" onclick="doEdit(0)" target="_blank" title="Create New">
+            <i class="icon-plus-sign bigger-140 green"></i>
+        </a>
+        if (tableParams.TableType == TableParams.TableType_PriceMaster)
+        {
+            <a href="@Url.Content("~/CostingMasterData/History")/@category.CategoryName" target="_blank" title="History">
+                <i class="icon-calendar bigger-140 orange"></i>
+            </a>
+        }
+        <a href="javascript:void(0)" id="aUpload" title="Import">
+            <i class="icon-cloud-upload bigger-140 purple"></i>
+        </a>
+    }
+    
+    <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+        <i class="icon-cloud-download bigger-140 pink"></i>
+    </a>
+    <a href="javascript:void(0)" id="aDelete" title="Batch Delete">
+        <i class="icon-trash bigger-140 red"></i>
+    </a>
+    <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+        <i class="icon-refresh bigger-140 green"></i>
+    </a>
+}
+@section FootScript {
+<script type="text/javascript">
+    var historyPage = '@ViewBag.History';
+    var categoryName = '@category.CategoryName';
+    var tableType = '@tableParams.TableType';
+    var sortname, sortorder;
+    var orderBy = '@tableParams.OrderBy';
+    if (historyPage == 'yes') {
+        sortname = "ExpiryDate";
+        sortorder = "DESC";
+    } else {
+        if (orderBy == '') {
+            sortname = "ID";
+            sortorder = "ASC";
+        } else {
+            sortname = orderBy;
+            sortorder = "";
+        }
+    }
+    $(document).ready(function () {
+        $("#form-searchBox").biSearchBox({
+            groupName: categoryName,
+            dataUrl: '@Url.Content("~/CostingMasterData/GenerateQuery")',
+            searchButton: 'btnSearch'
+        });
+
+        var extSqlColumns, extColumns;
+        if (historyPage == 'yes') {
+            extSqlColumns = "ID,ExpiryDate";
+            extColumns = [{ index: 0, title: 'Expiry Date', model: { name: 'ExpiryDate', index: 'ExpiryDate', width: 150, align: 'center' } }];
+        } else {
+            extSqlColumns = "ID";
+            extColumns = [{ index: 0, title: ' ', model: { name: 'myac', width: 55, sortable: false, resizable: false, align: 'center' } }];
+            if (tableType == "2") {
+                extSqlColumns += ",(SELECT Status FROM SCM_Version WHERE Version=t.Version) AS VersionStatus";
+            } else if (tableType == "3") {
+                extSqlColumns += ",(SELECT Status FROM SCM_Period WHERE Period=t.Period) AS PeriodStatus";
+            }
+        }
+
+        if (tableType == "3") {
+            extSqlColumns += ",CreatorName";
+            extColumns.push({ index: -1, title: 'Creator', model: { name: 'CreatorName', width: 100 } });
+        }
+
+        $("#grid-table").biGrid({
+            groupName: categoryName,
+            dataUrl: '@Url.Content("~/CostingMasterData/GetGridData")',
+            postData: { historyPage: historyPage },
+            pager: 'grid-pager',
+            sortname: sortname,
+            sortorder: sortorder,
+            widthRelateElement: 'searchPanel',
+            multiselect: false,
+            multiboxonly: false,
+            extSqlColumns: extSqlColumns,
+            extColumns: extColumns,
+            formatters: {
+                myac: function (cellvalue, options, rowObject) {
+                    if (tableType == 1 || (tableType == 2 && rowObject["VersionStatus"] == "Draft") || (tableType == 3 && (rowObject["PeriodStatus"] == "Draft" || rowObject["PeriodStatus"] == "Active"))) {
+                        return '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>' +
+                           '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="doDelete(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>';
+                    } else {
+                        return "";
+                    }
+                }
+            },
+        });
+
+        $("#btnSearch").on('click', function (e) {
+            $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+        })
+
+        $("#aRefresh").on('click', function (e) {
+            refresh();
+        })
+
+        $("#aDownload").on('click', function (e) {
+            showExportDialog(e);
+        })
+
+        $("#aUpload").on('click', function (e) {
+            showFilesDialog();
+        })
+
+        $("#aUpload").on('click', function (e) {
+            showFilesDialog();
+        })
+
+        $("#aDelete").on('click', function (e) {
+            batchDelete();
+        })
+    });
+
+    function refresh() {
+        location.replace(location);
+    }
+
+    function doEdit(id) {
+        $.post('@Url.Content("~/CostingMasterData/GenrateCategory")', { dataId: id, categoryName: categoryName }, function (data) {
+            if (data.success) {
+                $.bi.dialog.show({
+                    id: 'editData', title: ' ', content: data.html, width: '800px', buttons: [
+                    {
+                        html: "<i class='icon-ok bigger-110'></i>&nbsp; Save &nbsp;",
+                        "class": "btn btn-success btn-xs",
+                        click: function () {
+                            var postData = {
+                                dataId: id,
+                                categoryName: categoryName,
+                                data: $.bi.form.getCategoryData('fm-@category.ID')
+                            };
+                            $(this).dialog("destroy");
+
+                            $.post('@Url.Content("~/CostingMasterData/SaveData")', { postData: JSON.stringify(postData) }, function (data) {
+                                $.bi.overlay.hide();
+                                if (!data.success) {
+                                    $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                                } else {
+                                    $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+                                    $("#btnSearch").click();
+                                }
+                            }, "json");
+                        }
+                    },
+                    {
+                        html: "<i class='icon-remove bigger-110'></i>&nbsp; Cancel",
+                        "class": "btn btn-xs",
+                        click: function () {
+                            $(this).dialog("destroy");
+                        }
+                    }],
+                    create: function () {
+                        $.bi.setComponentEvent();
+                        if (id > 0) {
+                            $(".fm-category").find("#Version").attr("disabled", "disabled");
+                        }
+                    }
+                });
+            } else {
+                if (!data.success) {
+                    $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                }
+            }
+        }, "json");
+    }
+
+    function doDelete(id) {
+        $.bi.dialog.showDelete({
+            okAction: function () {
+                $.post('@Url.Content("~/CostingMasterData/DelData")', { dataId: id, categoryName: categoryName }, function (data) {
+                    if (data.success) {
+                        $("#btnSearch").click();
+                    } else {
+                        if (!data.success) {
+                            $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                        }
+                    }
+                }, "json");
+                return true;
+            }
+        });
+    }
+
+    function batchDelete() {
+        $.bi.dialog.showDelete({
+            okAction: function () {
+                $.post('@Url.Content("~/CostingMasterData/BatchDelete")', { categoryName: categoryName }, function (data) {
+                    if (data.success) {
+                        $("#btnSearch").click();
+                    } else {
+                        if (!data.success) {
+                            $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                        }
+                    }
+                }, "json");
+                return true;
+            }
+        });
+    }
+</script>
+@Html.Partial("~/Views/CostingMasterData/Import.cshtml")
+}

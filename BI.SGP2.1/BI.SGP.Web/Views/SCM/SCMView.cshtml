@@ -1,0 +1,69 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    ViewBag.Title = "SCMView";
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
+}
+@section ActionButton{
+    <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+        <i class="icon-cloud-download bigger-140 pink"></i>
+    </a>
+    <a href="javascript:void(0)" id="aFieldSetting" title="Field Setting">
+        <i class="icon-cog bigger-140 red"></i>
+    </a>
+    <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+        <i class="icon-refresh bigger-140 green"></i>
+    </a>
+}
+@section FootScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#form-searchBox").biSearchBox({
+                groupName: searchGroup,
+                searchButton: 'btnSearch'
+            });
+
+            $("#grid-table").biGrid({
+                groupName: gridGroup,
+                pager: 'grid-pager',
+                sortname: 'RFQID',
+                sortorder: 'DESC',
+                widthRelateElement: 'searchPanel',
+                extSqlColumns: 'RFQID,StatusID,TemplateID',
+                extColumns: [
+                    { index: 0, title: ' ', model: { name: 'myac', width: 100, sortable: false, resizable: false, align: 'center' } }
+                ],
+                formatters: {
+                    myac: function (cellvalue, options, rowObject) {
+                        gridRowsObject[options.rowId] = rowObject;
+                        return '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["TemplateID"] + '\', \'' + rowObject["RFQID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>' +
+                               '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="doDelete(\'' + rowObject["RFQID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>' +
+                               '<div title="history" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-edit" onclick="history(\'' + rowObject["RFQID"] + '\');" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon icon-calendar orange"></span></div>';
+                    },
+                    Number: function (cellvalue, options, rowObject) {
+                        cellvalue = cellvalue || "";
+                        var ahref = rowObject["TemplateID"] == "2" ? '@Url.Content("~/VVI/VVIPricingDetail")' : '@Url.Content("~/VVI/VVIPricingDetail")';
+                        cellvalue = "<a href='" + ahref + "?RFQID=" + rowObject["RFQID"] + "' target='_blank'>" + cellvalue + "</a>";
+                        return cellvalue;
+                    },
+                    WFStatus: function (cellvalue, options, rowObject) {
+                        if (cellvalue == null || cellvalue == "") {
+                            return "";
+                        } else {
+                            var labelClass;
+                            if (rowObject["StatusID"] == "9") {
+                                labelClass = "label-success";
+                            } else {
+                                labelClass = "label-info";
+                            }
+                            return '<span class="label ' + labelClass + ' arrowed arrowed-right" style="cursor:pointer" onclick="$.bi.timeline.show(' + rowObject["TemplateID"] + ',\'' + rowObject["RFQID"] + '\')">' + cellvalue + '</span>';
+                        }
+                    },
+                    VIForm: function (cellvalue, options, rowObject) {
+                        cellvalue = cellvalue || "";
+                        return "<a href='javascript:void(0)' onclick='TransformGPToVI(\"" + rowObject["RFQID"] + "\", \"" + cellvalue + "\")'>" + cellvalue + "</a>";
+                    }
+                },
+            });
+        });
+    </script>    
+}

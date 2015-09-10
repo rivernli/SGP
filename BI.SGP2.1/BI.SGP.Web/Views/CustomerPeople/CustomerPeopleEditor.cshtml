@@ -1,0 +1,177 @@
+﻿
+    <div class="divEditor">
+        <form id="fm" method="post">
+            <input type="hidden" id="ID" name="ID" />
+            <input type="hidden" id="CustomerId" name="CustomerId" />
+            <table width="100%">
+                <tr>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Name
+                    </td>
+                    <td width="28%" align="left">
+                        <input style=" width:100% !important" id="Name" name="Name" type="text" />
+                    </td>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Gender
+                    </td>
+                    <td width="31%" align="left">
+                        @*<input style=" width:100% !important" id="Gender" name="Gender" type="text" />*@
+                        <select class="form-control" style="width:100% !important" id="Gender" name="Gender">
+                            <option value=""></option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr >
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Age
+                    </td>
+                    <td width="28%" align="left">
+                        <input style=" width:100% !important" id="Age" name="Age" type="text" />
+                    </td>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Title
+                    </td>
+                    <td width="31%" align="left">
+                        <input style=" width:100% !important" id="Title" name="Title" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Country
+                    </td>
+                    <td width="28%" align="left">
+                        <input style=" width:100% !important" id="Country" name="Country" type="text" />
+                    </td>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        City
+                    </td>
+                    <td width="31%" align="left">
+                        <input style=" width:100% !important" id="City" name="City" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Language
+                    </td>
+                    <td width="28%" align="left">
+                        <input style=" width:100% !important" id="Language" name="Language" type="text" />
+                    </td>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Phone
+                    </td>
+                    <td width="31%" align="left">
+                        <input style=" width:100% !important" id="Phone" name="Phone" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Mobile
+                    </td>
+                    <td width="28%" align="left">
+                        <input style=" width:100% !important" id="Language" name="Language" type="text" />
+                    </td>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                    </td>
+                    <td width="31%" align="left">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Hobbies
+                    </td>
+                    <td width="28%" align="left" colspan="3">
+                       <textarea class="form-control" style=" width:100% !important" id="Hobbies" name="Hobbies" rows="3"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:#edf3f4;border:1px solid #dcebf7;width:10%;">
+                        Other
+                    </td>
+                    <td width="28%" align="left" colspan="3">
+                        <textarea class="form-control" style=" width:100% !important" id="Other" name="Other" rows="3"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="center">
+                        <button id="btnSave" class="btn btn-primary" title="" onclick="saveData(); return false;">
+                            Save
+                            <i class="icon-save small-30"></i>
+                        </button>
+                        <label id="lblErrorMessage" style="background-color:red"></label>                        
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+<script type="text/javascript">
+
+    function CustomePeopleloadData(keyValue, CustomerId) {
+        var id = keyValue;
+        $("#CustomerId").val(CustomerId);
+        
+        if (id != null && id != "") {
+            $.post('@Url.Content("~/CustomerPeople/GetCustomerPeopleDetail")', { ID: id }, function (data) {
+                fillData(data);
+            });
+        }
+    }
+
+    //Edit View
+    function fillData(data) {
+        $("#ID").val(data.ID);
+        $("#CustomerId").val(data.CustomerId);
+        $("#Name").val(data.Name);
+        $("#Gender").val(data.Gender);
+        $("#Age").val(data.Age);
+        $("#Title").val(data.Title);
+        $("#Country").val(data.Country);
+        $("#City").val(data.City);
+        $("#Language").val(data.Language);
+        $("#Phone").val(data.Phone);
+        $("#Mobile").val(data.Mobile);
+        $("#Hobbies").val(data.Hobbies);
+        $("#Other").val(data.Other);
+    }
+
+    //Save Data
+    function saveData() {
+        if ($("#Name").val().length == 0)
+        {
+            $("#lblErrorMessage").html('Name is required');
+            return false;
+        }
+
+        $.bi.overlay.show();
+        var ID = $("#ID").val();
+        var CustomerId = $("#CustomerId").val();
+        var Name = $.trim($("#Name").val());
+        var Gender = $.trim($("#Gender").val());
+        var Age = $.trim($("#Age").val());
+        var Title = $.trim($("#Title").val());
+        var Country = $.trim($("#Country").val());
+        var City = $.trim($("#City").val());
+        var Language = $.trim($("#Language").val());
+        var Phone = $.trim($("#Phone").val());
+        var Mobile = $.trim($("#Mobile").val());
+        var Hobbies = $.trim($("#Hobbies").val());
+        var Other = $.trim($("#Other").val());
+
+        $.post('@Url.Content("~/CustomerPeople/SaveData")', { ID: ID, CustomerId: CustomerId, Name: Name, Gender: Gender, Age: Age, Title: Title, Country: Country, Cit: City, Language: Language, Phone: Phone, Mobile: Mobile, Hobbies: Hobbies, Other: Other }, function (data) {
+            $.bi.overlay.hide();
+            if (data.success) {
+                $.bi.dialog.show({ title: 'Success', content: ' Successful Operation', width: 300 });
+                fillData(data.data);
+            } else {
+                if (!data.success) {
+                    $.bi.dialog.showErr({ title: "Message", content: data.message, iconCss: "icon-warning-sign red" });
+                }
+            }
+        }, "json");
+    }
+</script>
+
+
+

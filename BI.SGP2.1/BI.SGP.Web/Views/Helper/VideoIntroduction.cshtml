@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "VideoIntroduction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head
+{
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+        <title></title>
+        @*<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+            <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="~/assets/css/select2.css" />
+            <link rel="stylesheet" href="~/assets/css/opensans.css" />
+            <link rel="stylesheet" href="~/assets/css/ace.min.css" />
+            <link rel="stylesheet" href="~/assets/css/ace-rtl.min.css" />
+            <link rel="stylesheet" href="~/assets/css/ace-skins.min.css" />
+            <script src="~/assets/js/ace-extra.min.js"></script>*@
+
+
+        <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+        <link rel="stylesheet" href="~/assets/css/chosen.css" />
+        <link rel="stylesheet" href="~/assets/css/datepicker.css" />
+        <link rel="stylesheet" href="~/assets/css/bootstrap-timepicker.css" />
+        <link rel="stylesheet" href="~/assets/css/daterangepicker.css" />
+        <link rel="stylesheet" href="~/assets/css/colorpicker.css" />
+        <link rel="stylesheet" href="~/assets/css/opensans.css" />
+        <link rel="stylesheet" href="~/assets/css/ace.min.css" />
+        <link rel="stylesheet" href="~/assets/css/ace-rtl.min.css" />
+        <link rel="stylesheet" href="~/assets/css/ace-skins.min.css" />
+        <script src="~/assets/js/ace-extra.min.js"></script>
+        
+
+       
+            </head>
+        }
+        @section featured
+{
+            <div class="main-content">
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+        </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Pricing/PricingView">Home</a>
+                </li>
+
+                <li>
+                    <a href="~/Helper/VideoIntroduction">VideoIntroduction</a>
+                </li>
+
+            </ul><!-- .breadcrumb -->
+    
+
+        </div>
+    
+            
+                <div id="a1" style=" margin-top:30px;margin-left:150px;"></div>
+
+                <script type="text/javascript" src="~/assets/Video/ckplayer/ckplayer.js" charset="utf-8"></script>
+                <script type="text/javascript">
+                    
+                    
+
+                    var width = document.body.offsetWidth - document.getElementById('sidebar').offsetWidth - 300;
+                    var height = document.body.offsetHeight - document.getElementById('breadcrumbs').offsetHeight - document.getElementById('navbar').offsetHeight-600;
+                    var flashvars = {
+                        p: 1,
+                        e: 1
+                    };
+                    
+                    // var video = ['http://movie.ks.js.cn/flv/other/1_0.mp4->video/mp4'];
+                    var video = ['http://mcnnt800.asia.ad.flextronics.com/Common/assets/Video_00038.webm->video/webm'];
+                    
+                    var support = ['all'];
+                    CKobject.embedHTML5('a1', 'ckplayer_a1', width, height, video, flashvars, support);
+                </script>
+
+    </div>
+
+<script src='~/assets/js/jquery-2.0.3.min.js'></script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+<script src="~/assets/js/jquery-1.10.2.min.js"></script>
+<![endif]-->
+<!--[if !IE]> -->
+
+<script type="text/javascript">
+        window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-2.0.3.min.js")'>" + "<" + "/script>");
+</script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-1.10.2.min.js")'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+</script>
+<script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+<script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+<!-- page specific plugin scripts -->
+<!-- ace scripts -->
+<script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+<script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+<script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+<script src="@Url.Content("~/assets/js/chosen.jquery.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+<script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+<script src="@Url.Content("~/assets/js/easyui/easyloader.js")" type="text/javascript"></script>
+
+
+<div style="display:none"></div>
+
+
+
+   
+}

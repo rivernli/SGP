@@ -1,0 +1,5 @@
+D:\Company\tfs\Applications\BI.SGP2.1\DBUtility\bin\Debug\DBUtility.dll
+D:\Company\tfs\Applications\BI.SGP2.1\DBUtility\bin\Debug\DBUtility.pdb
+D:\Company\tfs\Applications\BI.SGP2.1\DBUtility\obj\Debug\DBUtility.csprojResolveAssemblyReference.cache
+D:\Company\tfs\Applications\BI.SGP2.1\DBUtility\obj\Debug\DBUtility.dll
+D:\Company\tfs\Applications\BI.SGP2.1\DBUtility\obj\Debug\DBUtility.pdb

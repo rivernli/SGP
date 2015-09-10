@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <title>System Message</title>
+    @*<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/assets/css/select2.css" />
+        <link rel="stylesheet" href="~/assets/css/opensans.css" />
+        <link rel="stylesheet" href="~/assets/css/ace.min.css" />
+        <link rel="stylesheet" href="~/assets/css/ace-rtl.min.css" />
+        <link rel="stylesheet" href="~/assets/css/ace-skins.min.css" />
+        <script src="~/assets/js/ace-extra.min.js"></script>*@
+
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+    <link rel="stylesheet" href="~/assets/css/chosen.css" />
+    <link rel="stylesheet" href="~/assets/css/datepicker.css" />
+    <link rel="stylesheet" href="~/assets/css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="~/assets/css/daterangepicker.css" />
+    <link rel="stylesheet" href="~/assets/css/colorpicker.css" />
+    <link rel="stylesheet" href="~/assets/css/opensans.css" />
+    <link rel="stylesheet" href="~/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="~/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/assets/css/ace-skins.min.css" />
+    <script src="~/assets/js/ace-extra.min.js"></script>
+
+
+
+
+</head>
+<body>
+    <div >
+        <div class="error-container">
+            <div class="well">
+                <h1 class="grey lighter smaller">
+                    <span class="blue bigger-125">
+                        <i class="icon-random"></i>
+
+                    </span>
+                    System Message
+                </h1>
+
+                <hr>
+                <h3 class="lighter smaller">
+                    @ViewBag.Message
+            </h3>
+
+            <div class="space"></div>
+
+            <div>
+                <h4 class="lighter smaller">Meanwhile, try one of the following:</h4>
+
+                <ul class="list-unstyled spaced inline bigger-110 margin-15">
+                    <li>
+                        <i class="icon-hand-right blue"></i>
+                        Click <a href="~/Helper/VideoIntroduction">here</a> to watch the system demo.
+                    </li>
+
+                    <li>
+                        <i class="icon-hand-right blue"></i>
+                        Give us more info on how this specific error occurred!
+                    </li>
+                    <li>
+                        <i class="icon-hand-right blue"></i>
+                        Contact <a href="mailto:multekbisupport@flextronics.com">IT support team.</a>
+                    </li>
+                </ul>
+            </div>
+
+            <hr>
+            <div class="space"></div>
+
+            <div class="center">
+                <a href="~/" class="btn btn-grey">
+                    <i class="icon-arrow-left"></i>
+                    Go Back
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

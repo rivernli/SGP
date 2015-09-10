@@ -1,0 +1,386 @@
+﻿@using BI.SGP.Web.Models;
+@using System.Data;
+@{
+    ViewBag.Title = "SupplierRFQImportExcel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head{
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <title>Batch Upload/Update Vendor RFQ</title>
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/font-awesome.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/opensans.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/jquery-ui-1.10.3.full.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/daterangepicker.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ui.jqgrid.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ace.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-rtl.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/ace-skins.min.css")" />
+    <script src="@Url.Content("~/assets/js/ace-extra.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/uploadify/jquery.uploadify.min.js")"></script>
+
+}
+@section featured {
+
+    <div class="main-content" style="background-color:white">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="~/Home/Home">Home</a>
+                </li>
+
+                <li>
+                    <a href="~/Import/ImportExcel">ImportExcel</a>
+                </li>
+                <li class="active">ImportExcel</li>
+            </ul><!-- .breadcrumb -->
+        </div>
+
+
+        <div class="widget-header widget-header-small">
+            <h4 class="blue smaller">
+                <i class="icon-cloud-upload"></i>
+                Batch Upload/Update Vendor RFQ
+            </h4>
+
+            <div class="widget-toolbar action-buttons">
+
+                @*<a href='#' id="tbnSubmit">
+                        <i class="icon-arrow-right bigger-140"></i>
+                        Submit
+                    </a>*@
+
+            </div>
+        </div>
+        <script>
+
+            window.onload = function () {
+
+
+
+            };
+
+        </script>
+        @using (Html.BeginForm("SupplierRFQLoadExcel", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Select File </div>
+
+                    <div class="profile-info-value">
+                        <div class="ace-file-input">
+
+                            <input type="file" name="excelname" id="id-input-file" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Action </div>
+
+                    <div class="profile-info-value">
+                        <button id="tbnSave" type="submit" class="btn btn-sm btn-info">
+                            <i class="icon-cloud-upload bigger-110"></i>
+                            Upload
+                        </button>
+                        <button id="tbnSubmit" type="submit" class="btn btn-sm btn-info" onclick="return submitData();">
+                            <i class="icon-ok bigger-110"></i>
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+        <div class="col-sm-zy1">
+
+
+            <div class="table-responsive">
+                @if (@ViewData["ExcelData"] != null)
+                {
+
+                    @Html.GetHtmlContent(@ViewData["ExcelData"] as DataTable)
+
+                }
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <script src='~/assets/js/jquery-2.0.3.min.js'></script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="~/assets/js/jquery-1.10.2.min.js"></script>
+    <![endif]-->
+    <!--[if !IE]> -->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery-2.0.3.min.js")'>" + "<" + "/script>");
+    </script>
+
+
+
+
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+    </script>
+
+
+    <script src="@Url.Content("~/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/typeahead-bs2.min.js")"></script>
+
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="@Url.Content("~/assets/js/jqGrid/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jqGrid/i18n/grid.locale-en.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery-ui-1.10.3.full.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/daterangepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/date-time/moment.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace-elements.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/ace.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/easyui/easyloader.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/publiclib.js")"></script>
+    <script type="text/javascript">
+
+        jQuery(function ($) {
+
+
+
+            $('table th input:checkbox').on('click', function () {
+                var that = this;
+                $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function () {
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                    alert($(thi).val);
+                });
+
+            });
+
+
+            $('[data-rel="tooltip"]').tooltip({ placement: tooltip_placement });
+            function tooltip_placement(context, source) {
+                var $source = $(source);
+                var $parent = $source.closest('table')
+                var off1 = $parent.offset();
+                var w1 = $parent.width();
+
+                var off2 = $source.offset();
+                var w2 = $source.width();
+
+                if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+                return 'left';
+            }
+        })
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var $t1 = $('#GridData');
+
+            $t1.wrapAll("<div style=\"overflow-x:scroll\"></div>");
+
+            var msg = '@ViewData["MSG"]';
+
+            if (msg != '') {
+                alert(msg);
+            }
+
+        });
+
+
+    </script>
+
+
+
+
+
+
+    @*<script type="text/javascript">
+        jQuery(function ($) {
+            $('#form-field-select-1').change(function (data) {
+                if ($(this).val() != null&&$(this).val().trim()!='') {
+                    window.open('@Url.Content("~/Export/DownloadTemplate")' + "?filename=" + $(this).val().trim()+'.xlsx');
+                }
+
+            });
+        });
+
+        </script>*@
+    <script type="text/javascript">
+        jQuery(function ($) {
+
+
+            $('#id-input-file-1 , #id-input-file-2').ace_file_input({
+                no_file: 'No File ...',
+                btn_choose: 'Choose',
+                btn_change: 'Change',
+                droppable: false,
+                onchange: null,
+                thumbnail: false //| true | large
+                //whitelist:'gif|png|jpg|jpeg'
+                //blacklist:'exe|php'
+                //onchange:''
+                //
+            });
+
+            $('#id-input-file').ace_file_input({
+                no_file: '',
+                btn_choose: 'choose',
+                btn_change: 'Change',
+
+                droppable: false,
+                thumbnail: false
+
+            }).on('change', function () {
+                //console.log($(this).data('ace_input_files'));
+                //console.log($(this).data('ace_input_method'));
+            });
+
+
+            //dynamically change allowed formats by changing before_change callback function
+            $('#id-file-format').removeAttr('checked').on('change', function () {
+                var before_change
+                var btn_choose
+                var no_icon
+                if (this.checked) {
+                    btn_choose = "Drop images here or click to choose";
+                    no_icon = "icon-picture";
+                    before_change = function (files, dropped) {
+                        var allowed_files = [];
+                        for (var i = 0 ; i < files.length; i++) {
+                            var file = files[i];
+                            if (typeof file === "string") {
+                                //IE8 and browsers that don't support File Object
+                                if (!(/\.(jpe?g|png|gif|bmp)$/i).test(file)) return false;
+                            }
+                            else {
+                                var type = $.trim(file.type);
+                                if ((type.length > 0 && !(/^image\/(jpe?g|png|gif|bmp)$/i).test(type))
+                                        || (type.length == 0 && !(/\.(jpe?g|png|gif|bmp)$/i).test(file.name))//for android's default browser which gives an empty string for file.type
+                                    ) continue;//not an image so don't keep this file
+                            }
+
+                            allowed_files.push(file);
+                        }
+                        if (allowed_files.length == 0) return false;
+
+                        return allowed_files;
+                    }
+                }
+                else {
+                    btn_choose = "Select Excel File here";
+                    no_icon = "icon-cloud-upload";
+                    before_change = function (files, dropped) {
+                        return files;
+                    }
+                }
+                var file_input = $('#id-input-file-3');
+                file_input.ace_file_input('update_settings', { 'before_change': before_change, 'btn_choose': btn_choose, 'no_icon': no_icon })
+                file_input.ace_file_input('reset_input');
+            });
+
+
+
+
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        var rootUrl = '@Url.Content("~/")';
+        function wfSkip(curId, toId) {
+            $.bi.wf.skip.close(0);
+
+            var gid = $('#GridData');
+            var keyValues = '';
+            $("#GridData tr td:nth-child(1)").each(function () {
+                if ($(this).text().trim().length > 0) {
+                    keyValues += $(this).text() + ',';
+                }
+
+            });
+
+            $.post('@Url.Content("~/Pricing/WFRunSkips")', { KeyValues: keyValues, ToID: toId }, function (data) {
+                $.bi.overlay.hide();
+                if (data.isPass) {
+
+                    $.bi.dialog.show({ title: "Submit", content: "operation successfully completed!" });
+                } else {
+                    $.bi.dialog.show({ title: "Message", content: data.MessageString, iconCss: "icon-warning-sign red" });
+                }
+                $('#grid-table').jqGrid().trigger("reloadGrid");
+            }, "json");
+        }
+
+        function submitData() {
+            var grid = $('#GridData');
+            var keyValues = new Array();
+            var row = jQuery("#GridData").jqGrid("getGridParam", "rowNum");
+            var number = '@ViewData["NUMBER"]';
+            $.post('@Url.Content("~/VVI/BatchSubmitVendorRFQ")' + "?NUMBER=" + number, function (data) {
+                if (data.isPass) {
+                    $.bi.dialog.show({ title: 'Success', content: 'Submit Success!', width: 300 });
+                }
+                else {
+                    $.bi.dialog.show({ title: 'Fail', content: data.MessageString, width: 800 });
+                }
+            });
+            return false;
+        }
+
+        function DownloadData() {
+            var gid = $('#GridData');
+            var keyValues = '';
+            $("#GridData tr td:nth-child(1)").each(function () {
+                if ($(this).text().trim().length > 0) {
+                    keyValues += $(this).text() + ',';
+                }
+
+            });
+
+            if (keyValues == '') {
+
+                $.bi.dialog.show({ title: "Error", content: "There is no data,please import data !", iconCss: "icon-warning-sign red" });
+            }
+            else {
+
+                window.open('@Url.Content("~/Import/DownloadData")');
+            }
+
+
+
+            return false;
+
+        }
+
+
+
+    </script>
+
+    <div style="display:none"></div>
+}

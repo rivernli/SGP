@@ -1,0 +1,118 @@
+﻿@using BI.SGP.Web.Models;
+@using BI.SGP.BLL.DataModels;
+@{
+    Layout = "~/Views/Shared/_CostingLayoutList.cshtml";
+    FieldCategory category = ViewBag.Category;
+}
+@section ActionButton{
+    <a href="javascript:void(0)" onclick="doEdit(0)" target="_blank" title="Create New">
+        <i class="icon-plus-sign bigger-140 green"></i>
+    </a>
+    <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+        <i class="icon-refresh bigger-140 green"></i>
+    </a>
+}
+@section FootScript {
+    <script type="text/javascript">
+        var categoryName = 'SCProcFlowGroup';
+        $(document).ready(function () {
+            $("#form-searchBox").biSearchBox({
+                groupName: categoryName,
+                searchButton: 'btnSearch'
+            });
+
+            $("#grid-table").biGrid({
+                groupName: categoryName,
+                pager: 'grid-pager',
+                sortname: 'ProcGroup,Sort,ID',
+                sortorder: '',
+                widthRelateElement: 'searchPanel',
+                extSqlColumns: 'ID',
+                multiselect: false,
+                multiboxonly: false,
+                extColumns: [
+                    { index: 0, title: ' ', model: { name: 'myac', width: 55, sortable: false, resizable: false, align: 'center' } }
+                ],
+                formatters: {
+                    myac: function (cellvalue, options, rowObject) {
+                        return '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["ID"] + '\',\'' + rowObject["Status"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>' +
+                                    '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="doDelete(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>';
+                    }
+                },
+            });
+
+            $("#btnSearch").on('click', function (e) {
+                $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+            })
+
+            $("#aRefresh").on('click', function (e) {
+                refresh();
+            })
+        });
+
+        function refresh() {
+            location.replace(location);
+        }
+
+        function doEdit(id, status) {
+            $.post('@Url.Content("~/CostingMasterData/GenrateCategory")', { dataId: id, categoryName: categoryName }, function (data) {
+                if (data.success) {
+                    $.bi.dialog.show({
+                        id: 'editData', title: ' ', content: data.html, width: '800px', buttons: [
+                        {
+                            html: "<i class='icon-ok bigger-110'></i>&nbsp; Save &nbsp;",
+                            "class": "btn btn-success btn-xs",
+                            click: function () {
+                                var postData = {
+                                    dataId: id,
+                                    categoryName: categoryName,
+                                    data: $.bi.form.getCategoryData('fm-2013')
+                                };
+                                $(this).dialog("destroy");
+
+                                $.post('@Url.Content("~/CostingMasterData/SaveOtherData")', { postData: JSON.stringify(postData) }, function (data) {
+                                    $.bi.overlay.hide();
+                                    if (!data.success) {
+                                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                                    } else {
+                                        $.bi.dialog.show({ title: 'Success', content: ' Successful Operation!', width: 300 });
+                                        $("#btnSearch").click();
+                                    }
+                                }, "json");
+                            }
+                        },
+                        {
+                            html: "<i class='icon-remove bigger-110'></i>&nbsp; Cancel",
+                            "class": "btn btn-xs",
+                            click: function () {
+                                $(this).dialog("destroy");
+                            }
+                        }]
+                    });
+                } else {
+                    if (!data.success) {
+                        $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                    }
+                }
+            }, "json");
+        }
+
+        function doDelete(id) {
+            $.bi.dialog.showDelete({
+                okAction: function () {
+                    $.post('@Url.Content("~/CostingMasterData/DelOtherData")', { dataId: id, categoryName: categoryName }, function (data) {
+                        if (data.success) {
+                            $("#btnSearch").click();
+                        } else {
+                            if (!data.success) {
+                                $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                            }
+                        }
+                    }, "json");
+                    return true;
+                }
+            });
+        }
+
+    </script>
+}

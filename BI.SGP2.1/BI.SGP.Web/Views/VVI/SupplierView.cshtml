@@ -1,0 +1,86 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
+}
+@section ActionButton{
+    <a href="@Url.Content("~/VVI/SupplierEdit")" target="_blank" title="Create Customer Profile">
+        <i class="icon-plus-sign bigger-140 green"></i>
+    </a>
+    <a href="javascript:void(0)" id="aDownload" title="Excel Export">
+        <i class="icon-cloud-download bigger-140 pink"></i>
+    </a>
+}
+@section FootScript {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#form-searchBox").biSearchBox({
+                groupName: searchGroup,
+                searchButton: 'btnSearch'
+            });
+
+            $("#grid-table").biGrid({
+                groupName: gridGroup,
+                pager: 'grid-pager',
+                sortname: 'SupplierName',
+                sortorder: 'asc',
+                widthRelateElement: 'searchPanel',
+                extSqlColumns: 'ID,StatusID',
+                extColumns: [
+                    { index: 0, title: ' ', model: { name: 'myac', width: 60, sortable: false, resizable: false, align: 'center' } }
+                    
+                ],
+                formatters: {
+                    myac: function (cellvalue, options, rowObject) {
+                        return '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>' +
+                               '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="doDelete(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>';
+                    },
+                    StatusID: function (cellvalue, options, rowObject) {
+                        if (cellvalue == null || cellvalue == "") {
+                            return "";
+                        } else {
+                            var labelClass;
+                            if (rowObject["StatusID"] == "9") {
+                                labelClass = "label-success";
+                            } else {
+                                labelClass = "label-info";
+                            }
+                            return '<span class="label ' + labelClass + ' arrowed arrowed-right" style="cursor:pointer" onclick="$.bi.timeline.show(2, \'' + rowObject["ID"] + '\')">' + cellvalue + '</span>';
+                        }
+                    }
+
+                },
+            });
+
+             $("#aDownload").on('click', function (e) {
+                showExportDialog(e);
+            })
+
+            $("#btnSearch").on('click', function (e) {
+                $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+            })
+        });
+
+        function doEdit(id) {
+            window.open('@Url.Content("~/VVI/SupplierEdit")' + '?ID=' + id);
+        }
+
+        function doDelete(id) {
+            $.bi.dialog.showDelete({
+                okAction: function () {
+                    $.post('@Url.Content("~/VVI/SupplierDel")', { ID: id }, function (data) {
+                        if (data.success) {
+                            $("#btnSearch").click();
+                        } else {
+                            if (!data.success) {
+                                $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                            }
+                        }
+                    }, "json");
+                    return true;
+                }
+            });
+        }
+
+    </script>
+}

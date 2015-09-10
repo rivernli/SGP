@@ -1,0 +1,58 @@
+﻿<script language="javascript">
+    function showExportDialog() {
+        var dialog = $("#excelDialog").removeClass('hide').dialog({
+            modal: true,
+            resizable: false,
+            title: "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='icon-ok'></i> Export</h4></div>",
+            title_html: true
+        });
+    }
+    function postToServer() {
+        var urlParam = "?excelList=" + $("#excelList").val() + "&renderType=" + $('input[name="renderType"]:checked').val();
+        var queryParam = $.param($.bi.form.getData("fm"));
+        if(queryParam != "") {
+            urlParam += ("&" + queryParam);
+        }
+        window.open('@Url.Content("~/Export/DownloadExcel")' + urlParam);
+        $("#excelDialog").dialog("close");
+    }
+</script>
+<div id="excelDialog" class="hide">
+    @using BI.SGP.BLL.DataModels;
+    @{
+        List<FieldGroup> grouplist = FieldGroup.GetExcelGroups();
+        var excelList = new List<SelectListItem>();
+
+        foreach (FieldGroup fieldGroup in grouplist)
+        {
+            SelectListItem item = new SelectListItem();
+            item.Text = fieldGroup.GroupName;
+            item.Value = fieldGroup.GroupID.ToString();
+            excelList.Add(item);
+        }
+    }
+    <table style="width:100%; height:60px" cellpadding="2" cellspacing="2">
+        <tr>
+            <td style="width:320px" valign="bottom">
+                @Html.DropDownList("excelList", excelList, new { @class = "form-control" })
+            </td>
+            <td valign="bottom" align="center">
+                <button id="btnExport" class="btn btn-app btn-success btn-sm" onclick="postToServer();return false;"><i class="icon-save small-30"></i></button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style=" padding-top:10px">
+                <label class="control-label "> &nbsp;Render Type:</label>
+                <label class="blue">
+                    <input name="renderType" value="1" type="radio" class="ace" checked />
+                    <span class="lbl"> Horizontal</span>
+                </label>
+                <label class="blue">
+                    <input name="renderType" value="2" type="radio" class="ace" />
+                    <span class="lbl"> Vertical</span>
+                </label>
+                <br>
+            </td>
+        </tr>
+    </table>
+</div>

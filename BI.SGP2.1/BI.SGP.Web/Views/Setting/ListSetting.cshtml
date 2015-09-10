@@ -1,0 +1,172 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <title>Smart Global Pricing</title>
+    <link rel="stylesheet" href="~/assets/js/easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" href="~/assets/js/easyui/themes/icon.css" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/assets/css/opensans.css" />
+    <link rel="stylesheet" href="~/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="~/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="~/assets/css/ace-skins.min.css" />
+</head>
+<body>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="row">
+                    <table>
+                        <tr>
+                            <td valign="top">
+                                <div style="width:250px">
+                                    <div class="widget-box">
+                                        <div class="widget-header header-color-blue2">
+                                            <h4 class="lighter smaller">All Fields</h4>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div class="widget-main padding-8">
+                                                <div style="height:230px; overflow-y:auto">
+                                                    <ul id="easyTree" class="easyui-tree" data-options="animate:true,dnd:true"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td valign="top">
+                                <div style="width:250px">
+                                    <div class="widget-box">
+                                        <div class="widget-header header-color-green2">
+                                            <h4 class="lighter smaller">Specify the Fields</h4>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div class="widget-main padding-8">
+                                                <div style="height:230px; overflow-y:auto">
+                                                    <ul id="easyTree1" class="easyui-tree" data-options="animate:true,dnd:true"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <script type="text/javascript">
+                    var $assets = "assets";//this will be used in fuelux.tree-sampledata.js
+                </script>
+
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+
+    <script src='~/assets/js/jquery-2.0.3.min.js'></script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="assets/js/jquery-1.10.2.min.js"></script>
+    <![endif]-->
+    <!--[if !IE]> -->
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='~/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='~/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='~/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    @*<script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/typeahead-bs2.min.js"></script>*@
+
+    <!-- page specific plugin scripts -->
+    @*<script src="~/assets/js/ace-elements.min.js"></script>
+    <script src="~/assets/js/ace.min.js"></script>*@
+
+    <script src="~/assets/js/easyui/jquery.easyui.min.js"></script>
+
+    <!-- inline scripts related to this page -->
+
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .page-content {
+            padding-left: 24px;
+            padding-right: 12px;
+            padding-top:0px;
+            padding-bottom:0px;
+        }
+    </style>
+    <script type="text/javascript">
+        @{
+            string ListName = ViewBag.ListName;
+            string categoryTreeAction = Url.Content("~/Setting/GetAllCategoryAndFields/") + ListName;
+            string userTreeAction = Url.Content("~/Setting/GetUserListFields/") + ListName;
+        }
+
+        function Save() {
+
+            var postModel = { ListName: '@ListName', FieldIds: [] }
+            var nodes = $('#easyTree1').tree('getChildren');
+            if (nodes != null) {
+                for (var i = 0; i < nodes.length; i++) {
+                    postModel.FieldIds.push(nodes[i].id);
+                }
+            }
+
+            $.ajax({
+                url: '@Url.Content("~/Setting/SaveListFields")',
+                data: postModel,
+                dataType: "json",
+                type: "POST",
+                traditional: true,
+                async:false,
+                success: function (responseJSON) {
+
+                }
+            });
+        }
+
+        jQuery(function ($) {
+            
+            $('#easyTree').tree({
+                onBeforeDrop: function (target, source, point) {
+                    if ($('#easyTree').tree('getNode', target).IsCategory) {
+                        return false;
+                    }
+                },
+                url: '@categoryTreeAction',
+                lines: true
+            })
+            $('#easyTree1').tree({
+                onBeforeDrop: function (target, source, point) {
+                    if (source.IsCategory) {
+                        return false;
+                    }
+                },
+                url: '@userTreeAction',
+                lines: true
+            })
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+﻿@using BI.SGP.Web.Models;
+@{
+    ViewBag.Title = "Cost Modelling";
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
+}
+@section ActionButton{
+    <a href="@Url.Content("~/CostIO/Input")" target="_blank" title="Create">
+        <i class="icon-plus-sign bigger-140 green"></i>
+    </a>
+    <a href="javascript:void(0)" id="aRefresh" title="Refresh">
+        <i class="icon-refresh bigger-140 green"></i>
+    </a>
+}
+@section FootScript {
+    <script type="text/javascript">
+        var gridRowsObject = {};
+        var searchGroup = 'SCCostList';
+        var gridGroup = 'SCCostList';
+        $(document).ready(function () {
+
+            $("#form-searchBox").biSearchBox({
+                groupName: searchGroup,
+                searchButton: 'btnSearch'
+            });
+
+            $("#grid-table").biGrid({
+                groupName: gridGroup,
+                pager: 'grid-pager',
+                sortname: 'ID',
+                sortorder: 'DESC',
+                widthRelateElement: 'searchPanel',
+                extSqlColumns: 'ID,Status',
+                extColumns: [
+                    { index: 0, title: ' ', model: { name: 'myac', width: 80, sortable: false, resizable: false, align: 'center' } }
+                ],
+                formatters: {
+                    myac: function (cellvalue, options, rowObject) {
+                        gridRowsObject[options.rowId] = rowObject;
+                        var actionString = '<div title="Edit" style="float:left;cursor:pointer;" class="ui-pg-div ui-inline-edit" onclick="doEdit(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon ui-icon-pencil"></span></div>';
+                        if (rowObject["Status"] == "2" || rowObject["Status"] == "3") {
+                            actionString += '<div title="View" style="float:left;margin-left:2px;margin-top:3px" class="ui-pg-div ui-inline-edit" onclick="doView(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\')"><span class="ui-icon icon-file-text"></span></div>';
+                        } 
+                        actionString += '<div title="Delete" style="float:left;margin-left:2px;" class="ui-pg-div ui-inline-del" onclick="doDelete(\'' + rowObject["ID"] + '\')" onmouseover="jQuery(this).addClass(\'ui-state-hover\');" onmouseout="jQuery(this).removeClass(\'ui-state-hover\');"><span class="ui-icon ui-icon-trash"></span></div>';
+                        return actionString;
+                    },
+                    ID: function (cellvalue, options, rowObject) {
+                        return "<a href='@Url.Content("~/CostIO/Input")/" + rowObject["ID"] + "' target='_blank'>" + cellvalue + "</a>";;
+                    }
+                },
+            });
+
+            $("#btnSearch").on('click', function (e) {
+                $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+            })
+
+            $("#aRefresh").on('click', function (e) {
+                refresh();
+            })
+        });
+
+        function refresh() {
+            location.replace(location);
+        }
+
+        function doEdit(id) {
+            window.open('@Url.Content("~/CostIO/Input")/' + id);
+        }
+
+        function doView(id) {
+            window.open('@Url.Content("~/CostIO/Output")/' + id);
+        }
+
+        function doDelete(id) {
+            $.bi.dialog.showDelete({
+                okAction: function () {
+                    $.post('@Url.Content("~/CostIO/DelData")', { ID: id }, function (data) {
+                        if (data.success) {
+                            $("#grid-table").biGrid('search', $("#form-searchBox").biSearchBox('getData'));
+                        } else {
+                            if (!data.success) {
+                                $.bi.dialog.showErr({ title: "Message", content: data.errMessage, iconCss: "icon-warning-sign red" });
+                            }
+                        }
+                    }, "json");
+                    return true;
+                }
+            });
+        }
+
+        function getSelectedValues() {
+            var gid = "#grid-table";
+            var keyValues = new Array();
+            var selectedIds = $(gid).jqGrid("getGridParam", "selarrrow");
+            if (selectedIds != null && selectedIds.length > 0) {
+                for (var i = 0; i < selectedIds.length; i++) {
+                    keyValues.push(gridRowsObject[selectedIds[i]]["ID"]);
+                }
+            }
+
+            return keyValues.join();
+        }
+    </script>
+}
